@@ -125,6 +125,7 @@
     }
 
     function osc_print_form($id) {
+        osc_run_hook('print_form', $id);
         osc_form_use($id);
         $class = osc_form_class();
         if($class!="") { $class = ' class="'.$class.'" '; } else { $class = ''; }
