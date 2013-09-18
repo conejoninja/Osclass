@@ -128,6 +128,9 @@ MESSAGE;
                                         $form->addElement(__('Your email address'), 'yourEmail');
                                         $form->addElement(__('Subject'), 'subject');
                                         $form->addElement(__('Message'), 'message');
+                                        if(osc_contact_attachment()) {
+                                            $form->addElement(array('name' => 'attachment', 'type' => 'file'));
+                                        }
 
                                         if( osc_recaptcha_public_key() ) {
                                             require_once osc_lib_path() . 'recaptchalib.php';
