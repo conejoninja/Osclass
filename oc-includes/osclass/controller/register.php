@@ -42,6 +42,14 @@
         {
             switch( $this->action ) {
                 case('register'):       //register user
+                                        $form = new OSCForm('register');
+                                        $form->addHidden('page', 'register');
+                                        $form->addHidden('action', 'register_post');
+                                        $form->addElement(__('Name'), 's_name');
+                                        $form->addElement(__('E-mail'), 's_email');
+                                        $form->addElement(array('label' => __('Password'), 'name' => 's_password', 'type' => 'password'));
+                                        $form->addElement(array('label' => __('Repeat password'), 'name' => 's_password2', 'type' => 'password'));
+                                        $form->addButton(__('Create'));
                                         $this->doView('user-register.php');
                 break;
                 case('register_post'):  //register user
@@ -77,33 +85,25 @@
                                                     require_once(osc_lib_path() . 'osclass/controller/login.php');
                                                     $do = new CWebLogin();
                                                     $do->doModel();
-                                                    //$this->doView('user-login.php');
                                             break;
                                             case 3: osc_add_flash_warning_message( _m('The specified e-mail is already in use'));
-                                                    $this->doView('user-register.php');
                                             break;
                                             case 4: osc_add_flash_error_message( _m('The reCAPTCHA was not entered correctly'));
-                                                    $this->doView('user-register.php');
                                             break;
                                             case 5: osc_add_flash_warning_message( _m('The email is not valid'));
-                                                    $this->doView('user-register.php');
                                             break;
                                             case 6: osc_add_flash_warning_message( _m('The password cannot be empty'));
-                                                    $this->doView('user-register.php');
                                             break;
                                             case 7: osc_add_flash_warning_message( _m("Passwords don't match"));
-                                                    $this->doView('user-register.php');
                                             break;
                                             case 8: osc_add_flash_warning_message( _m("Username is already taken"));
-                                                $this->doView('user-register.php');
                                             break;
                                             case 9: osc_add_flash_warning_message( _m("The specified username is not valid, it contains some invalid words"));
-                                                $this->doView('user-register.php');
                                             break;
                                             case 10: osc_add_flash_warning_message( _m('The name cannot be empty'));
-                                                $this->doView('user-register.php');
                                             break;
                                         }
+                                        $this->redirectTo(osc_register_account_url());
                 break;
                 case('validate'):       //validate account
                                         $id          = intval( Params::getParam('id') );

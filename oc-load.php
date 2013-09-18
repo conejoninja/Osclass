@@ -99,6 +99,7 @@ require_once LIB_PATH . 'osclass/helpers/hPage.php';
 require_once LIB_PATH . 'osclass/helpers/hPagination.php';
 require_once LIB_PATH . 'osclass/helpers/hPremium.php';
 require_once LIB_PATH . 'osclass/helpers/hTheme.php';
+require_once LIB_PATH . 'osclass/helpers/hForm.php';
 require_once LIB_PATH . 'osclass/core/Params.php';
 require_once LIB_PATH . 'osclass/core/Cookie.php';
 require_once LIB_PATH . 'osclass/core/Session.php';
@@ -173,6 +174,7 @@ require_once LIB_PATH . 'osclass/classes/Dependencies.php';
 require_once LIB_PATH . 'osclass/classes/Scripts.php';
 require_once LIB_PATH . 'osclass/classes/Styles.php';
 
+require_once LIB_PATH . 'osclass/frm/OSCForm.php';
 require_once LIB_PATH . 'osclass/frm/Form.form.class.php';
 require_once LIB_PATH . 'osclass/frm/Page.form.class.php';
 require_once LIB_PATH . 'osclass/frm/Category.form.class.php';
