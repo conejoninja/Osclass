@@ -25,7 +25,7 @@
         private static $_forms;
         private $_self;
 
-        public function __construct($id, $action = null, $method = 'post') {
+        public function __construct($id, $action = null, $method = 'post', $class = '') {
             $this->_self = &OSCForm::$_forms[$id];
             $this->_self['id'] = $id;
             if($action==null) {
@@ -34,7 +34,7 @@
                 $this->_self['action'] = $action;
             }
             $this->_self['method'] = $method;
-            $this->_self['class'] = osc_apply_filter('form_class', '', $id);
+            $this->_self['class'] = osc_apply_filter('form_class', $class, $id);
             $this->_self['elements'] = array();
         }
 

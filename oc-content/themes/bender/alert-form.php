@@ -59,19 +59,6 @@ $(document).ready(function(){
     <h3>
         <strong><?php _e('Subscribe to this search', 'bender'); ?></strong>
     </h3>
-    <form action="<?php echo osc_base_url(true); ?>" method="post" name="sub_alert" id="sub_alert" class="nocsrf">
-            <?php AlertForm::page_hidden(); ?>
-            <?php AlertForm::alert_hidden(); ?>
-
-            <?php if(osc_is_web_user_logged_in()) { ?>
-                <?php AlertForm::user_id_hidden(); ?>
-                <?php AlertForm::email_hidden(); ?>
-
-            <?php } else { ?>
-                <?php AlertForm::user_id_hidden(); ?>
-                <?php AlertForm::email_text(); ?>
-
-            <?php }; ?>
-            <button type="submit" class="sub_button" ><?php _e('Subscribe now', 'bender'); ?>!</button>
-    </form>
+    <?php osc_form_element_class('subscribe-alert', 'subscribe-button', 'sub_button');
+    osc_print_form('subscribe-alert'); ?>
 </div>
