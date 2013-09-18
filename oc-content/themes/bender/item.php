@@ -177,47 +177,8 @@
                     <h3><?php _e('Leave your comment (spam and offensive messages will be removed)', 'bender'); ?></h3>
                 </div>
                 <div class="resp-wrapper">
-                    <form action="<?php echo osc_base_url(true); ?>" method="post" name="comment_form" id="comment_form">
-                        <fieldset>
-
-                            <input type="hidden" name="action" value="add_comment" />
-                            <input type="hidden" name="page" value="item" />
-                            <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
-                            <?php if(osc_is_web_user_logged_in()) { ?>
-                                <input type="hidden" name="authorName" value="<?php echo osc_esc_html( osc_logged_user_name() ); ?>" />
-                                <input type="hidden" name="authorEmail" value="<?php echo osc_logged_user_email();?>" />
-                            <?php } else { ?>
-                                <div class="control-group">
-                                    <label class="control-label" for="authorName"><?php _e('Your name', 'bender'); ?></label>
-                                    <div class="controls">
-                                        <?php CommentForm::author_input_text(); ?>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="authorEmail"><?php _e('Your e-mail', 'bender'); ?></label>
-                                    <div class="controls">
-                                        <?php CommentForm::email_input_text(); ?>
-                                    </div>
-                                </div>
-                            <?php }; ?>
-                            <div class="control-group">
-                                <label class="control-label" for="title"><?php _e('Title', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php CommentForm::title_input_text(); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="body"><?php _e('Comment', 'bender'); ?></label>
-                                <div class="controls textarea">
-                                    <?php CommentForm::body_input_textarea(); ?>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <button type="submit"><?php _e('Send', 'bender'); ?></button>
-                            </div>
-
-                        </fieldset>
-                    </form>
+                    <ul id="comment_error_list"></ul>
+                    <?php osc_print_form('comment_form'); ?>
                 </div>
             </div>
         </div>

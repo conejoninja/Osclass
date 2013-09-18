@@ -139,7 +139,7 @@
     function osc_print_form_element($element = null) {
         if($element!=null) { View::newInstance()->_exportVariableToView('form_element', $element); }
         if(osc_form_element_type()=='hidden') {
-            echo '<input type="hidden" name="'.osc_form_element_name().'" id="'.osc_form_element_name().'" value="'.osc_form_element_value().'" />';
+            echo '<input type="hidden" name="'.osc_esc_html(osc_form_element_name()).'" id="'.osc_esc_html(osc_form_element_name()).'" value="'.osc_esc_html(osc_form_element_value()).'" />';
         } else if(osc_form_element_type()=='html') {
             echo osc_form_element_value();
         } else {
