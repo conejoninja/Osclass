@@ -121,7 +121,7 @@ MESSAGE;
                 break;
                 default:                //contact
 
-                                        $form = new OSCForm('contact');
+                                        $form = new OSCForm('contact_form');
                                         $form->addHidden('page', 'contact');
                                         $form->addHidden('action', 'contact_post');
                                         $form->addElement(__('Your name'), 'yourName');

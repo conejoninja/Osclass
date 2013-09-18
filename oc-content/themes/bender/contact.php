@@ -32,8 +32,8 @@
     </div>
     <div class="resp-wrapper">
         <ul id="error_list"></ul>
-        <?php osc_form_element_class('contact', 'contact-send', 'ui-button ui-button-middle ui-button-main');
-        osc_print_form('contact'); ?>
+        <?php osc_form_element_class('contact_form', 'contact-send', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('contact_form'); ?>
         <?php ContactForm::js_validation(); ?>
     </div>
 </div>
