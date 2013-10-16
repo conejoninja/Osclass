@@ -42,14 +42,6 @@
         {
             switch( $this->action ) {
                 case('register'):       //register user
-                                        $form = new OSCForm('register');
-                                        $form->addHidden('page', 'register');
-                                        $form->addHidden('action', 'register_post');
-                                        $form->addElement(__('Name'), 's_name');
-                                        $form->addElement(__('E-mail'), 's_email');
-                                        $form->addElement(array('label' => __('Password'), 'name' => 's_password', 'type' => 'password'));
-                                        $form->addElement(array('label' => __('Repeat password'), 'name' => 's_password2', 'type' => 'password'));
-                                        $form->addButton(__('Create'));
                                         $this->doView('user-register.php');
                 break;
                 case('register_post'):  //register user

@@ -579,22 +579,6 @@
                         $this->redirectTo(osc_base_url() . $itemURI);
                     }
 
-                    $form = new OSCForm('comment_form');
-                    $form->addHidden('page', 'item');
-                    $form->addHidden('action', 'add_comment');
-                    $form->addHidden('id', osc_item_id());
-                    if(osc_is_web_user_logged_in()) {
-                        $form->addHidden('authorName', osc_osc_logged_user_name());
-                        $form->addHidden('authorEmail', osc_logged_user_email());
-                    } else {
-                        $form->addElement(__('Your name'), 'authorName');
-                        $form->addElement(__('Your email address'), 'authorEmail');
-                    }
-                    $form->addElement(__('Title'), 'title');
-                    $form->addElement(__('Comment'), 'body');
-
-                    $form->addButton(__('Send'), 'comment-send');
-
                     $this->doView('item.php');
                 break;
             }

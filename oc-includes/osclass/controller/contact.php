@@ -120,24 +120,6 @@ MESSAGE;
                                         $this->redirectTo( osc_contact_url() );
                 break;
                 default:                //contact
-
-                                        $form = new OSCForm('contact_form');
-                                        $form->addHidden('page', 'contact');
-                                        $form->addHidden('action', 'contact_post');
-                                        $form->addElement(__('Your name'), 'yourName');
-                                        $form->addElement(__('Your email address'), 'yourEmail');
-                                        $form->addElement(__('Subject'), 'subject');
-                                        $form->addElement(__('Message'), 'message');
-                                        if(osc_contact_attachment()) {
-                                            $form->addElement(array('name' => 'attachment', 'type' => 'file'));
-                                        }
-
-                                        if( osc_recaptcha_public_key() ) {
-                                            require_once osc_lib_path() . 'recaptchalib.php';
-                                            $form->addHTML(recaptcha_get_html( osc_recaptcha_public_key()));
-                                        };
-                                        $form->addButton(__('Send'), 'contact-send');
-
                                         $this->doView('contact.php');
             }
         }

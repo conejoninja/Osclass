@@ -120,6 +120,14 @@
         if($form!==false) {
             View::newInstance()->_exportVariableToView('form_elements', $form['elements']);
             return View::newInstance()->_exportVariableToView('form', $form);
+        } else {
+            require_once LIB_PATH.'forms.php';
+            _osc_load_form($id);
+            $form = OSCForm::form($id);
+            if($form!==false) {
+                View::newInstance()->_exportVariableToView('form_elements', $form['elements']);
+                return View::newInstance()->_exportVariableToView('form', $form);
+            }
         }
         return false;
     }

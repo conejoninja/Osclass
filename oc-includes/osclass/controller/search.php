@@ -403,17 +403,6 @@
                     header('HTTP/1.1 404 Not Found');
                 }
 
-
-                $form = new OSCForm('subscribe-alert', null, 'post', 'nocsrf');
-                $form->addHidden('alert', osc_search_alert());
-                $form->addHidden('alert_userId', osc_logged_user_id());
-                if(osc_is_web_user_logged_in()) {
-                    $form->addHidden('alert_email', osc_logged_user_email());
-                } else {
-                    $form->addElement('E-mail', 'alert_email', __('Enter your e-mail'));
-                };
-                $form->addButton(__('Subscribe now'), 'subscribe-button');
-
                 $this->doView('search.php');
 
             } else {
