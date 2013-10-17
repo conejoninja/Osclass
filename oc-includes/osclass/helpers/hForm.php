@@ -171,7 +171,13 @@
             case 'textarea':
                 echo '<textarea '.$common.'>'.osc_form_element_value().'</textarea>';
                 break;
-
+            case 'select':
+                echo '<select '.$common.'>';
+                foreach($element['options'] as $o) {
+                    echo '<option value="'.osc_esc_html($o['value']).'" '.(@$o['selected']==true?'selected="selected"':'').' >'.$o['label'].'</option>';
+                }
+                echo '</select>';
+                break;
             default:
                 echo '<input '.$common.
                     ' type="'.osc_esc_html(osc_form_element_type()).

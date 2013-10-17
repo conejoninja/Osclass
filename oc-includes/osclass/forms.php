@@ -86,11 +86,11 @@ function _osc_load_form($id) {
             $form->addHidden('page', 'user');
             $form->addHidden('action', 'profile_post');
             $form->addElement(__('Name'), 's_name', osc_user_name());
-            //TODO :
-            /*<label class="control-label" for="user_type"><?php _e('User type', 'bender'); ?></label>
-            <div class="controls">
-                <?php UserForm::is_company_select(osc_user()); ?>
-            </div>*/
+            $options = array(
+                array('value' => '0', 'label' => __('User'), 'selected' => !osc_user_is_company()),
+                array('value' => '1', 'label' => __('Company'), 'selected' => osc_user_is_company())
+            );
+            $form->addSelect(__('User type'), 'b_company', $options);
             $form->addElement(__('Cell phone'), 's_phone_mobile', osc_user_phone_mobile());
             $form->addElement(__('Phone'), 's_phone_land', osc_user_phone());
             //TODO :

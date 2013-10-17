@@ -71,6 +71,19 @@
             }
         }
 
+        public function addSelect($text = '', $name = '', $options = null) {
+            if($options!=null && !is_array($options)) {
+                $this->addElement(
+                    array(
+                        'label' => $text,
+                        'name' => $name,
+                        'type' => 'select',
+                        'options' => $options
+                    )
+                );
+            }
+        }
+
         public function addFile($name = '') {
             $this->_self['has_files'] = true;
             $this->addElement(array('name' => $name,'type' => 'file'));
