@@ -91,6 +91,10 @@
         }
     }
 
+    function osc_form_has_file() {
+        return osc_form_field("has_file");
+    }
+
     function osc_form_element_options() {
         if(func_num_args()>=3) {
             $args = func_get_args();
@@ -116,20 +120,16 @@
     }
 
     function osc_form_use($id) {
-        $form = OSCForm::form($id);
+        $form = OSCForm::load($id);
         if($form!==false) {
             View::newInstance()->_exportVariableToView('form_elements', $form['elements']);
             return View::newInstance()->_exportVariableToView('form', $form);
-        } else {
-            require_once LIB_PATH.'forms.php';
-            _osc_load_form($id);
-            $form = OSCForm::form($id);
-            if($form!==false) {
-                View::newInstance()->_exportVariableToView('form_elements', $form['elements']);
-                return View::newInstance()->_exportVariableToView('form', $form);
-            }
         }
         return false;
+    }
+
+    function osc_form_load($id) {
+        return OSCForm::load($id);
     }
 
     function osc_print_form($id) {
@@ -137,7 +137,7 @@
         osc_form_use($id);
         $class = osc_form_class();
         if($class!="") { $class = ' class="'.$class.'" '; } else { $class = ''; }
-        echo '<form id="'.$id.'" name="'.$id.'" action="'.osc_form_action().'" method="'.osc_form_method().'" '.$class.'>';
+        echo '<form id="'.$id.'" name="'.$id.'" action="'.osc_form_action().'" method="'.osc_form_method().'" '.$class.' '.(osc_form_has_file()?'enctype="multipart/form-data"':'').'>';
         while(osc_has_form_elements()) {
             osc_print_form_element();
         }

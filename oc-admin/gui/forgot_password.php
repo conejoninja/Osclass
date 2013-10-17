@@ -37,27 +37,7 @@
             <div class="flashmessage">
                 <?php _e('Type your new password'); ?>.
             </div>
-            <form action="<?php echo osc_admin_base_url(true); ?>" method="post" >
-                <input type="hidden" name="page" value="login" />
-                <input type="hidden" name="action" value="forgot_post" />
-                <input type="hidden" name="adminId" value="<?php echo Params::getParam('adminId', true); ?>" />
-                <input type="hidden" name="code" value="<?php echo Params::getParam('code', true); ?>" />
-                    <p>
-                        <label for="new_password">
-                            <span><?php _e('New password'); ?></span>
-                            <input id="new_password" type="password" name="new_password" value="" />
-                        </label>
-                    </p>
-                    <p>
-                        <label for="new_password2">
-                            <span><?php _e('Repeat new password'); ?></span>
-                            <input id="new_password2" type="password" name="new_password2" value="" />
-                        </label>
-                    </p>
-                    <p class="submit">
-                        <input type="submit" name="submit" id="submit" value="<?php echo osc_esc_html( __('Change password')); ?>" tabindex="100" />
-                    </p>
-            </form>
+            <?php osc_print_form('forgot_password'); ?>
             <p id="nav">
                 <a title="<?php _e('Log in'); ?>" href="<?php echo osc_admin_base_url(); ?>"><?php _e('Log in'); ?></a>
             </p>

@@ -57,6 +57,30 @@ function _osc_load_form($id) {
             };
             $form->addButton(__('Subscribe now'), 'subscribe-button');
             break;
+        case 'recover_password':
+            $form = new OSCForm('recover_password');
+            $form->addHidden('page', 'login');
+            $form->addHidden('action', 'recover_post');
+            $form->addElement(__('E-mail'), 's_email');
+            if( osc_recaptcha_public_key() ) {
+                require_once osc_lib_path() . 'recaptchalib.php';
+                $time  = Session::newInstance()->_get('recover_time');
+                if((time()-$time)<=1200) {
+                    $form->addHTML(recaptcha_get_html( osc_recaptcha_public_key()));
+                }
+            }
+            $form->addButton(__('Send me a new password'), 'recover-button');
+            break;
+        case 'forgot_password':
+            $form = new OSCForm('forgot_password');
+            $form->addHidden('page', 'login');
+            $form->addHidden('action', 'forgot_post');
+            $form->addHidden('adminId', Params::getParam('adminId', true));
+            $form->addHidden('code', Params::getParam('code', true));
+            $form->addElement(array('label' => __('New password'), 'name' => 'new_password', 'type' => 'password'));
+            $form->addElement(array('label' => __('Repeat new password'), 'name' => 'new_password2', 'type' => 'password'));
+            $form->addButton(__('Change password'), 'submit');
+            break;
         default:
             return false;
             break;

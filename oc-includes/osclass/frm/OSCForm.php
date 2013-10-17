@@ -36,6 +36,7 @@
             $this->_self['method'] = $method;
             $this->_self['class'] = osc_apply_filter('form_class', $class, $id);
             $this->_self['elements'] = array();
+            $this->_self['has_files'] = false;
         }
 
         public function addElement() {
@@ -48,12 +49,12 @@
                     $this->_self['elements'][$args['name']] = array(
                         'label' => @$args['label'],
                         'name' => $args['name'],
-                        'value' => $args['value'],
+                        'value' => @$args['value'],
                         'type' => $args['type'],
                         'class' => @$args['class'],
                         'attributes' => $args['attributes'],
                         'options' => $args['options'],
-                        'help' => $args['help']
+                        'help' => @$args['help']
                     );
                 }
             } else if(func_num_args()>=2) {
@@ -70,6 +71,11 @@
             }
         }
 
+        public function addFile($name = '') {
+            $this->_self['has_files'] = true;
+            //$this->addElement(array('name' => ($name!=''?$name:'button-'.$type),'type' => $type, 'attributes' => array('button-text' => $text)));
+        }
+
         public function addButton($text, $name = '', $type = 'submit') {
             $this->addElement(array('name' => ($name!=''?$name:'button-'.$type),'type' => $type, 'attributes' => array('button-text' => $text)));
         }
@@ -83,36 +89,53 @@
         }
 
         public static function addElementClass($form_id, $element_name, $class) {
-            if($class!='' && isset(self::$_forms[$form_id]) && isset(self::$_forms[$form_id]['elements'][$element_name])) {
-                self::$_forms[$form_id]['elements'][$element_name]['class'] .= " ".$class;
+            OSCForm::load($form_id);
+            if($class!='' && isset(OSCForm::$_forms[$form_id]) && isset(OSCForm::$_forms[$form_id]['elements'][$element_name])) {
+                OSCForm::$_forms[$form_id]['elements'][$element_name]['class'] .= " ".$class;
                 return true;
             }
             return false;
         }
 
         public static function addElementAttributes($form_id, $element_name, $attributes) {
-            if(is_array($attributes) && isset(self::$_forms[$form_id]) && isset(self::$_forms[$form_id]['elements'][$element_name])) {
-                self::$_forms[$form_id]['elements'][$element_name]['attributes'] = array_merge(self::$_forms[$form_id]['elements'][$element_name]['attributes'], $attributes);
+            OSCForm::load($form_id);
+            if(is_array($attributes) && isset(OSCForm::$_forms[$form_id]) && isset(OSCForm::$_forms[$form_id]['elements'][$element_name])) {
+                OSCForm::$_forms[$form_id]['elements'][$element_name]['attributes'] = array_merge(OSCForm::$_forms[$form_id]['elements'][$element_name]['attributes'], $attributes);
                 return true;
             }
             return false;
         }
 
         public static function addElementOptions($form_id, $element_name, $options) {
-            if(is_array($options) && isset(self::$_forms[$form_id]) && isset(self::$_forms[$form_id]['elements'][$element_name])) {
-                self::$_forms[$form_id]['elements'][$element_name]['options'] = array_merge(self::$_forms[$form_id]['elements'][$element_name]['options'], $options);
+            OSCForm::load($form_id);
+            if(is_array($options) && isset(OSCForm::$_forms[$form_id]) && isset(OSCForm::$_forms[$form_id]['elements'][$element_name])) {
+                OSCForm::$_forms[$form_id]['elements'][$element_name]['options'] = array_merge(OSCForm::$_forms[$form_id]['elements'][$element_name]['options'], $options);
                 return true;
             }
             return false;
         }
 
-        public function forms() {
-            return self::$_forms;
+        public static function load($id) {
+            if(isset(OSCForm::$_forms[$id])) {
+                return OSCForm::$_forms[$id];
+            } else {
+                require_once LIB_PATH.'osclass/forms.php';
+                _osc_load_form($id);
+                if(isset(OSCForm::$_forms[$id])) {
+                    return OSCForm::$_forms[$id];
+                }
+            }
+            return false;
         }
 
-        public function form($id) {
-            if(isset(self::$_forms[$id])) {
-                return self::$_forms[$id];
+
+        public static function forms() {
+            return OSCForm::$_forms;
+        }
+
+        public static function form($id) {
+            if(isset(OSCForm::$_forms[$id])) {
+                return OSCForm::$_forms[$id];
             }
             return false;
         }
