@@ -119,10 +119,10 @@
                 <input type="hidden" name="<?php echo $key; ?>" value="<?php echo osc_esc_html($value); ?>" />
                 <?php } } ?>
                 <select name="iDisplayLength" class="select-box-extra select-box-medium float-left" onchange="this.form.submit();" >
-                    <option value="10"><?php printf(__('%d Listings'), 10); ?></option>
-                    <option value="25" <?php if( Params::getParam('iDisplayLength') == 25 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 25); ?></option>
-                    <option value="50" <?php if( Params::getParam('iDisplayLength') == 50 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 50); ?></option>
-                    <option value="100" <?php if( Params::getParam('iDisplayLength') == 100 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 100); ?></option>
+                    <option value="100"><?php printf(__('%d Listings'), 100); ?></option>
+                    <option value="250" <?php if( Params::getParam('iDisplayLength') == 250 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 250); ?></option>
+                    <option value="500" <?php if( Params::getParam('iDisplayLength') == 500 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 500); ?></option>
+                    <option value="1000" <?php if( Params::getParam('iDisplayLength') == 1000 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 1000); ?></option>
                 </select>
             </form>
             <?php if($sort!='date') { ?>
