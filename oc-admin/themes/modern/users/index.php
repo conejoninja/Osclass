@@ -244,6 +244,18 @@
 <div class="relative">
     <div id="users-toolbar" class="table-toolbar">
         <div class="float-right">
+            <form method="get" action="<?php echo osc_admin_base_url(true); ?>"  class="inline nocsrf">
+                <?php foreach( Params::getParamsAsArray('get') as $key => $value ) { ?>
+                <?php if( $key != 'iDisplayLength' ) { ?>
+                <input type="hidden" name="<?php echo $key; ?>" value="<?php echo osc_esc_html($value); ?>" />
+                <?php } } ?>
+                <select name="iDisplayLength" class="select-box-extra select-box-medium float-left" onchange="this.form.submit();" >
+                    <option value="100"><?php printf(__('%d Listings'), 100); ?></option>
+                    <option value="250" <?php if( Params::getParam('iDisplayLength') == 250 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 250); ?></option>
+                    <option value="500" <?php if( Params::getParam('iDisplayLength') == 500 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 500); ?></option>
+                    <option value="1000" <?php if( Params::getParam('iDisplayLength') == 1000 ) echo 'selected'; ?> ><?php printf(__('%d Listings'), 1000); ?></option>
+                </select>
+            </form>
             <form method="get" action="<?php echo osc_admin_base_url(true); ?>" id="shortcut-filters" class="inline">
                 <input type="hidden" name="page" value="users" />
                 <a id="btn-display-filters" href="#" class="btn <?php if($withFilters) { echo 'btn-red'; } ?>"><?php _e('Show filters'); ?></a>
