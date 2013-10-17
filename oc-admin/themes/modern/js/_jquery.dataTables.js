@@ -7744,28 +7744,28 @@
 		 * position as the value, and the array in the second position as the 
 		 * displayed options (useful for language strings such as 'All').
 		 *  @type array
-		 *  @default [ 10, 25, 50, 100 ]
+		 *  @default [ 100, 500, 1000 ]
 		 *  @dtopt Option
 		 * 
 		 *  @example
 		 *    $(document).ready(function() {
 		 *      $('#example').dataTable( {
-		 *        "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+		 *        "aLengthMenu": [[100, 500, 1000, -1], [100, 500, 1000, "All"]]
 		 *      } );
 		 *    } );
 		 *  
 		 *  @example
 		 *    // Setting the default display length as well as length menu
-		 *    // This is likely to be wanted if you remove the '10' option which
+		 *    // This is likely to be wanted if you remove the '100' option which
 		 *    // is the iDisplayLength default.
 		 *    $(document).ready(function() {
 		 *      $('#example').dataTable( {
-		 *        "iDisplayLength": 25,
-		 *        "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+		 *        "iDisplayLength": 100,
+		 *        "aLengthMenu": [[100, 500, 1000, -1], [100, 500, 1000, "All"]]
 		 *      } );
 		 *    } );
 		 */
-		"aLengthMenu": [ 10, 25, 50, 100 ],
+		"aLengthMenu": [ 100, 500, 1000, "All" ],
 	
 	
 		/**
@@ -8816,17 +8816,17 @@
 		 * feature enabled (bLengthChange) then the end user will be able to override
 		 * this to a custom setting using a pop-up menu.
 		 *  @type int
-		 *  @default 10
+		 *  @default 100
 		 *  @dtopt Options
 		 * 
 		 *  @example
 		 *    $(document).ready( function() {
 		 *      $('#example').dataTable( {
-		 *        "iDisplayLength": 50
+		 *        "iDisplayLength": 100
 		 *      } );
 		 *    } )
 		 */
-		"iDisplayLength": 10,
+		"iDisplayLength": 100,
 	
 	
 		/**
