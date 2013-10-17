@@ -73,7 +73,7 @@
 
         public function addFile($name = '') {
             $this->_self['has_files'] = true;
-            //$this->addElement(array('name' => ($name!=''?$name:'button-'.$type),'type' => $type, 'attributes' => array('button-text' => $text)));
+            $this->addElement(array('name' => $name,'type' => 'file'));
         }
 
         public function addButton($text, $name = '', $type = 'submit') {

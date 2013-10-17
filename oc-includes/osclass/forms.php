@@ -11,7 +11,7 @@ function _osc_load_form($id) {
             $form->addElement(__('Subject'), 'subject');
             $form->addElement(__('Message'), 'message');
             if(osc_contact_attachment()) {
-                $form->addElement(array('name' => 'attachment', 'type' => 'file'));
+                $form->addFile('attachment');
             }
 
             if( osc_recaptcha_public_key() ) {
@@ -80,6 +80,71 @@ function _osc_load_form($id) {
             $form->addElement(array('label' => __('New password'), 'name' => 'new_password', 'type' => 'password'));
             $form->addElement(array('label' => __('Repeat new password'), 'name' => 'new_password2', 'type' => 'password'));
             $form->addButton(__('Change password'), 'submit');
+            break;
+        case 'user-profile':
+            $form = new OSCForm('user-profile');
+            $form->addHidden('page', 'user');
+            $form->addHidden('action', 'profile_post');
+            $form->addElement(__('Name'), 's_name', osc_user_name());
+            //TODO :
+            /*<label class="control-label" for="user_type"><?php _e('User type', 'bender'); ?></label>
+            <div class="controls">
+                <?php UserForm::is_company_select(osc_user()); ?>
+            </div>*/
+            $form->addElement(__('Cell phone'), 's_phone_mobile', osc_user_phone_mobile());
+            $form->addElement(__('Phone'), 's_phone_land', osc_user_phone());
+            //TODO :
+
+/*
+
+<div class="control-group">
+    <label class="control-label" for="country"><?php _e('Country', 'bender'); ?></label>
+    <div class="controls">
+        <?php UserForm::country_select(osc_get_countries(), osc_user()); ?>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="region"><?php _e('Region', 'bender'); ?></label>
+    <div class="controls">
+        <?php UserForm::region_select(osc_get_regions(), osc_user()); ?>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="city"><?php _e('City', 'bender'); ?></label>
+    <div class="controls">
+        <?php UserForm::city_select(osc_get_cities(), osc_user()); ?>
+    </div>
+</div>        */
+
+            $form->addElement(__('City area'), 'cityArea', osc_user_city_area());
+            $form->addElement(__('Address'), 'address', osc_user_address());
+            $form->addElement(__('Website'), 's_website', osc_user_website());
+            //TODO :
+/*
+<div class="control-group">
+    <label class="control-label" for="s_info"><?php _e('Description', 'bender'); ?></label>
+    <div class="controls">
+        <?php UserForm::info_textarea('s_info', osc_locale_code(), @$osc_user['locale'][osc_locale_code()]['s_info']); ?>
+    </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Update", 'bender');?></button>
+    </div>
+</div>      */
+            $form->addButton(__('Update'), 'update-button');
+
+            //TODO :
+/*
+<div class="control-group">
+    <div class="controls">
+        <?php osc_run_hook('user_form'); ?>
+    </div>
+</div>
+</form>   */
+
+
+
             break;
         default:
             return false;
