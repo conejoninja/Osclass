@@ -173,7 +173,8 @@
                 break;
             case 'select':
                 echo '<select '.$common.'>';
-                foreach($element['options'] as $o) {
+                $options = osc_form_element_options();
+                foreach($options as $o) {
                     echo '<option value="'.osc_esc_html($o['value']).'" '.(@$o['selected']==true?'selected="selected"':'').' >'.$o['label'].'</option>';
                 }
                 echo '</select>';

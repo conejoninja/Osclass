@@ -93,16 +93,24 @@ function _osc_load_form($id) {
             $form->addSelect(__('User type'), 'b_company', $options);
             $form->addElement(__('Cell phone'), 's_phone_mobile', osc_user_phone_mobile());
             $form->addElement(__('Phone'), 's_phone_land', osc_user_phone());
-            //TODO :
 
+            $countries = osc_get_countries();
+            $user = osc_user();
+            if(count($countries)>=1) {
+                $options = array();
+                $options[] = array('value' => '', 'label' => __('Select a country...'));
+                foreach($countries as $c) {
+                    if($user['fk_c_country_code']==$c['pk_c_code']) {
+                        $options[] = array('value' => $c['pk_c_code'], 'label' => $c['s_name'], 'selected' => true);
+                    } else {
+                        $options[] = array('value' => $c['pk_c_code'], 'label' => $c['s_name']);
+                    }
+                }
+                $form->addSelect(__('Country'), 'countryId', $options);
+            } else {
+                $form->addElement(__('Country'), 'country', osc_user_country());
+            }
 /*
-
-<div class="control-group">
-    <label class="control-label" for="country"><?php _e('Country', 'bender'); ?></label>
-    <div class="controls">
-        <?php UserForm::country_select(osc_get_countries(), osc_user()); ?>
-    </div>
-</div>
 <div class="control-group">
     <label class="control-label" for="region"><?php _e('Region', 'bender'); ?></label>
     <div class="controls">

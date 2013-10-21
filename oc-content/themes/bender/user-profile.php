@@ -36,6 +36,7 @@
 ?>
 <h1><?php _e('Update account', 'bender'); ?></h1>
 <?php UserForm::location_javascript(); ?>
+<?php osc_print_form('user-profile'); ?>
 <div class="form-container form-horizontal">
     <div class="resp-wrapper">
         <ul id="error_list"></ul>

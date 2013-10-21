@@ -72,7 +72,7 @@
         }
 
         public function addSelect($text = '', $name = '', $options = null) {
-            if($options!=null && !is_array($options)) {
+            if($options!=null && is_array($options)) {
                 $this->addElement(
                     array(
                         'label' => $text,
