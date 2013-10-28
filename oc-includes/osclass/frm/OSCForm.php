@@ -89,6 +89,10 @@
             $this->addElement(array('name' => $name,'type' => 'file'));
         }
 
+        public function addTextArea($label, $name, $value = '') {
+            $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'textarea'));
+        }
+
         public function addButton($text, $name = '', $type = 'submit') {
             $this->addElement(array('name' => ($name!=''?$name:'button-'.$type),'type' => $type, 'attributes' => array('button-text' => $text)));
         }
@@ -148,7 +152,7 @@
 
         public static function form($id) {
             if(isset(OSCForm::$_forms[$id])) {
-                return OSCForm::$_forms[$id];
+                OSCForm::$_forms[$id];
             }
             return false;
         }

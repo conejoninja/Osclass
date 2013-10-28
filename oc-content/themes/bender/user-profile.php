@@ -36,90 +36,11 @@
 ?>
 <h1><?php _e('Update account', 'bender'); ?></h1>
 <?php UserForm::location_javascript(); ?>
-<?php osc_print_form('user-profile'); ?>
 <div class="form-container form-horizontal">
     <div class="resp-wrapper">
         <ul id="error_list"></ul>
-        <form action="<?php echo osc_base_url(true); ?>" method="post">
-            <input type="hidden" name="page" value="user" />
-            <input type="hidden" name="action" value="profile_post" />
-            <div class="control-group">
-                <label class="control-label" for="name"><?php _e('Name', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::name_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="user_type"><?php _e('User type', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::is_company_select(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="phoneMobile"><?php _e('Cell phone', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::mobile_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="phoneLand"><?php _e('Phone', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::phone_land_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="country"><?php _e('Country', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::country_select(osc_get_countries(), osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="region"><?php _e('Region', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::region_select(osc_get_regions(), osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="city"><?php _e('City', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::city_select(osc_get_cities(), osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="city_area"><?php _e('City area', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::city_area_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label"l for="address"><?php _e('Address', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::address_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="webSite"><?php _e('Website', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::website_text(osc_user()); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="s_info"><?php _e('Description', 'bender'); ?></label>
-                <div class="controls">
-                    <?php UserForm::info_textarea('s_info', osc_locale_code(), @$osc_user['locale'][osc_locale_code()]['s_info']); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Update", 'bender');?></button>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <?php osc_run_hook('user_form'); ?>
-                </div>
-            </div>
-        </form>
+        <?php osc_form_element_class('user-profile', 'update-button', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('user-profile'); ?>
     </div>
 </div>
 <?php osc_current_web_theme_path('footer.php') ; ?>
