@@ -71,11 +71,11 @@ function _osc_load_form($id) {
             }
             $form->addButton(__('Send me a new password'), 'recover-button');
             break;
-        case 'forgot_password':
-            $form = new OSCForm('forgot_password');
+        case 'forgot-password':
+            $form = new OSCForm('forgot-password');
             $form->addHidden('page', 'login');
             $form->addHidden('action', 'forgot_post');
-            $form->addHidden('adminId', Params::getParam('adminId', true));
+            $form->addHidden('userId', Params::getParam('userId', true));
             $form->addHidden('code', Params::getParam('code', true));
             $form->addElement(array('label' => __('New password'), 'name' => 'new_password', 'type' => 'password'));
             $form->addElement(array('label' => __('Repeat new password'), 'name' => 'new_password2', 'type' => 'password'));
@@ -188,6 +188,40 @@ function _osc_load_form($id) {
                 $form->addHTML(recaptcha_get_html( osc_recaptcha_public_key()));
             };
             $form->addButton(__('Send'), 'contact-send');
+            break;
+        case 'user-login':
+            $form = new OSCForm('user-login');
+            $form->addHidden('page', 'login');
+            $form->addHidden('action', 'login_post');
+            $form->addElement(__('E-mail'), 'email');
+            $form->addElement(array('label' => __('Password'), 'name' => 'password', 'type' => 'password'));
+            $form->addCheckbox(__('Remember me'), 'remember', 1);
+            $form->addButton(__('Log in'), 'submit');
+            break;
+        case 'change-username':
+            $form = new OSCForm('change-username');
+            $form->addHidden('page', 'user');
+            $form->addHidden('action', 'change_username_post');
+            $form->addElement(__('Username'), 's_username');
+            $form->addHTML('<div id="available"></div>');
+            $form->addButton(__('Update'), 'submit');
+            break;
+        case 'change-password':
+            $form = new OSCForm('change-password');
+            $form->addHidden('page', 'user');
+            $form->addHidden('action', 'change_password_post');
+            $form->addElement(array('label' => __('Current password'), 'name' => 'password', 'type' => 'password'));
+            $form->addElement(array('label' => __('New password'), 'name' => 'new_password', 'type' => 'password'));
+            $form->addElement(array('label' => __('Repeat new password'), 'name' => 'new_password2', 'type' => 'password'));
+            $form->addButton(__('Update'), 'submit');
+            break;
+        case 'change-email':
+            $form = new OSCForm('change-password');
+            $form->addHidden('page', 'user');
+            $form->addHidden('action', 'change_email_post');
+            $form->addText(__('Current e-mail'), osc_logged_user_email());
+            $form->addElement(__('New email'), 'new_email');
+            $form->addButton(__('Update'), 'submit');
             break;
         default:
             return false;

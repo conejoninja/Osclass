@@ -179,6 +179,17 @@
                 }
                 echo '</select>';
                 break;
+            case 'checkbox':
+                $options = osc_form_element_options();
+                echo '<input '.$common.
+                    ' type="'.osc_esc_html(osc_form_element_type()).
+                    '" value="'.osc_esc_html(osc_form_element_value()).
+                    '" '.osc_form_attributes_html(osc_form_element_attributes()).
+                    (@$options['selected']==true?' selected="selected"':'').' />';
+                break;
+            case 'text':
+                echo osc_form_element_value();
+                break;
             default:
                 echo '<input '.$common.
                     ' type="'.osc_esc_html(osc_form_element_type()).

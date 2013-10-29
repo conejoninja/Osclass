@@ -38,33 +38,8 @@
 <div class="form-container form-horizontal">
     <div class="resp-wrapper">
         <ul id="error_list"></ul>
-        <form action="<?php echo osc_base_url(true); ?>" method="post">
-            <input type="hidden" name="page" value="user" />
-            <input type="hidden" name="action" value="change_password_post" />
-            <div class="control-group">
-                <label class="control-label" for="password"><?php _e('Current password', 'bender'); ?> *</label>
-                <div class="controls">
-                    <input type="password" name="password" id="password" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="new_password"><?php _e('New password', 'bender'); ?> *</label>
-                <div class="controls">
-                    <input type="password" name="new_password" id="new_password" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="new_password2"><?php _e('Repeat new password', 'bender'); ?> *</label>
-                <div class="controls">
-                    <input type="password" name="new_password2" id="new_password2" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Update", 'bender');?></button>
-                </div>
-            </div>
-        </form>
+        <?php osc_form_element_class('change-password', 'submit', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('change-password'); ?>
     </div>
 </div>
 <?php osc_current_web_theme_path('footer.php') ; ?>

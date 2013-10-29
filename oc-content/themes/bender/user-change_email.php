@@ -39,27 +39,8 @@
 <div class="form-container form-horizontal">
     <div class="resp-wrapper">
         <ul id="error_list"></ul>
-        <form action="<?php echo osc_base_url(true); ?>" method="post">
-            <input type="hidden" name="page" value="user" />
-            <input type="hidden" name="action" value="change_email_post" />
-            <div class="control-group">
-                <label for="email"><?php _e('Current e-mail', 'bender'); ?></label>
-                <div class="controls">
-                    <?php echo osc_logged_user_email(); ?>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="new_email"><?php _e('New e-mail', 'bender'); ?> *</label>
-                <div class="controls">
-                    <input type="text" name="new_email" id="new_email" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Update", 'bender');?></button>
-                </div>
-            </div>
-        </form>
+        <?php osc_form_element_class('change-email', 'submit', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('change-email'); ?>
     </div>
 </div>
 <script type="text/javascript">

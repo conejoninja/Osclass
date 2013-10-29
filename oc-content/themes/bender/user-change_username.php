@@ -87,22 +87,8 @@ $(document).ready(function() {
 <div class="form-container form-horizontal">
     <div class="resp-wrapper">
         <ul id="error_list"></ul>
-        <form action="<?php echo osc_base_url(true); ?>" method="post" id="change-username">
-            <input type="hidden" name="page" value="user" />
-            <input type="hidden" name="action" value="change_username_post" />
-            <div class="control-group">
-                <label class="control-label" for="s_username"><?php _e('Username', 'bender'); ?></label>
-                <div class="controls">
-                    <input type="text" name="s_username" id="s_username" value="" />
-                    <div id="available"></div>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Update", 'bender');?></button>
-                </div>
-            </div>
-        </form>
+        <?php osc_form_element_class('change-username', 'submit', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('change-username'); ?>
     </div>
 </div>
 <?php osc_current_web_theme_path('footer.php') ; ?>

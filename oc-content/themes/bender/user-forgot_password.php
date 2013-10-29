@@ -30,29 +30,8 @@
         <h1><?php _e('Recover your password', 'bender'); ?></h1>
     </div>
     <div class="resp-wrapper">
-        <form action="<?php echo osc_base_url(true); ?>" method="post" >
-            <input type="hidden" name="page" value="login" />
-            <input type="hidden" name="action" value="forgot_post" />
-            <input type="hidden" name="userId" value="<?php echo osc_esc_html(Params::getParam('userId')); ?>" />
-            <input type="hidden" name="code" value="<?php echo osc_esc_html(Params::getParam('code')); ?>" />
-            <div class="control-group">
-                <label class="control-label" for="new_password"><?php _e('New password', 'bender'); ?></label>
-                <div class="controls">
-                    <input type="password" name="new_password" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="new_password2"><?php _e('Repeat new password', 'bender'); ?></label>
-                <div class="controls">
-                    <input type="password" name="new_password2" value="" />
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php _e("Change password", 'bender');?></button>
-                </div>
-            </div>
-        </form>
+        <?php osc_form_element_class('forgot-password', 'submit', 'ui-button ui-button-middle ui-button-main');
+        osc_print_form('forgot-password'); ?>
     </div>
 </div>
 <?php osc_current_web_theme_path('footer.php') ; ?>

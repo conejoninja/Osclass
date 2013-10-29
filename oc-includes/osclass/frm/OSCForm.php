@@ -93,6 +93,14 @@
             $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'textarea'));
         }
 
+        public function addText($label, $value = '', $name = '') {
+            $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'text'));
+        }
+
+        public function addCheckBox($label, $name, $value = '1', $selected = false) {
+            $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'checkbox', 'options' => array('selected' => $selected)));
+        }
+
         public function addButton($text, $name = '', $type = 'submit') {
             $this->addElement(array('name' => ($name!=''?$name:'button-'.$type),'type' => $type, 'attributes' => array('button-text' => $text)));
         }
