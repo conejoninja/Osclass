@@ -25,7 +25,7 @@
         <div id="contact" class="widget-box form-container form-vertical">
             <h2><?php _e("Contact", 'bender'); ?></h2>
             <ul id="error_list"></ul>
-            <?php //osc_form_element_class('contact_user_form', 'send-button', 'ui-button ui-button-middle ui-button-main');
+            <?php osc_form_element_class('contact_user_form', 'send-button', 'ui-button ui-button-middle ui-button-main');
             osc_print_form('contact_user_form'); ?>
             <?php ContactForm::js_validation(); ?>
         </div>

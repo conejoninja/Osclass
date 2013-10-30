@@ -189,6 +189,24 @@ function _osc_load_form($id) {
             };
             $form->addButton(__('Send'), 'contact-send');
             break;
+        case 'contact_item_form':
+            // TODO: this should be contact_form, but it collides with previous contact_form
+            // contact_item_form has NO JS validation ;(
+            $form = new OSCForm('contact_item_form');
+            $form->addHidden('page', 'user');
+            $form->addHidden('action', 'contact_post');
+            $form->addHidden('id', osc_user_id());
+            $form->addElement(__('Your name'), 'yourName');
+            $form->addElement(__('Your email address'), 'yourEmail');
+            $form->addElement(__('Subject'), 'subject');
+            $form->addElement(__('Message'), 'message');
+
+            if( osc_recaptcha_public_key() ) {
+                require_once osc_lib_path() . 'recaptchalib.php';
+                $form->addHTML(recaptcha_get_html( osc_recaptcha_public_key()));
+            };
+            $form->addButton(__('Send'), 'contact-send');
+            break;
         case 'user-login':
             $form = new OSCForm('user-login');
             $form->addHidden('page', 'login');
@@ -222,6 +240,92 @@ function _osc_load_form($id) {
             $form->addText(__('Current e-mail'), osc_logged_user_email());
             $form->addElement(__('New email'), 'new_email');
             $form->addButton(__('Update'), 'submit');
+            break;
+        case 'sendfriend':
+            $form = new OSCForm('sendfriend');
+            $form->addHidden('page', 'item');
+            $form->addHidden('action', 'send_friend_post');
+            $form->addHidden('id', osc_item_id());
+            if(osc_is_web_user_logged_in()) {
+                $form->addHidden('yourName', osc_logged_user_name());
+                $form->addHidden('yourEmail', osc_logged_user_email());
+            } else {
+                $form->addElement(__('Your name'), 'yourName');
+                $form->addElement(__('Your e-mail'), 'yourEmail');
+            }
+            $form->addElement(__("Your friend's name"), 'friendName');
+            $form->addElement(__("Your friend's e-mail"), 'friendEmail');
+            $form->addElement(__('Subject (optional)'), 'subject');
+            $form->addTextArea(__('Message'), 'message');
+            osc_run_hook('send_friend_form', $form);
+            if( osc_recaptcha_public_key() ) {
+                require_once osc_lib_path() . 'recaptchalib.php';
+                $form->addHTML(recaptcha_get_html( osc_recaptcha_public_key()));
+            };
+            $form->addButton(__('Send'), 'submit');
+            break;
+        case 'search':
+            $form = new OSCForm('search', null, 'get', 'nocsrf');
+            $form->addHidden('page', 'search');
+            $form->addHidden('sOrder', osc_search_order());
+            $allowedTypesForSorting = Search::getAllowedTypesForSorting();
+            $form->addHidden('iOrderType', $allowedTypesForSorting[osc_search_order_type()]);
+            foreach(osc_search_user() as $userId) {
+                $form->addHidden('sUser[]', $userId);
+            };
+
+
+/*
+<fieldset class="first">
+    <h3><?php _e('Your search', 'bender'); ?></h3>
+    <div class="row">
+        <input class="input-text" type="text" name="sPattern"  id="query" value="<?php echo osc_esc_html(osc_search_pattern()); ?>" />
+    </div>
+</fieldset>
+<fieldset>
+    <h3><?php _e('City', 'bender'); ?></h3>
+    <div class="row">
+        <input class="input-text" type="text" id="sCity" name="sCity" value="<?php echo osc_esc_html(osc_search_city()); ?>" />
+    </div>
+</fieldset>
+<?php if( osc_images_enabled_at_items() ) { ?>
+    <fieldset>
+        <h3><?php _e('Show only', 'bender') ; ?></h3>
+        <div class="row">
+            <input type="checkbox" name="bPic" id="withPicture" value="1" <?php echo (osc_search_has_pic() ? 'checked' : ''); ?> />
+            <label for="withPicture"><?php _e('listings with pictures', 'bender') ; ?></label>
+        </div>
+    </fieldset>
+<?php } ?>
+<?php if( osc_price_enabled_at_items() ) { ?>
+    <fieldset>
+        <div class="row price-slice">
+            <h3><?php _e('Price', 'bender') ; ?></h3>
+            <span><?php _e('Min', 'bender') ; ?>.</span>
+            <input class="input-text" type="text" id="priceMin" name="sPriceMin" value="<?php echo osc_esc_html(osc_search_price_min()); ?>" size="6" maxlength="6" />
+            <span><?php _e('Max', 'bender') ; ?>.</span>
+            <input class="input-text" type="text" id="priceMax" name="sPriceMax" value="<?php echo osc_esc_html(osc_search_price_max()); ?>" size="6" maxlength="6" />
+        </div>
+    </fieldset>
+<?php } ?>
+<div class="plugin-hooks">
+    <?php
+    if(osc_search_category_id()) {
+        osc_run_hook('search_form', osc_search_category_id()) ;
+    } else {
+        osc_run_hook('search_form') ;
+    }
+    ?>
+</div>
+<?php
+$aCategories = osc_search_category();
+foreach($aCategories as $cat_id) { ?>
+    <input type="hidden" name="sCategory[]" value="<?php echo osc_esc_html($cat_id); ?>"/>
+<?php } ?>
+<div class="actions">
+    <button type="submit"><?php _e('Apply', 'bender') ; ?></button>
+</div>
+</form>*/
             break;
         default:
             return false;
