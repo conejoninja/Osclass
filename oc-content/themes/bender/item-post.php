@@ -40,6 +40,7 @@
                 <h1><?php _e('Publish a listing', 'bender'); ?></h1>
             </div>
             <ul id="error_list"></ul>
+            <?php osc_print_form('item-form'); ?>
                 <form name="item" action="<?php echo osc_base_url(true);?>" method="post" enctype="multipart/form-data" id="item-post">
                     <fieldset>
                     <input type="hidden" name="action" value="<?php echo $action; ?>" />

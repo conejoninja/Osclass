@@ -87,7 +87,6 @@ function selectUi(thatSelect){
         return false;
     });
     thatSelect.on('focus',function(){
-        console.log(uiWrap);
         thatSelect.parent().addClass('select-box-focus');
     });
     thatSelect.on('blur',function(){
@@ -183,10 +182,8 @@ $(document).ready(function(event){
     $('.flashmessage .ico-close').click(function(){
         $(this).parents('.flashmessage').remove();
     });
-    $('#mask_as_form select').on('change',function(){
-        $('#mask_as_form').submit();
-        $('#mask_as_form').submit();
-    });
+
+    $('#mask_as_form select').on('change',function(){ $('#mask_as_form').submit(); });
 
     if(typeof $.fancybox == 'function') {
       $("a[rel=image_group]").fancybox({
