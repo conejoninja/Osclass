@@ -328,7 +328,6 @@
         $base_url = osc_base_url();
         $http_url = osc_is_ssl()?"https://":"http://";
         if(osc_subdomain_type()=='category' && isset($params['sCategory'])) {
-            if($params['sCategory']!=Params::getParam('sCategory')) {
                 if(is_array($params['sCategory'])) {
                     $params['sCategory'] = implode(",", $params['sCategory']);
                 }
@@ -343,11 +342,7 @@
                         unset($params['sCategory']);
                     }
                 }
-            } else if(osc_is_subdomain()) {
-                unset($params['sCategory']);
-            }
         } else if(osc_subdomain_type()=='country' && isset($params['sCountry'])) {
-            if($params['sCountry']!=Params::getParam('sCountry')) {
                 if(is_array($params['sCountry'])) {
                     $params['sCountry'] = implode(",", $params['sCountry']);
                 }
@@ -362,11 +357,7 @@
                         unset($params['sCountry']);
                     }
                 }
-            } else if(osc_is_subdomain()) {
-                unset($params['sCountry']);
-            }
         } else if(osc_subdomain_type()=='region' && isset($params['sRegion'])) {
-            if($params['sRegion']!=Params::getParam('sRegion')) {
                 if(is_array($params['sRegion'])) {
                     $params['sRegion'] = implode(",", $params['sRegion']);
                 }
@@ -382,11 +373,7 @@
                     }
 
                 }
-            } else if(osc_is_subdomain()) {
-                unset($params['sRegion']);
-            }
         } else if(osc_subdomain_type()=='city' && isset($params['sCity'])) {
-            if($params['sCity']!=Params::getParam('sCity')) {
                 if(is_array($params['sCity'])) {
                     $params['sCity'] = implode(",", $params['sCity']);
                 }
@@ -402,13 +389,8 @@
                     }
 
                 }
-            } else if(osc_is_subdomain()) {
-                unset($params['sCity']);
-            }
         }
-
-        $countP = count($params);
-        if ($countP == 0) { return $base_url; };
+        if (count($params) == 0) return $base_url;
         unset($params['page']);
         $countP = count($params);
 
