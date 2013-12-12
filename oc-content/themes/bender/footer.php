@@ -66,7 +66,7 @@
         </ul>
         <?php
         if( osc_get_preference('footer_link', 'bender_theme') !== '0') {
-            echo '<div>This website is proudly using the <a title="Osclass web" href="http://osclass.org/">classifieds scripts</a> software <strong>Osclass</strong></div>';
+            echo '<div>'.__('This website is proudly using the <a title="Osclass web" href="http://osclass.org/">classifieds scripts</a> software <strong>Osclass</strong>','bender').'</div>';
         }
         ?>
         <?php if ( osc_count_web_enabled_locales() > 1) { ?>
