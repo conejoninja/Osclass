@@ -458,6 +458,10 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#: /var/www/osclass-themes-git/bender/item.php:42
+msgid "in"
+msgstr ""
+
 #: /var/www/osclass-themes-git/bender/item.php:55
 #, php-format
 msgid "<strong class=\"publish\">Published date</strong>: %1$s"
