@@ -1277,13 +1277,14 @@
             $title = __('{WEB_TITLE} - Your site has upgraded to Osclass {VERSION}');
             $body .= __('<p>Your site at {WEB_LINK} has been updated automatically to Osclass {VERSION}</p>');
             if($result['error']==6) {
-                $body .= __('<p>There were some minor errors removing temporary files. Please manually remove the "oc-content/downloads/oc-temp" folder</p>');
+                $body .= '<p>'.__('There were some minor errors removing temporary files. Please manually remove the "oc-content/downloads/oc-temp" folder').'</p>';
             }
         } else {
             $title = __('{WEB_TITLE} - We failed trying to upgrade your site to Osclass {VERSION}');
-            $body .= '<p>We failed trying to upgrade your site to Osclass {VERSION}. Heres is the error message: {MESSAGE}</p>';
+            $body .= '<p>'.__('We failed trying to upgrade your site to Osclass {VERSION}. Heres is the error message: {MESSAGE}').'</p>';
+            $body .= '<p>'.__('We have disabled auto-upgrading until the errors were fixed').'</p>';
         }
-        $body .= '<p>If you experience any issues or need support, we will be happy to help you at the Osclass support forums</p>';
+        $body .= '<p>'.__('If you experience any issues or need support, we will be happy to help you at the Osclass support forums').'</p>';
         $body .= '<p><a href="http://forums.osclass.org/">http://forums.osclass.org/</a></p>';
         $body .= '<p>The Osclass team</p>';
 

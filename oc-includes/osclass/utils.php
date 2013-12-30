@@ -1966,6 +1966,8 @@ function osc_do_auto_upgrade() {
                 }
             }
         }
+    } else {
+        osc_set_preference('auto_update', str_replace('branch', 'disabled', str_replace('major', 'disabled', str_replace('minor', 'disabled', osc_auto_update()))));
     }
 }
 
