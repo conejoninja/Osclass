@@ -35,7 +35,7 @@ function _osc_load_form($id) {
             $form->addHidden('page', 'item');
             $form->addHidden('action', 'add_comment');
             $form->addHidden('id', osc_item_id());
-            if(osc_is_web_user_logged_in()) {
+            if(osc_is_user_logged_in()) {
                 $form->addHidden('authorName', osc_osc_logged_user_name());
                 $form->addHidden('authorEmail', osc_logged_user_email());
             } else {
@@ -50,7 +50,7 @@ function _osc_load_form($id) {
             $form = new OSCForm('subscribe-alert', null, 'post', 'nocsrf');
             $form->addHidden('alert', osc_search_alert());
             $form->addHidden('alert_userId', osc_logged_user_id());
-            if(osc_is_web_user_logged_in()) {
+            if(osc_is_user_logged_in()) {
                 $form->addHidden('alert_email', osc_logged_user_email());
             } else {
                 $form->addElement('E-mail', 'alert_email', __('Enter your e-mail'));
@@ -246,7 +246,7 @@ function _osc_load_form($id) {
             $form->addHidden('page', 'item');
             $form->addHidden('action', 'send_friend_post');
             $form->addHidden('id', osc_item_id());
-            if(osc_is_web_user_logged_in()) {
+            if(osc_is_user_logged_in()) {
                 $form->addHidden('yourName', osc_logged_user_name());
                 $form->addHidden('yourEmail', osc_logged_user_email());
             } else {
@@ -387,7 +387,7 @@ function _osc_load_form($id) {
                             </div>
                         </div>
                         <!-- seller info -->
-                        <?php if(!osc_is_web_user_logged_in() ) { ?>
+                        <?php if(!osc_is_user_logged_in() ) { ?>
                         <div class="box seller_info">
                             <h2><?php _e("Seller's information", 'bender'); ?></h2>
                             <div class="control-group">

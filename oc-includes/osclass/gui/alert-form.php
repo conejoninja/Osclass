@@ -63,7 +63,7 @@ $(document).ready(function(){
             <?php AlertForm::page_hidden(); ?>
             <?php AlertForm::alert_hidden(); ?>
 
-            <?php if(osc_is_web_user_logged_in()) { ?>
+            <?php if(osc_is_user_logged_in()) { ?>
                 <?php AlertForm::user_id_hidden(); ?>
                 <?php AlertForm::email_hidden(); ?>
 

@@ -20,7 +20,7 @@
      */
 ?>
 <div id="sidebar">
-    <?php if(!osc_is_web_user_logged_in() || osc_logged_user_id()!=osc_item_user_id()) { ?>
+    <?php if(!osc_is_user_logged_in() || osc_logged_user_id()!=osc_item_user_id()) { ?>
         <form action="<?php echo osc_base_url(true); ?>" method="post" name="mask_as_form" id="mask_as_form">
             <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
             <input type="hidden" name="as" value="spam" />
@@ -46,7 +46,7 @@
             <p>
                 <?php _e("It's your own listing, you can't contact the publisher.", 'bender'); ?>
             </p>
-        <?php } else if( osc_reg_user_can_contact() && !osc_is_web_user_logged_in() ) { ?>
+        <?php } else if( osc_reg_user_can_contact() && !osc_is_user_logged_in() ) { ?>
             <p>
                 <?php _e("You must log in or register a new account in order to contact the advertiser", 'bender'); ?>
             </p>

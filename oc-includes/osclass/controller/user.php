@@ -255,7 +255,7 @@
                 case 'delete':
                     $id     = Params::getParam('id');
                     $secret = Params::getParam('secret');
-                    if(osc_is_web_user_logged_in()) {
+                    if(osc_is_user_logged_in()) {
                         $user = User::newInstance()->findByPrimaryKey(osc_logged_user_id());
                         View::newInstance()->_exportVariableToView('user', $user);
                         if(!empty($user) && osc_logged_user_id()==$id && $secret==$user['s_secret']) {

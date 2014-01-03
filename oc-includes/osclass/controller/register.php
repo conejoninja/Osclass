@@ -33,7 +33,7 @@
                 $this->redirectTo( osc_base_url() );
             }
 
-            if( osc_is_web_user_logged_in() ) {
+            if( osc_is_user_logged_in() ) {
                 $this->redirectTo( osc_base_url() );
             }
         }

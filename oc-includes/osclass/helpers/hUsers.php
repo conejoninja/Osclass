@@ -193,13 +193,9 @@
      * Gets true if admin user is logged in
      *
      * @return boolean
-     * @deprecated deprecated sin 3.4, will be removed in 4.0
      */
     function osc_is_admin_user_logged_in() {
-        if(osc_is_user_logged_in()) {
-            return (osc_is_admin() || osc_is_moderator());
-        }
-        return false;
+        return (osc_is_user_logged_in() && (osc_is_admin() || osc_is_moderator()));
     }
 
     /**

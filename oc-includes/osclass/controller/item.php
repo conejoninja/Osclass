@@ -29,7 +29,7 @@
             $this->itemManager = Item::newInstance();
 
             // here allways userId == ''
-            if( osc_is_web_user_logged_in() ) {
+            if( osc_is_user_logged_in() ) {
                 $this->userId = osc_logged_user_id();
                 $this->user = User::newInstance()->findByPrimaryKey($this->userId);
             } else {
@@ -126,7 +126,7 @@
                         }
                     }
 
-                    if(!osc_is_web_user_logged_in()) {
+                    if(!osc_is_user_logged_in()) {
                         $user = User::newInstance()->findByEmail($mItems->data['contactEmail']);
                         // The user exists but it's not logged
                         if(isset($user['pk_i_id'])) {
@@ -425,7 +425,7 @@
                             $this->redirectTo( osc_item_url() );
                         }
 
-                        if( osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact() ){
+                        if( osc_reg_user_can_contact() && osc_is_user_logged_in() || !osc_reg_user_can_contact() ){
                             $this->doView('item-contact.php');
                         } else {
                             osc_add_flash_error_message( _m("You can't contact the seller, only registered users can") );

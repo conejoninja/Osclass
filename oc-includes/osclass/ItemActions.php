@@ -910,7 +910,7 @@
 
             Params::setParam('itemURL', $itemURL);
 
-            if(osc_reg_user_post_comments() && !osc_is_web_user_logged_in()) {
+            if(osc_reg_user_post_comments() && !osc_is_user_logged_in()) {
                 Session::newInstance()->_setForm('commentAuthorName', $authorName);
                 Session::newInstance()->_setForm('commentTitle', $title);
                 Session::newInstance()->_setForm('commentBody', $body);
@@ -1099,7 +1099,7 @@
                     $active = 'ACTIVE';
                 } else {
                     if(osc_moderate_items()>0) { // HAS TO VALIDATE
-                        if(!osc_is_web_user_logged_in()) { // NO USER IS LOGGED, VALIDATE
+                        if(!osc_is_user_logged_in()) { // NO USER IS LOGGED, VALIDATE
                             $active = 'INACTIVE';
                         } else { // USER IS LOGGED
                             if(osc_logged_user_item_validation()) { //USER IS LOGGED, BUT NO NEED TO VALIDATE
@@ -1114,7 +1114,7 @@
                             }
                         }
                     } else if(osc_moderate_items()==0 ){
-                        if(osc_is_web_user_logged_in() && osc_logged_user_item_validation() ) {
+                        if(osc_is_user_logged_in() && osc_logged_user_item_validation() ) {
                             $active = 'ACTIVE';
                         } else {
                             $active = 'INACTIVE';

@@ -37,7 +37,7 @@
                 <li class="cat"><a class="ico-menu icons" data-bclass-toggle="display-cat"></a></li>
             <?php } ?>
             <?php if( osc_users_enabled() ) { ?>
-            <?php if( osc_is_web_user_logged_in() ) { ?>
+            <?php if( osc_is_user_logged_in() ) { ?>
                 <li class="first logged">
                     <span><?php echo sprintf(__('Hi %s', 'bender'), osc_logged_user_name() . '!'); ?>  &middot;</span>
                     <strong><a href="<?php echo osc_user_dashboard_url(); ?>"><?php _e('My account', 'bender'); ?></a></strong> &middot;

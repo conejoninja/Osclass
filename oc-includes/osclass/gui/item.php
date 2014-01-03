@@ -61,7 +61,7 @@
                 <li><strong><?php _e("Location", 'bender'); ?></strong>: <?php echo implode(', ', $location); ?></li>
             </ul>
         </div>
-        <?php if(osc_is_web_user_logged_in() && osc_logged_user_id()==osc_item_user_id()) { ?>
+        <?php if(osc_is_user_logged_in() && osc_logged_user_id()==osc_item_user_id()) { ?>
             <p id="edit_item_view">
                 <strong>
                     <a href="<?php echo osc_item_edit_url(); ?>" rel="nofollow"><?php _e('Edit item', 'bender'); ?></a>
@@ -109,7 +109,7 @@
         <p class="contact_button">
             <?php if( !osc_item_is_expired () ) { ?>
             <?php if( !( ( osc_logged_user_id() == osc_item_user_id() ) && osc_logged_user_id() != 0 ) ) { ?>
-                <?php     if(osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact() ) { ?>
+                <?php     if(osc_reg_user_can_contact() && osc_is_user_logged_in() || !osc_reg_user_can_contact() ) { ?>
                     <a href="#contact" class="ui-button ui-button-middle ui-button-main resp-toogle"><?php _e('Contact seller', 'bender'); ?></a>
                 <?php     } ?>
             <?php     } ?>
@@ -141,7 +141,7 @@
         </div>
     <?php } ?>
     <?php if( osc_comments_enabled() ) { ?>
-        <?php if( osc_reg_user_post_comments () && osc_is_web_user_logged_in() || !osc_reg_user_post_comments() ) { ?>
+        <?php if( osc_reg_user_post_comments () && osc_is_user_logged_in() || !osc_reg_user_post_comments() ) { ?>
         <div id="comments">
             <h2><?php _e('Comments', 'bender'); ?></h2>
             <ul id="comment_error_list"></ul>
@@ -175,7 +175,7 @@
                             <input type="hidden" name="action" value="add_comment" />
                             <input type="hidden" name="page" value="item" />
                             <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
-                            <?php if(osc_is_web_user_logged_in()) { ?>
+                            <?php if(osc_is_user_logged_in()) { ?>
                                 <input type="hidden" name="authorName" value="<?php echo osc_esc_html( osc_logged_user_name() ); ?>" />
                                 <input type="hidden" name="authorEmail" value="<?php echo osc_logged_user_email();?>" />
                             <?php } else { ?>

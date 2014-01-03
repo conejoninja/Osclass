@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <!-- seller info -->
-                        <?php if(!osc_is_web_user_logged_in() ) { ?>
+                        <?php if(!osc_is_user_logged_in() ) { ?>
                         <div class="box seller_info">
                             <h2><?php _e("Seller's information", 'bender'); ?></h2>
                             <div class="control-group">

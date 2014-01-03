@@ -58,7 +58,7 @@
         }
     }
 
-    if(!osc_users_enabled() && osc_is_web_user_logged_in()) {
+    if(!osc_users_enabled() && osc_is_user_logged_in()) {
         Session::newInstance()->_drop('userId');
 
         Cookie::newInstance()->pop('oc_userId');
@@ -66,7 +66,7 @@
         Cookie::newInstance()->set();
     }
 
-    if(osc_is_web_user_logged_in()) {
+    if(osc_is_user_logged_in()) {
         User::newInstance()->lastAccess(osc_logged_user_id(), date('Y-m-d H:i:s'), $_SERVER['REMOTE_ADDR'], 3600);
     }
 
@@ -78,7 +78,7 @@
         break;
         case ('user'):      // user pages (with security)
                             if(Params::getParam('action')=='change_email_confirm' || Params::getParam('action')=='activate_alert'
-                            || (Params::getParam('action')=='unsub_alert' && !osc_is_web_user_logged_in())
+                            || (Params::getParam('action')=='unsub_alert' && !osc_is_user_logged_in())
                             || Params::getParam('action')=='contact_post'
                             || Params::getParam('action')=='pub_profile') {
                                 require_once(osc_lib_path() . 'osclass/controller/user-non-secure.php');
