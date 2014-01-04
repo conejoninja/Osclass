@@ -23,7 +23,6 @@
     class Router extends DAO
     {
         private static $instance;
-        private $rules;
         private $routes;
         private $request_uri;
         private $raw_request_uri;
@@ -42,30 +41,20 @@
             $this->section = '';
             $this->title = '';
             $this->http_referer = '';
-            $this->routes = array();
-            $this->rules = $this->getRules();
+            $this->routes = $this->routes();
 
-            $this->setTableName('t_router');
+            $this->setTableName('t_route');
             $this->setPrimaryKey('pk_s_id');
             $array_fields = array(
                 'pk_s_id',
-                'fk_i_user_id',
-                'fk_i_category_id',
-                'dt_pub_date',
-                'dt_mod_date',
-                'f_price',
-                'i_price',
-                'fk_c_currency_code',
-                's_contact_name',
-                's_contact_email',
-                'b_premium',
-                's_ip',
-                'b_enabled',
-                'b_active',
-                'b_spam',
-                's_secret',
-                'b_show_email',
-                'dt_expiration'
+                's_regexp',
+                's_url',
+                's_file',
+                'b_user_menu',
+                's_location',
+                's_section',
+                's_title',
+                'i_order'
             );
             $this->setFields($array_fields);
         }
@@ -78,41 +67,19 @@
             return self::$instance;
         }
 
-        public function getRules()
+        public function routes()
         {
-            return osc_unserialize(osc_rewrite_rules());
-        }
+            $this->dao->select('*');
+            $this->dao->from($this->getTableName());
+            $this->dao->orderBy('i_order', 'DESC');
+            $result = $this->dao->get();
 
-        public function setRules()
-        {
-            osc_set_preference('rewrite_rules', osc_serialize($this->rules));
-        }
-
-        public function listRules()
-        {
-            return $this->rules;
-        }
-
-        public function addRules($rules)
-        {
-            if(is_array($rules)) {
-                foreach($rules as $rule) {
-                    if(is_array($rule) && count($rule)>1) {
-                        $this->addRule($rule[0], $rule[1]);
-                    }
-                }
+            if( $result->numRows == 0 ) {
+                return false;
             }
-        }
 
-        public function addRule($regexp, $uri)
-        {
-            $regexp = trim($regexp);
-            $uri = trim($uri);
-            if($regexp!='' && $uri!='') {
-                if(!in_array($regexp, $this->rules)) {
-                    $this->rules[$regexp] = $uri;
-                }
-            }
+            $this->routes = $result->result();
+            return $this->routes;
         }
 
         public function addRoute($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $title = "Custom")
@@ -120,13 +87,43 @@
             $regexp = trim($regexp);
             $file = trim($file);
             if($regexp!='' && $file!='') {
-                $this->routes[$id] = array('regexp' => $regexp, 'url' => $url, 'file' => $file, 'user_menu' => $user_menu, 'location' => $location, 'section' => $section, 'title' => $title);
+                $order = $this->lastOrder()+1;
+                $params = array(
+                    'pk_s_id' => $id,
+                    's_regexp' => $regexp,
+                    's_url' => $url,
+                    's_file' => $file,
+                    'b_user_menu' => $user_menu,
+                    's_location' => $location,
+                    's_section' => $section,
+                    's_title' => $title,
+                    'i_order' => $order
+                );
+                return $this->insert($params);
             }
         }
 
+        public function lastOrder()
+        {
+            $this->dao->select('i_order');
+            $this->dao->from($this->getTableName());
+            $this->dao->orderBy('i_order', 'DESC');
+            $result = $this->dao->get();
+
+            if( $result->numRows == 0 ) {
+                return 998;
+            }
+
+            $row = $result->row();
+            return $row['i_order'];
+        }
+
+        /*
+         * @deprecated to be removed in 5.0
+         */
         public function getRoutes()
         {
-            return $this->routes;
+            return $this->routes();
         }
 
         public function init()
@@ -139,11 +136,13 @@
                 }
                 $request_uri = preg_replace('@^' . REL_WEB_URL . '@', "", urldecode($_SERVER['REQUEST_URI']));
                 $this->raw_request_uri = $request_uri;
-                $route_used = false;
+                if(Params::getParam('r')!='') { $request_uri = Params::getParam('r'); }
+                $tmp = explode("?", $request_uri);
+                $request_uri = $tmp[0];
                 foreach($this->routes as $id => $route) {
                     // UNCOMMENT TO DEBUG
-                    //echo 'Request URI: '.$request_uri." # Match : ".$match." # URI to go : ".$uri." <br />";
-                    if(preg_match('#^'.$route['regexp'].'#', $request_uri, $m)) {
+                    //echo 'Request URI: '.$request_uri." # Match : ".$route['s_regexp']." # URI to go : ".$route['s_url']." <br />";
+                    if(preg_match('#^'.$route['s_regexp'].'#', $request_uri, $m)) {
                         if(!preg_match_all('#\{([^\}]+)\}#', $route['url'], $args)) {
                             $args[1] = array();
                         }
@@ -157,31 +156,15 @@
                         }
                         Params::setParam('page', 'custom');
                         Params::setParam('route', $id);
-                        $route_used = true;
-                        $this->location = $route['location'];
-                        $this->section = $route['section'];
-                        $this->title = $route['title'];
+
+                        //$this->extractParams($request_uri);
+                        $this->request_uri = $request_uri;
+
+                        $this->location = $route['s_location'];
+                        $this->section = $route['s_section'];
+                        $this->title = $route['s_title'];
                         break;
                     }
-                }
-                if(!$route_used) {
-                    if(osc_rewrite_enabled()) {
-                        $tmp_ar = explode("?", $request_uri);
-                        $request_uri = $tmp_ar[0];
-                        foreach($this->rules as $match => $uri) {
-                            // UNCOMMENT TO DEBUG
-                            //echo 'Request URI: '.$request_uri." # Match : ".$match." # URI to go : ".$uri." <br />";
-                            if(preg_match('#^'.$match.'#', $request_uri, $m)) {
-                                $request_uri = preg_replace('#'.$match.'#', $uri, $request_uri);
-                                break;
-                            }
-                        }
-                    }
-                    $this->extractParams($request_uri);
-                    $this->request_uri = $request_uri;
-
-                    if(Params::getParam('page')!='') { $this->location = Params::getParam('page'); };
-                    if(Params::getParam('action')!='') { $this->section = Params::getParam('action'); };
                 }
             }
         }
@@ -208,17 +191,6 @@
                     }
                 }
             }
-        }
-
-        public function removeRule($regexp)
-        {
-            unset($this->rules[$regexp]);
-        }
-
-        public function clearRules()
-        {
-            unset($this->rules);
-            $this->rules = array();
         }
 
         public function get_request_uri()

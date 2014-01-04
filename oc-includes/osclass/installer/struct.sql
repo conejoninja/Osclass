@@ -31,6 +31,22 @@ CREATE TABLE /*TABLE_PREFIX*/t_country (
         INDEX idx_s_name (s_name)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET 'UTF8' COLLATE 'UTF8_GENERAL_CI';
 
+CREATE TABLE /*TABLE_PREFIX*/t_route (
+    pk_s_id VARCHAR(24) NOT NULL,
+    s_regexp VARCHAR(250) NOT NULL,
+    s_url VARCHAR(250) NOT NULL DEFAULT '',
+    s_file VARCHAR(250) NULL,
+    b_user_menu TINYINT(1) NOT NULL DEFAULT 0,
+    s_location VARCHAR(24) NOT NULL,
+    s_section VARCHAR(24) NOT NULL,
+    s_title VARCHAR(100) NOT NULL,
+    i_order INT(2) UNSIGNED NOT NULL,
+
+        PRIMARY KEY (pk_s_id),
+        INDEX idx_s_id (pk_s_id),
+        INDEX idx_i_order (i_order)
+) ENGINE=InnoDB DEFAULT CHARACTER SET 'UTF8' COLLATE 'UTF8_GENERAL_CI';
+
 CREATE TABLE /*TABLE_PREFIX*/t_currency (
     pk_c_code CHAR(3) NOT NULL,
     s_name VARCHAR(40) NOT NULL,
