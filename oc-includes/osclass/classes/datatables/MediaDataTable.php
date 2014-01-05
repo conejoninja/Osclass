@@ -68,11 +68,11 @@
                 };
             }
 
-            Rewrite::newInstance()->init();
+            Router::newInstance()->init();
             $page  = (int)Params::getParam('iPage');
             if($page==0) { $page = 1; };
             Params::setParam('iPage', $page);
-            $url_base = preg_replace('|&direction=([^&]*)|', '', preg_replace('|&sort=([^&]*)|', '', osc_base_url().Rewrite::newInstance()->get_raw_request_uri()));
+            $url_base = preg_replace('|&direction=([^&]*)|', '', preg_replace('|&sort=([^&]*)|', '', osc_base_url().Router::newInstance()->get_raw_request_uri()));
 
             $this->addColumn('bulkactions', '<input id="check_all" type="checkbox" />');
             $this->addColumn('file', __('File'));

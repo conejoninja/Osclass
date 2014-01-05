@@ -82,8 +82,8 @@ function search_title() {
 }
 
 function meta_title() {
-    $location = Rewrite::newInstance()->get_location();
-    $section  = Rewrite::newInstance()->get_section();
+    $location = Router::newInstance()->get_location();
+    $section  = Router::newInstance()->get_section();
 
     switch ($location) {
         case ('item'):

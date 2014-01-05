@@ -28,8 +28,8 @@
 
         public function __construct($lang = array())
         {
-            $this->location = Rewrite::newInstance()->get_location();
-            $this->section  = Rewrite::newInstance()->get_section();
+            $this->location = Router::newInstance()->get_location();
+            $this->section  = Router::newInstance()->get_section();
             $this->aLevel   = array();
             $this->setTitles($lang);
         }
@@ -88,7 +88,7 @@
                             $this->addLevel($l);
                         break;
                         default:
-                            $l = array('title' => Rewrite::newInstance()->get_title());
+                            $l = array('title' => Router::newInstance()->get_title());
                             $this->addLevel($l);
                             break;
                     }
@@ -235,7 +235,7 @@
                             $this->addLevel($l);
                             break;
                         default:
-                            $l = array('title' => Rewrite::newInstance()->get_title());
+                            $l = array('title' => Router::newInstance()->get_title());
                             $this->addLevel($l);
                             break;
                     }
@@ -269,7 +269,7 @@
                     $this->addLevel($l);
                 break;
                 case('custom'):
-                    $l = array('title' => Rewrite::newInstance()->get_title());
+                    $l = array('title' => Router::newInstance()->get_title());
                     $this->addLevel($l);
                 break;
             }

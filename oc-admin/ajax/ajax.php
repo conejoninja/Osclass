@@ -404,7 +404,7 @@
                     break;
                 case 'custom': // Execute via AJAX custom file
                     if(Params::existParam('route')) {
-                        $routes = Rewrite::newInstance()->getRoutes();
+                        $routes = Rewrite::newInstance()->routes();
                         $rid = Params::getParam('route');
                         $file = '../';
                         if(isset($routes[$rid]) && isset($routes[$rid]['file'])) {

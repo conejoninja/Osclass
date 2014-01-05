@@ -20,331 +20,20 @@
 
     //customize Head
     function customHead() { ?>
-<script type="text/javascript">
-            $(document).ready(function(){
-                // Code for form validation
-                $("form[name=permalinks_form]").validate({
-                    rules: {
-                        rewrite_item_url: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_page_url: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_cat_url: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_url: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_country: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_region: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_city: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_city_area: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_category: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_user: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_search_pattern: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_contact: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_feed: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_language: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_mark: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_send_friend: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_contact: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_activate: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_edit: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_delete: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_item_resource_delete: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_login: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_dashboard: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_logout: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_register: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_activate: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_activate_alert: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_profile: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_items: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_alerts: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_recover: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_forgot: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_change_password: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_change_email: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_change_username: {
-                            required: true,
-                            minlength: 1
-                        },
-                        rewrite_user_change_email_confirm: {
-                            required: true,
-                            minlength: 1
-                        }
-                    },
-                    messages: {
-                        rewrite_item_url: {
-                            required: '<?php echo osc_esc_js( __("Listings url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Listings url: this field is required")); ?>.'
-                        },
-                        rewrite_page_url: {
-                            required: '<?php echo osc_esc_js( __("Page url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Page url: this field is required")); ?>.'
-                        },
-                        rewrite_cat_url: {
-                            required: '<?php echo osc_esc_js( __("Categories url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Categories url: this field is required")); ?>.'
-                        },
-                        rewrite_search_url: {
-                            required: '<?php echo osc_esc_js( __("Search url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search url: this field is required")); ?>.'
-                        },
-                        rewrite_search_country: {
-                            required: '<?php echo osc_esc_js( __("Search country: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search country: this field is required")); ?>.'
-                        },
-                        rewrite_search_region: {
-                            required: '<?php echo osc_esc_js( __("Search region: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search region: this field is required")); ?>.'
-                        },
-                        rewrite_search_city: {
-                            required: '<?php echo osc_esc_js( __("Search city: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search city: this field is required")); ?>.'
-                        },
-                        rewrite_search_city_area: {
-                            required: '<?php echo osc_esc_js( __("Search city area: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search city area: this field is required")); ?>.'
-                        },
-                        rewrite_search_category: {
-                            required: '<?php echo osc_esc_js( __("Search category: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search category: this field is required")); ?>.'
-                        },
-                        rewrite_search_user: {
-                            required: '<?php echo osc_esc_js( __("Search user: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search user: this field is required")); ?>.'
-                        },
-                        rewrite_search_pattern: {
-                            required: '<?php echo osc_esc_js( __("Search pattern: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Search pattern: this field is required")); ?>.'
-                        },
-                        rewrite_contact: {
-                            required: '<?php echo osc_esc_js( __("Contact url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Contact url: this field is required")); ?>.'
-                        },
-                        rewrite_feed: {
-                            required: '<?php echo osc_esc_js( __("Feed url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Feed url: this field is required")); ?>.'
-                        },
-                        rewrite_language: {
-                            required: '<?php echo osc_esc_js( __("Language url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Language url: this field is required")); ?>.'
-                        },
-                        rewrite_item_mark: {
-                            required: '<?php echo osc_esc_js( __("Listing mark url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Listing mark url: this field is required")); ?>.'
-                        },
-                        rewrite_item_send_friend: {
-                            required: '<?php echo osc_esc_js( __("Listing send friend url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Listing send friend url: this field is required")); ?>.'
-                        },
-                        rewrite_item_contact: {
-                            required: '<?php echo osc_esc_js( __("Listing contact url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Listing contact url: this field is required")); ?>.'
-                        },
-                        rewrite_item_new: {
-                            required: '<?php echo osc_esc_js( __("New listing url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("New listing url: this field is required")); ?>.'
-                        },
-                        rewrite_item_activate: {
-                            required: '<?php echo osc_esc_js( __("Activate listing url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Activate listing url: this field is required")); ?>.'
-                        },
-                        rewrite_item_edit: {
-                            required: '<?php echo osc_esc_js( __("Edit listing url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Edit listing url: this field is required")); ?>.'
-                        },
-                        rewrite_item_delete: {
-                            required: '<?php echo osc_esc_js( __("Delete listing url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Delete listing url: this field is required")); ?>.'
-                        },
-                        rewrite_item_resource_delete: {
-                            required: '<?php echo osc_esc_js( __("Delete listing resource url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Delete listing resource url: this field is required")); ?>.'
-                        },
-                        rewrite_user_login: {
-                            required: '<?php echo osc_esc_js( __("Login url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Login url: this field is required")); ?>.'
-                        },
-                        rewrite_user_dashboard: {
-                            required: '<?php echo osc_esc_js( __("User dashboard url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User dashboard url: this field is required")); ?>.'
-                        },
-                        rewrite_user_logout: {
-                            required: '<?php echo osc_esc_js( __("Logout url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Logout url: this field is required")); ?>.'
-                        },
-                        rewrite_user_register: {
-                            required: '<?php echo osc_esc_js( __("User register url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User register url: this field is required")); ?>.'
-                        },
-                        rewrite_user_activate: {
-                            required: '<?php echo osc_esc_js( __("Activate user url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Activate user url: this field is required")); ?>.'
-                        },
-                        rewrite_user_activate_alert: {
-                            required: '<?php echo osc_esc_js( __("Activate alert url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Activate alert url: this field is required")); ?>.'
-                        },
-                        rewrite_user_profile: {
-                            required: '<?php echo osc_esc_js( __("User profile url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User profile url: this field is required")); ?>.'
-                        },
-                        rewrite_user_items: {
-                            required: '<?php echo osc_esc_js( __("User listings url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User listings url: this field is required")); ?>.'
-                        },
-                        rewrite_user_alerts: {
-                            required: '<?php echo osc_esc_js( __("User alerts url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User alerts url: this field is required")); ?>.'
-                        },
-                        rewrite_user_recover: {
-                            required: '<?php echo osc_esc_js( __("Recover user url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Recover user url: this field is required")); ?>.'
-                        },
-                        rewrite_user_forgot: {
-                            required: '<?php echo osc_esc_js( __("User forgot url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("User forgot url: this field is required")); ?>.'
-                        },
-                        rewrite_user_change_password: {
-                            required: '<?php echo osc_esc_js( __("Change password url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Change password url: this field is required")); ?>.'
-                        },
-                        rewrite_user_change_email: {
-                            required: '<?php echo osc_esc_js( __("Change email url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Change email url: this field is required")); ?>.'
-                        },
-                        rewrite_user_change_username: {
-                            required: '<?php echo osc_esc_js( __("Change username url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Change username url: this field is required")); ?>.'
-                        },
-                        rewrite_user_change_email_confirm: {
-                            required: '<?php echo osc_esc_js( __("Change email confirm url: this field is required")); ?>.',
-                            minlength: '<?php echo osc_esc_js( __("Change email confirm url: this field is required")); ?>.'
-                        }
-                    },
-                    wrapper: "li",
-                    errorLabelContainer: "#error_list",
-                    invalidHandler: function(form, validator) {
-                        $('html,body').animate({ scrollTop: $('h1').offset().top }, { duration: 250, easing: 'swing'});
-                    },
-                    submitHandler: function(form){
-                        $('button[type=submit], input[type=submit]').attr('disabled', 'disabled');
-                        form.submit();
-                    }
-                });
-            });
-
+        <script type="text/javascript">
             function showhide() {
-                $("#inner_rules").toggle();
-                if($("#show_hide a").html()=='<?php echo osc_esc_js(__('Show rules')); ?>') {
-                    $("#show_hide a").html('<?php echo osc_esc_js(__('Hide rules')); ?>');
+                $("#inner_routes").toggle();
+                if($("#show_hide a").html()=='<?php echo osc_esc_js(__('Show routes')); ?>') {
+                    $("#show_hide a").html('<?php echo osc_esc_js(__('Hide routes')); ?>');
                     resetLayout();
                 } else {
-                    $("#show_hide a").html('<?php echo osc_esc_js(__('Show rules')); ?>')
+                    $("#show_hide a").html('<?php echo osc_esc_js(__('Show routes')); ?>')
                 }
             }
 
             $(function() {
                 $("#rewrite_enabled").click(function(){
-                    $("#custom_rules").toggle();
+                    $("#custom_routes").toggle();
                 });
             });
         </script>
@@ -375,6 +64,271 @@
     osc_add_filter('admin_title', 'customPageTitle');
 
     osc_current_admin_theme_path( 'parts/header.php' ); ?>
+    <style>
+        .placeholder {
+            background-color: #cfcfcf;
+        }
+        .footest .category_div {
+            opacity: 0.8;
+        }
+        .list-categories li {
+            opacity: 1 !important;
+        }
+        .category_div {
+            background: #ffffff;
+        }
+        .alert-custom {
+            background-color: #FDF5D9;
+            border-bottom: 1px solid #EEDC94;
+            color: #404040;
+        }
+        .cat-hover,
+        .cat-hover .category_row{
+            background-color:#fffccc !important;
+            background:#fffccc !important;
+        }
+    </style>
+    <script type="text/javascript">
+    $(function() {
+        $('.category_div').on('mouseenter',function(){
+            $(this).addClass('cat-hover');
+        }).on('mouseleave',function(){
+                $(this).removeClass('cat-hover');
+            });
+        var list_original = '';
+
+        $('.sortable').nestedSortable({
+            disableNesting: 'no-nest',
+            forcePlaceholderSize: true,
+            handle: '.handle',
+            helper: 'clone',
+            listType: 'ul',
+            items: 'li',
+            maxLevels: 1,
+            opacity: .6,
+            placeholder: 'placeholder',
+            revert: 250,
+            tabSize: 25,
+            tolerance: 'pointer',
+            toleranceElement: '> div',
+            create: function(event, ui) {
+            },
+            start: function(event, ui) {
+                list_original = $('.sortable').nestedSortable('serialize');
+                $(ui.helper).addClass('footest');
+                $(ui.helper).prepend('<div style="opacity: 1 !important; padding:5px;" class="alert-custom"><?php echo osc_esc_js(__('Note: You must expand the category in order to make it a subcategory.')); ?></div>');
+            },
+            stop: function(event, ui) {
+
+                $(".jsMessage").fadeIn("fast");
+                $(".jsMessage p").attr('class', '');
+                $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
+
+                var list = '';
+                list = $('.sortable').nestedSortable('serialize');
+                var array_list = $('.sortable').nestedSortable('toArray');
+                var l = array_list.length;
+                for(var k = 0; k < l; k++ ) {
+                    if( array_list[k].item_id == $(ui.item).find('div').attr('category_id') ) {
+                        if( array_list[k].parent_id == 'root' ) {
+                            $(ui.item).closest('.toggle').show();
+                        }
+                        break;
+                    }
+                }
+                if( !$(ui.item).parent().hasClass('sortable') ) {
+                    $(ui.item).parent().addClass('subcategory');
+                }
+                if(list_original != list) {
+                    var plist = array_list.reduce(function ( total, current, index ) {
+                        total[index] = {'c' : current.item_id, 'p' : current.parent_id};
+                        return total;
+                    }, {});
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=categories_order&" . osc_csrf_token_url(); ?>",
+                        data: {'list' : plist},
+                        context: document.body,
+                        success: function(res){
+                            var ret = eval( "(" + res + ")");
+                            var message = "";
+                            if( ret.error ) {
+                                $(".jsMessage p").attr('class', 'error');
+                                message += ret.error;
+                            }
+                            if( ret.ok ){
+                                $(".jsMessage p").attr('class', 'ok');
+                                message += ret.ok;
+                            }
+
+                            $(".jsMessage").show();
+                            $(".jsMessage p").html(message);
+                        },
+                        error: function(){
+                            $(".jsMessage").fadeIn("fast");
+                            $(".jsMessage p").attr('class', '');
+                            $(".jsMessage p").html('<?php echo osc_esc_js(__('Ajax error, please try again.')); ?>');
+                        }
+                    });
+
+                    list_original = list;
+                }
+            }
+        });
+
+        $(".toggle").bind("click", function(e) {
+            var list = $(this).parents('li').first().find('ul');
+            var lili = $(this).closest('li').find('ul').find('li').find('ul');
+            var li   = $(this).closest('li').first();
+            if( $(this).hasClass('status-collapsed') ) {
+                $(li).removeClass('no-nest');
+                $(list).show();
+                $(lili).hide();
+                $(this).removeClass('status-collapsed').addClass('status-expanded');
+                $(this).html('-');
+            } else {
+                $(li).addClass('no-nest');
+                $(list).hide();
+                $(this).removeClass('status-expanded').addClass('status-collapsed');
+                $(this).html('+');
+            }
+        });
+
+        // dialog delete
+        $("#dialog-delete-category").dialog({
+            autoOpen: false,
+            modal: true
+        });
+        $("#category-delete-submit").click(function() {
+            var id  = $("#dialog-delete-category").attr('data-category-id');
+            var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=delete_category&<?php echo osc_csrf_token_url(); ?>&id=' + id;
+
+            $.ajax({
+                url: url,
+                context: document.body,
+                success: function(res) {
+                    var ret = eval( "(" + res + ")");
+                    var message = "";
+                    if( ret.error ) {
+                        message += ret.error;
+                        $(".jsMessage p").attr('class', 'error');
+                    }
+                    if( ret.ok ) {
+                        message += ret.ok;
+                        $(".jsMessage p").attr('class', 'ok');
+
+                        $('#list_'+id).fadeOut("slow");
+                        $('#list_'+id).remove();
+                    }
+
+                    $(".jsMessage").show();
+                    $(".jsMessage p").html(message);
+                },
+                error: function() {
+                    $(".jsMessage").show();
+                    $(".jsMessage p").attr('class', '');
+                    $(".jsMessage p").html("<?php echo osc_esc_js(__('Ajax error, try again.')); ?>");
+                }
+            });
+            $('#dialog-delete-category').dialog('close');
+            $('body,html').animate({
+                scrollTop: 0
+            }, 500);
+            return false;
+        });
+    });
+
+    list_original = $('.sortable').nestedSortable('serialize');
+
+    function show_iframe(class_name, id) {
+        if($('.content_list_'+id+' .iframe-category').length == 0){
+            $('.iframe-category').remove();
+            var name = 'frame_'+ id;
+            var id_  = 'frame_'+ id;
+            var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=category_edit_iframe&id=' + id;
+            $.ajax({
+                url: url,
+                context: document.body,
+                success: function(res){
+                    $('div.' + class_name).html(res);
+                    $('div.' + class_name).fadeIn("fast");
+                }
+            });
+        } else {
+            $('.iframe-category').remove();
+        }
+        return false;
+    }
+
+    function delete_category(id) {
+        $("#dialog-delete-category").attr('data-category-id', id);
+        $("#dialog-delete-category").dialog('open');
+        return false;
+    }
+
+    function enable_cat(id) {
+        var enabled;
+
+        $(".jsMessage").fadeIn("fast");
+        $(".jsMessage p").attr('class', '');
+        $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
+
+        if( $('div[category_id=' + id + ']').hasClass('disabled') ) {
+            enabled = 1;
+        } else {
+            enabled = 0;
+        }
+
+        var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=enable_category&<?php echo osc_csrf_token_url(); ?>&id=' + id + '&enabled=' + enabled;
+        $.ajax({
+            url: url,
+            context: document.body,
+            success: function(res) {
+                var ret = eval( "(" + res + ")");
+                var message = "";
+                if(ret.error) {
+                    message += ret.error;
+                    $(".jsMessage p").attr('class', 'error');
+                }
+                if(ret.ok) {
+                    if( enabled == 0 ) {
+                        $('div[category_id=' + id + ']').addClass('disabled');
+                        $('div[category_id=' + id + ']').removeClass('enabled');
+                        $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Enable'); ?>');
+                        for(var i = 0; i < ret.affectedIds.length; i++) {
+                            id =  ret.affectedIds[i].id;
+                            $('div[category_id=' + id + ']').addClass('disabled');
+                            $('div[category_id=' + id + ']').removeClass('enabled');
+                            $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Enable'); ?>');
+                        }
+                    } else {
+                        $('div[category_id=' + id + ']').removeClass('disabled');
+                        $('div[category_id=' + id + ']').addClass('enabled');
+                        $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Disable'); ?>');
+
+                        for(var i = 0; i < ret.affectedIds.length; i++) {
+                            id =  ret.affectedIds[i].id;
+                            $('div[category_id=' + id + ']').removeClass('disabled');
+                            $('div[category_id=' + id + ']').addClass('enabled');
+                            $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Disable'); ?>');
+                        }
+                    }
+
+                    message += ret.ok;
+                    $(".jsMessage p").attr('class', 'ok');
+                }
+
+                $(".jsMessage").show();
+                $(".jsMessage p").html(message);
+            },
+            error: function(){
+                $(".jsMessage").show();
+                $(".jsMessage p").attr('class', '');
+                $(".jsMessage p").html("<?php echo osc_esc_js(__('Ajax error, try again.')); ?>");
+            }
+        });
+    }
+    </script>
 <div id="mail-setting">
     <!-- settings form -->
                     <div id="mail-settings">
@@ -393,249 +347,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="custom_rules" <?php if( !osc_rewrite_enabled() ) { echo 'class="hide"'; } ?>>
-                                <div id="show_hide" ><a href="#" onclick="javascript:showhide();"><?php _e('Show rules'); ?></a></div>
-                                <div id="inner_rules" class="hide">
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing URL:'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_url" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_url')); ?>" />
-                                            <div class="help-box">
-                                                <?php echo sprintf(__('Accepted keywords: %s'), '{ITEM_ID},{ITEM_TITLE},{CATEGORIES}'); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Page URL:'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_page_url" value="<?php echo osc_esc_html(osc_get_preference('rewrite_page_url')); ?>" />
-                                            <div class="help-box">
-                                                <?php echo sprintf(__('Accepted keywords: %s'), '{PAGE_ID}, {PAGE_SLUG}'); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Category URL:'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_cat_url" value="<?php echo osc_esc_html(osc_get_preference('rewrite_cat_url')); ?>" />
-                                            <div class="help-box">
-                                                <?php echo sprintf(__('Accepted keywords: %s'), '{CATEGORY_ID},{CATEGORY_NAME},{CATEGORIES}'); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search prefix URL:'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="seo_url_search_prefix" value="<?php echo osc_esc_html(osc_get_preference('seo_url_search_prefix')); ?>" />
-                                            <div class="help-box">
-                                                <?php _e('It always appear before the category, region or city url.'); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search URL:'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_url" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_url')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword country'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_country" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_country')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword region'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_region" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_region')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword city'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_city" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_city')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword city area'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_city_area" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_city_area')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword category'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_category" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_category')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword user'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_user" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_user')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Search keyword pattern'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_search_pattern" value="<?php echo osc_esc_html(osc_get_preference('rewrite_search_pattern')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Contact'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_contact" value="<?php echo osc_esc_html(osc_get_preference('rewrite_contact')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Feed'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_feed" value="<?php echo osc_esc_html(osc_get_preference('rewrite_feed')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Language'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_language" value="<?php echo osc_esc_html(osc_get_preference('rewrite_language')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing mark'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_mark" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_mark')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing send friend'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_send_friend" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_send_friend')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing contact'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_contact" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_contact')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing new'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_new" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_new')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing activate'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_activate" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_activate')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing edit'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_edit" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_edit')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing delete'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_delete" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_delete')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('Listing resource delete'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_item_resource_delete" value="<?php echo osc_esc_html(osc_get_preference('rewrite_item_resource_delete')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User login'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_login" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_login')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User dashboard'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_dashboard" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_dashboard')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User logout'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_logout" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_logout')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User register'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_register" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_register')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User activate'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_activate" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_activate')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User activate alert'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_activate_alert" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_activate_alert')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User profile'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_profile" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_profile')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User listings'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_items" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_items')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User alerts'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_alerts" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_alerts')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User recover'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_recover" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_recover')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User forgot'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_forgot" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_forgot')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User change password'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_change_password" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_change_password')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User change email'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_change_email" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_change_email')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User change email confirm'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_change_email_confirm" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_change_email_confirm')); ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-label"><?php _e('User change username'); ?></div>
-                                        <div class="form-controls">
-                                            <input type="text" class="input-large" name="rewrite_user_change_username" value="<?php echo osc_esc_html(osc_get_preference('rewrite_user_change_username')); ?>" />
-                                        </div>
-                                    </div>
+                            <div id="custom_routes" <?php if( !osc_rewrite_enabled() ) { echo 'class="hide"'; } ?>>
+                                <div id="show_hide" ><a href="#" onclick="javascript:showhide();"><?php _e('Show routes'); ?></a></div>
+                                <div id="inner_routes" class="hide">
                                 </div>
                             </div>
                             <?php if( osc_rewrite_enabled() ) { ?>

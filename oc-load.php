@@ -152,7 +152,7 @@ require_once LIB_PATH . 'osclass/model/CountryStats.php';
 require_once LIB_PATH . 'osclass/model/RegionStats.php';
 require_once LIB_PATH . 'osclass/model/CityStats.php';
 require_once LIB_PATH . 'osclass/model/BanRule.php';
-
+require_once LIB_PATH . 'osclass/model/Router.php';
 require_once LIB_PATH . 'osclass/model/LocationsTmp.php';
 
 require_once LIB_PATH . 'osclass/classes/Cache.php';
@@ -160,7 +160,6 @@ require_once LIB_PATH . 'osclass/classes/ImageResizer.php';
 require_once LIB_PATH . 'osclass/classes/RSSFeed.php';
 require_once LIB_PATH . 'osclass/classes/Sitemap.php';
 require_once LIB_PATH . 'osclass/classes/Pagination.php';
-require_once LIB_PATH . 'osclass/classes/Rewrite.php';
 require_once LIB_PATH . 'osclass/classes/Stats.php';
 require_once LIB_PATH . 'osclass/classes/AdminMenu.php';
 require_once LIB_PATH . 'osclass/classes/datatables/DataTable.php';
@@ -256,7 +255,7 @@ if( OC_ADMIN ) {
         require_once $functions_path;
     }
 } else {
-    Rewrite::newInstance()->init();
+    Router::newInstance()->init();
 }
 
 if( !class_exists('PHPMailer') ) {

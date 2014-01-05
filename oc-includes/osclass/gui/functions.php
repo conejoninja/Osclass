@@ -326,7 +326,7 @@ FUNCTIONS
 
     if( !function_exists('osc_is_contact_page') ) {
         function osc_is_contact_page() {
-            if( Rewrite::newInstance()->get_location() === 'contact' ) {
+            if( Router::newInstance()->get_location() === 'contact' ) {
                 return true;
             }
 
@@ -425,8 +425,8 @@ FUNCTIONS
 
     if( !function_exists('delete_user_js') ) {
         function delete_user_js() {
-            $location = Rewrite::newInstance()->get_location();
-            $section  = Rewrite::newInstance()->get_section();
+            $location = Router::newInstance()->get_location();
+            $section  = Router::newInstance()->get_section();
             if( ($location === 'user' && in_array($section, array('dashboard', 'profile', 'alerts', 'change_email', 'change_username',  'change_password', 'items'))) || (Params::getParam('page') ==='custom' && Params::getParam('in_user_menu')==true ) ) {
                 osc_enqueue_script('delete-user-js');
             }
@@ -436,8 +436,8 @@ FUNCTIONS
 
     if( !function_exists('user_info_js') ) {
         function user_info_js() {
-            $location = Rewrite::newInstance()->get_location();
-            $section  = Rewrite::newInstance()->get_section();
+            $location = Router::newInstance()->get_location();
+            $section  = Router::newInstance()->get_section();
 
             if( $location === 'user' && in_array($section, array('dashboard', 'profile', 'alerts', 'change_email', 'change_username',  'change_password', 'items')) ) {
                 $user = User::newInstance()->findByPrimaryKey( Session::newInstance()->_get('userId') );
@@ -510,7 +510,7 @@ FUNCTIONS
 
     function bender_redirect_user_dashboard()
     {
-        if( (Rewrite::newInstance()->get_location() === 'user') && (Rewrite::newInstance()->get_section() === 'dashboard') ) {
+        if( (Router::newInstance()->get_location() === 'user') && (Router::newInstance()->get_section() === 'dashboard') ) {
             header('Location: ' .osc_user_list_items_url());
             exit;
         }

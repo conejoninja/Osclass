@@ -34,15 +34,7 @@
 
         public function __construct()
         {
-            $this->request_uri = '';
-            $this->raw_request_uri = '';
-            $this->uri = '';
-            $this->location = '';
-            $this->section = '';
-            $this->title = '';
-            $this->http_referer = '';
-            $this->routes = $this->routes();
-
+            parent::__construct();
             $this->setTableName('t_route');
             $this->setPrimaryKey('pk_s_id');
             $array_fields = array(
@@ -57,6 +49,15 @@
                 'i_order'
             );
             $this->setFields($array_fields);
+
+            $this->request_uri = '';
+            $this->raw_request_uri = '';
+            $this->uri = '';
+            $this->location = '';
+            $this->section = '';
+            $this->title = '';
+            $this->http_referer = '';
+            $this->routes = $this->routes();
         }
 
         public static function newInstance()
@@ -74,8 +75,8 @@
             $this->dao->orderBy('i_order', 'DESC');
             $result = $this->dao->get();
 
-            if( $result->numRows == 0 ) {
-                return false;
+            if($result===false) {
+                return array();
             }
 
             $this->routes = $result->result();
@@ -86,7 +87,7 @@
         {
             $regexp = trim($regexp);
             $file = trim($file);
-            if($regexp!='' && $file!='') {
+            if($regexp!='') {
                 $order = $this->lastOrder()+1;
                 $params = array(
                     'pk_s_id' => $id,
@@ -99,7 +100,7 @@
                     'i_order' => $order,
                     'b_indelible' => $indelible
                 );
-                return $this->insert($params);
+                return $this->dao->insert($this->getTableName(), $params);
             }
         }
 
@@ -110,10 +111,9 @@
             $this->dao->orderBy('i_order', 'DESC');
             $result = $this->dao->get();
 
-            if( $result->numRows == 0 ) {
-                return 998;
+            if($result->numRows==0) {
+                return 0;
             }
-
             $row = $result->row();
             return $row['i_order'];
         }

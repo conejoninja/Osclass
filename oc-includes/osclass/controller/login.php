@@ -52,7 +52,7 @@
                                                 $request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $url_redirect));
                                                 $tmp_ar = explode("?", $request_uri);
                                                 $request_uri = $tmp_ar[0];
-                                                $rules = Rewrite::newInstance()->listRules();
+                                                $rules = Router::newInstance()->listRules();
                                                 foreach($rules as $match => $uri) {
                                                     if(preg_match('#'.$match.'#', $request_uri, $m)) {
                                                         $request_uri = preg_replace('#'.$match.'#', $uri, $request_uri);

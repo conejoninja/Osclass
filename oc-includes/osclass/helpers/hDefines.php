@@ -818,7 +818,7 @@
      * @since 3.2
      */
     function osc_route_url($id, $args = array()) {
-        $routes = Rewrite::newInstance()->getRoutes();
+        $routes = Rewrite::newInstance()->routes();
         if(!isset($routes[$id])) { return ''; };
         if ( osc_rewrite_enabled() ) {
             $uri = $routes[$id]['url'];
@@ -846,7 +846,7 @@
      * @since 3.2
      */
     function osc_route_admin_url($id, $args = array()) {
-        $routes = Rewrite::newInstance()->getRoutes();
+        $routes = Rewrite::newInstance()->routes();
         if(!isset($routes[$id])) { return ''; };
         $params_url = '';
         foreach($args as $k => $v) {
@@ -861,7 +861,7 @@
      * @since 3.2
      */
     function osc_route_ajax_url($id, $args = array()) {
-        $routes = Rewrite::newInstance()->getRoutes();
+        $routes = Rewrite::newInstance()->routes();
         if(!isset($routes[$id])) { return ''; };
         $params_url = '';
         foreach($args as $k => $v) {
@@ -876,7 +876,7 @@
      * @since 3.2
      */
     function osc_route_admin_ajax_url($id, $args = array()) {
-        $routes = Rewrite::newInstance()->getRoutes();
+        $routes = Rewrite::newInstance()->routes();
         if(!isset($routes[$id])) { return ''; };
         $params_url = '';
         foreach($args as $k => $v) {
@@ -971,8 +971,8 @@
      * @return boolean
      */
     function osc_is_ad_page() {
-        $location = Rewrite::newInstance()->get_location();
-        $section = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section = Router::newInstance()->get_section();
         if($location=='item' && $section=='') {
             return true;
         }
@@ -985,7 +985,7 @@
      * @return boolean
      */
     function osc_is_search_page() {
-        $location = Rewrite::newInstance()->get_location();
+        $location = Router::newInstance()->get_location();
         if($location=='search') {
             return true;
         }
@@ -998,7 +998,7 @@
      * @return boolean
      */
     function osc_is_static_page() {
-        $location = Rewrite::newInstance()->get_location();
+        $location = Router::newInstance()->get_location();
         if($location=='page') {
             return true;
         }
@@ -1011,8 +1011,8 @@
      * @return boolean
      */
     function osc_is_home_page() {
-        $location = Rewrite::newInstance()->get_location();
-        $section = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section = Router::newInstance()->get_section();
         if($location=='' && $section=='') {
             return true;
         }
@@ -1025,8 +1025,8 @@
      * @return boolean
      */
     function osc_is_user_dashboard() {
-        $location = Rewrite::newInstance()->get_location();
-        $section = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section = Router::newInstance()->get_section();
         if($location=='user' && $section=='dashboard') {
             return true;
         }
@@ -1039,8 +1039,8 @@
      * @return boolean
      */
     function osc_is_publish_page() {
-        $location = Rewrite::newInstance()->get_location();
-        $section = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section = Router::newInstance()->get_section();
         if($location=='item' && $section=='item_add') {
             return true;
         }
@@ -1053,8 +1053,8 @@
      * @return boolean
      */
     function osc_is_login_form() {
-        $location = Rewrite::newInstance()->get_location();
-        $section = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section = Router::newInstance()->get_section();
         if($location=='login' && $section=='') {
             return true;
         }
@@ -1067,7 +1067,7 @@
      * @return boolean
      */
     function osc_is_custom_page($value = null) {
-        if(Rewrite::newInstance()->get_location()=='custom') {
+        if(Router::newInstance()->get_location()=='custom') {
             if($value==null || Params::getParam('file')==$value || Params::getParam('route')==$value) {
                 return true;
             }
@@ -1081,8 +1081,8 @@
      * @return boolean
      */
     function osc_is_public_profile() {
-        $location = Rewrite::newInstance()->get_location();
-        $section  = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section  = Router::newInstance()->get_section();
         if( $location === 'user' && $section === 'pub_profile' ) {
             return true;
         }
@@ -1095,8 +1095,8 @@
      * @return boolean
      */
     function osc_is_list_items() {
-        $location = Rewrite::newInstance()->get_location();
-        $section  = Rewrite::newInstance()->get_section();
+        $location = Router::newInstance()->get_location();
+        $section  = Router::newInstance()->get_section();
         if( $location === 'user' && $section === 'items' ) {
             return true;
         }
@@ -1111,7 +1111,7 @@
      * @return string
      */
     function osc_get_osclass_location() {
-        return Rewrite::newInstance()->get_location();
+        return Router::newInstance()->get_location();
     }
 
     /**
@@ -1120,7 +1120,7 @@
      * @return string
      */
     function osc_get_osclass_section() {
-        return Rewrite::newInstance()->get_section();
+        return Router::newInstance()->get_section();
     }
 
 
