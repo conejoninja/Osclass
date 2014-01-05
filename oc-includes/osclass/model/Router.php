@@ -82,7 +82,7 @@
             return $this->routes;
         }
 
-        public function addRoute($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $title = "Custom")
+        public function addRoute($id, $regexp, $url, $file = '', $user_menu = false, $location = "custom", $section = "custom", $indelible = 0)
         {
             $regexp = trim($regexp);
             $file = trim($file);
@@ -96,8 +96,8 @@
                     'b_user_menu' => $user_menu,
                     's_location' => $location,
                     's_section' => $section,
-                    's_title' => $title,
-                    'i_order' => $order
+                    'i_order' => $order,
+                    'b_indelible' => $indelible
                 );
                 return $this->insert($params);
             }
@@ -154,8 +154,13 @@
                                 Params::setParam('route_param_'.$p, $m[$p]);
                             }
                         }
-                        Params::setParam('page', 'custom');
-                        Params::setParam('route', $id);
+                        if($route['s_file']!='') {
+                            Params::setParam('page', 'custom');
+                            Params::setParam('route', $id);
+                        } else {
+                            Params::setParam('page', $route['s_location']);
+                            Params::setParam('action', $route['s_section']);
+                        }
 
                         //$this->extractParams($request_uri);
                         $this->request_uri = $request_uri;

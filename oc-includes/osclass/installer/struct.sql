@@ -39,8 +39,8 @@ CREATE TABLE /*TABLE_PREFIX*/t_route (
     b_user_menu TINYINT(1) NOT NULL DEFAULT 0,
     s_location VARCHAR(24) NOT NULL,
     s_section VARCHAR(24) NOT NULL,
-    s_title VARCHAR(100) NOT NULL,
     i_order INT(2) UNSIGNED NOT NULL,
+    b_indelible TINYINT(1) NOT NULL DEFAULT 0,
 
         PRIMARY KEY (pk_s_id),
         INDEX idx_s_id (pk_s_id),
