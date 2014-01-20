@@ -17,6 +17,7 @@
      */
 
     osc_enqueue_script('jquery-validate');
+    $routes = __get('routes');
 
     //customize Head
     function customHead() { ?>
@@ -68,13 +69,13 @@
         .placeholder {
             background-color: #cfcfcf;
         }
-        .footest .category_div {
+        .footest .route_div {
             opacity: 0.8;
         }
-        .list-categories li {
+        .list-routes li {
             opacity: 1 !important;
         }
-        .category_div {
+        .route_div {
             background: #ffffff;
         }
         .alert-custom {
@@ -82,253 +83,48 @@
             border-bottom: 1px solid #EEDC94;
             color: #404040;
         }
-        .cat-hover,
-        .cat-hover .category_row{
+        .route-hover,
+        .route-hover .route_row{
             background-color:#fffccc !important;
             background:#fffccc !important;
         }
     </style>
     <script type="text/javascript">
-    $(function() {
-        $('.category_div').on('mouseenter',function(){
-            $(this).addClass('cat-hover');
-        }).on('mouseleave',function(){
-                $(this).removeClass('cat-hover');
-            });
-        var list_original = '';
-
-        $('.sortable').nestedSortable({
-            disableNesting: 'no-nest',
-            forcePlaceholderSize: true,
-            handle: '.handle',
-            helper: 'clone',
-            listType: 'ul',
-            items: 'li',
-            maxLevels: 1,
-            opacity: .6,
-            placeholder: 'placeholder',
-            revert: 250,
-            tabSize: 25,
-            tolerance: 'pointer',
-            toleranceElement: '> div',
-            create: function(event, ui) {
-            },
-            start: function(event, ui) {
-                list_original = $('.sortable').nestedSortable('serialize');
-                $(ui.helper).addClass('footest');
-                $(ui.helper).prepend('<div style="opacity: 1 !important; padding:5px;" class="alert-custom"><?php echo osc_esc_js(__('Note: You must expand the category in order to make it a subcategory.')); ?></div>');
-            },
-            stop: function(event, ui) {
-
-                $(".jsMessage").fadeIn("fast");
-                $(".jsMessage p").attr('class', '');
-                $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
-
-                var list = '';
-                list = $('.sortable').nestedSortable('serialize');
-                var array_list = $('.sortable').nestedSortable('toArray');
-                var l = array_list.length;
-                for(var k = 0; k < l; k++ ) {
-                    if( array_list[k].item_id == $(ui.item).find('div').attr('category_id') ) {
-                        if( array_list[k].parent_id == 'root' ) {
-                            $(ui.item).closest('.toggle').show();
-                        }
-                        break;
-                    }
-                }
-                if( !$(ui.item).parent().hasClass('sortable') ) {
-                    $(ui.item).parent().addClass('subcategory');
-                }
-                if(list_original != list) {
-                    var plist = array_list.reduce(function ( total, current, index ) {
-                        total[index] = {'c' : current.item_id, 'p' : current.parent_id};
-                        return total;
-                    }, {});
-                    $.ajax({
-                        type: 'POST',
-                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=categories_order&" . osc_csrf_token_url(); ?>",
-                        data: {'list' : plist},
-                        context: document.body,
-                        success: function(res){
-                            var ret = eval( "(" + res + ")");
-                            var message = "";
-                            if( ret.error ) {
-                                $(".jsMessage p").attr('class', 'error');
-                                message += ret.error;
-                            }
-                            if( ret.ok ){
-                                $(".jsMessage p").attr('class', 'ok');
-                                message += ret.ok;
-                            }
-
-                            $(".jsMessage").show();
-                            $(".jsMessage p").html(message);
-                        },
-                        error: function(){
-                            $(".jsMessage").fadeIn("fast");
-                            $(".jsMessage p").attr('class', '');
-                            $(".jsMessage p").html('<?php echo osc_esc_js(__('Ajax error, please try again.')); ?>');
-                        }
-                    });
-
-                    list_original = list;
-                }
-            }
+        $(function() {
+            $( ".sortable" ).sortable();
+            $( ".sortable" ).disableSelection();
         });
-
-        $(".toggle").bind("click", function(e) {
-            var list = $(this).parents('li').first().find('ul');
-            var lili = $(this).closest('li').find('ul').find('li').find('ul');
-            var li   = $(this).closest('li').first();
-            if( $(this).hasClass('status-collapsed') ) {
-                $(li).removeClass('no-nest');
-                $(list).show();
-                $(lili).hide();
-                $(this).removeClass('status-collapsed').addClass('status-expanded');
-                $(this).html('-');
-            } else {
-                $(li).addClass('no-nest');
-                $(list).hide();
-                $(this).removeClass('status-expanded').addClass('status-collapsed');
-                $(this).html('+');
-            }
-        });
-
-        // dialog delete
-        $("#dialog-delete-category").dialog({
-            autoOpen: false,
-            modal: true
-        });
-        $("#category-delete-submit").click(function() {
-            var id  = $("#dialog-delete-category").attr('data-category-id');
-            var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=delete_category&<?php echo osc_csrf_token_url(); ?>&id=' + id;
-
-            $.ajax({
-                url: url,
-                context: document.body,
-                success: function(res) {
-                    var ret = eval( "(" + res + ")");
-                    var message = "";
-                    if( ret.error ) {
-                        message += ret.error;
-                        $(".jsMessage p").attr('class', 'error');
-                    }
-                    if( ret.ok ) {
-                        message += ret.ok;
-                        $(".jsMessage p").attr('class', 'ok');
-
-                        $('#list_'+id).fadeOut("slow");
-                        $('#list_'+id).remove();
-                    }
-
-                    $(".jsMessage").show();
-                    $(".jsMessage p").html(message);
-                },
-                error: function() {
-                    $(".jsMessage").show();
-                    $(".jsMessage p").attr('class', '');
-                    $(".jsMessage p").html("<?php echo osc_esc_js(__('Ajax error, try again.')); ?>");
-                }
-            });
-            $('#dialog-delete-category').dialog('close');
-            $('body,html').animate({
-                scrollTop: 0
-            }, 500);
-            return false;
-        });
-    });
-
-    list_original = $('.sortable').nestedSortable('serialize');
-
-    function show_iframe(class_name, id) {
-        if($('.content_list_'+id+' .iframe-category').length == 0){
-            $('.iframe-category').remove();
-            var name = 'frame_'+ id;
-            var id_  = 'frame_'+ id;
-            var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=category_edit_iframe&id=' + id;
-            $.ajax({
-                url: url,
-                context: document.body,
-                success: function(res){
-                    $('div.' + class_name).html(res);
-                    $('div.' + class_name).fadeIn("fast");
-                }
-            });
-        } else {
-            $('.iframe-category').remove();
-        }
-        return false;
-    }
-
-    function delete_category(id) {
-        $("#dialog-delete-category").attr('data-category-id', id);
-        $("#dialog-delete-category").dialog('open');
-        return false;
-    }
-
-    function enable_cat(id) {
-        var enabled;
-
-        $(".jsMessage").fadeIn("fast");
-        $(".jsMessage p").attr('class', '');
-        $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
-
-        if( $('div[category_id=' + id + ']').hasClass('disabled') ) {
-            enabled = 1;
-        } else {
-            enabled = 0;
-        }
-
-        var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=enable_category&<?php echo osc_csrf_token_url(); ?>&id=' + id + '&enabled=' + enabled;
-        $.ajax({
-            url: url,
-            context: document.body,
-            success: function(res) {
-                var ret = eval( "(" + res + ")");
-                var message = "";
-                if(ret.error) {
-                    message += ret.error;
-                    $(".jsMessage p").attr('class', 'error');
-                }
-                if(ret.ok) {
-                    if( enabled == 0 ) {
-                        $('div[category_id=' + id + ']').addClass('disabled');
-                        $('div[category_id=' + id + ']').removeClass('enabled');
-                        $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Enable'); ?>');
-                        for(var i = 0; i < ret.affectedIds.length; i++) {
-                            id =  ret.affectedIds[i].id;
-                            $('div[category_id=' + id + ']').addClass('disabled');
-                            $('div[category_id=' + id + ']').removeClass('enabled');
-                            $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Enable'); ?>');
-                        }
-                    } else {
-                        $('div[category_id=' + id + ']').removeClass('disabled');
-                        $('div[category_id=' + id + ']').addClass('enabled');
-                        $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Disable'); ?>');
-
-                        for(var i = 0; i < ret.affectedIds.length; i++) {
-                            id =  ret.affectedIds[i].id;
-                            $('div[category_id=' + id + ']').removeClass('disabled');
-                            $('div[category_id=' + id + ']').addClass('enabled');
-                            $('div[category_id=' + id + ']').find('a.enable').text('<?php _e('Disable'); ?>');
-                        }
-                    }
-
-                    message += ret.ok;
-                    $(".jsMessage p").attr('class', 'ok');
-                }
-
-                $(".jsMessage").show();
-                $(".jsMessage p").html(message);
-            },
-            error: function(){
-                $(".jsMessage").show();
-                $(".jsMessage p").attr('class', '');
-                $(".jsMessage p").html("<?php echo osc_esc_js(__('Ajax error, try again.')); ?>");
-            }
-        });
-    }
     </script>
+<?php
+function drawRoute($route) {
+    ?>
+    <li id="list_<?php echo $route['pk_s_id']; ?>" class="route_li" >
+        <div class="route_div" route_id="<?php echo $route['pk_s_id']; ?>" >
+            <div class="route_row">
+                <div class="handle ico ico-32 ico-droppable"></div>
+                <div class="name-route" ><?php echo $route['pk_s_id']; ?></div>
+                <div class="name-url" ><?php echo $route['s_url']; ?></div>
+                <div class="actions-route">
+                    <a onclick="show_iframe('content_list_<?php echo $route['pk_s_id'];?>','<?php echo $route['pk_s_id']; ?>');"><?php _e('Edit'); ?></a>
+                    &middot;
+                    <a onclick="delete_route(<?php echo $route['pk_s_id']; ?>)"><?php _e('Delete'); ?></a>
+                </div>
+            </div>
+            <div class="edit content_list_<?php echo $route['pk_s_id']; ?>"></div>
+        </div>
+    </li>
+<?php
+} //End drawCategory
+?>
+
+
+    <style>
+        .sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+        .sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+        .sortable li span { position: absolute; margin-left: -1.3em; }
+    </style>
+
+
 <div id="mail-setting">
     <!-- settings form -->
                     <div id="mail-settings">
@@ -350,6 +146,14 @@
                             <div id="custom_routes" <?php if( !osc_rewrite_enabled() ) { echo 'class="hide"'; } ?>>
                                 <div id="show_hide" ><a href="#" onclick="javascript:showhide();"><?php _e('Show routes'); ?></a></div>
                                 <div id="inner_routes" class="hide">
+                                    <div class="list-routes">
+                                        <ul class="sortable">
+                                            <?php foreach($routes as $route) {
+                                                drawRoute($route);
+                                            } ?>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
                                 </div>
                             </div>
                             <?php if( osc_rewrite_enabled() ) { ?>

@@ -38,6 +38,7 @@
 
                     $this->_exportVariableToView('htaccess', $htaccess);
                     $this->_exportVariableToView('file', $file);
+                    $this->_exportVariableToView('routes', Router::newInstance()->routes());
 
                     $this->doView('settings/permalinks.php');
                 break;
