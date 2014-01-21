@@ -102,8 +102,8 @@ function drawRoute($route) {
         <div class="route_div" route_id="<?php echo $route['pk_s_id']; ?>" >
             <div class="route_row">
                 <div class="handle ico ico-32 ico-droppable"></div>
-                <div class="name-route" ><?php echo $route['pk_s_id']; ?></div>
-                <div class="name-url" ><?php echo $route['s_url']; ?></div>
+                <div class="route-name" ><?php echo $route['pk_s_id']; ?></div>
+                <div class="route-url" ><?php echo $route['s_url']; ?></div>
                 <div class="actions-route">
                     <a onclick="show_iframe('content_list_<?php echo $route['pk_s_id'];?>','<?php echo $route['pk_s_id']; ?>');"><?php _e('Edit'); ?></a>
                     &middot;
