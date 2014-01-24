@@ -432,6 +432,10 @@
 
                     require_once osc_plugins_path() . $file;
                 break;
+                case 'route':
+                    $route = Router::newInstance()->findByPrimaryKey(Params::getParam('id'));
+                    echo json_encode($route);
+                    break;
                 case 'test_mail':
                     $title = sprintf( __('Test email, %s'), osc_page_title() );
                     $body  = __("Test email") . "<br><br>" . osc_page_title();

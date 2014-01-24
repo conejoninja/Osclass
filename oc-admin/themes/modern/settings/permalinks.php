@@ -93,7 +93,65 @@
         $(function() {
             $( ".sortable" ).sortable();
             $( ".sortable" ).disableSelection();
+
+            $("#dialog-route").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 600,
+                title: '<?php echo osc_esc_js( __('Route') ); ?>'
+            });
+
+            $("#route-field-location").on("change", function() {
+                var options = {
+                    'contact': { '': 'Contact page' },
+                    'item': { 'item_add': 'Add new listing', 'item_edit': 'Edit listing', 'mark': 'Mark listing as spam', '': 'Listing page', 'item_delete': 'Delete a listing', 'activate': 'Activate a listing', 'send_friend': 'Send listing to a friend', 'deleteResource': 'Delete an image of a listing'},
+                    'language': { '': 'Change current language' },
+                    'login': { '': 'User login', 'forgot': 'Forgot password', 'recover': 'Recover password' },
+                    'main': { 'logout': 'User logout' },
+                    'page': { '': 'Page' },
+                    'register': { 'register': 'User registration' },
+                    'search': { '': 'Search page' },
+                    'user': { 'items': 'Listings of an user', 'alerts': 'Alerts of an user', 'change_email': 'Change email', 'profile': 'Profile', 'activate_alert': 'Activate alert',
+                        'change_email_confirm': 'Change email confirmation', 'validate': 'Activate user', 'dashboard': 'Dashboard', 'change_password': 'Change password', 'change_username': 'Change username',
+                        'pub_profile': 'Public profile'}
+                }
+                var location = $("#route-field-location").attr("value");
+                switch(location) {
+                    case 'contact':
+                    case 'item':
+                    case 'language':
+                    case 'login':
+                    case 'main':
+                    case 'page':
+                    case 'register':
+                    case 'search':
+                    case 'user':
+                        $("#route-field-section-p").show();
+                        $("#route-field-section option").remove();
+                        $("#route-field-section").append('<option value="-1" ><?php _e('Select a route action'); ?></option>');
+                        for (var key in options[location]) {
+                            $("#route-field-section").append('<option value="'+key+'" >'+options[location][key]+'</option>');
+                        }
+                        break;
+                    case '-1':
+                    default:
+                        $("#route-field-section-p").hide();
+                        break;
+                }
+            });
+
         });
+
+        function show_edit(id) {
+            $.getJSON(
+                "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=route",
+                {"route" : id},
+                function(data){
+                    $("#dialog-route").dialog('open');
+                }
+            );
+        }
+
     </script>
 <?php
 function drawRoute($route) {
@@ -105,9 +163,11 @@ function drawRoute($route) {
                 <div class="route-name" ><?php echo $route['pk_s_id']; ?></div>
                 <div class="route-url" ><?php echo $route['s_url']; ?></div>
                 <div class="actions-route">
-                    <a onclick="show_iframe('content_list_<?php echo $route['pk_s_id'];?>','<?php echo $route['pk_s_id']; ?>');"><?php _e('Edit'); ?></a>
-                    &middot;
-                    <a onclick="delete_route(<?php echo $route['pk_s_id']; ?>)"><?php _e('Delete'); ?></a>
+                    <a onclick="show_edit('<?php echo $route['pk_s_id']; ?>');"><?php _e('Edit'); ?></a>
+                    <?php if($route['b_indelible']!=1) { ?>
+                        &middot;
+                        <a onclick="delete_route(<?php echo $route['pk_s_id']; ?>)"><?php _e('Delete'); ?></a>
+                    <?php }; ?>
                 </div>
             </div>
             <div class="edit content_list_<?php echo $route['pk_s_id']; ?>"></div>
@@ -193,4 +253,56 @@ HTACCESS;
                 </div>
                 <!-- /settings form -->
 </div>
+
+    <form id="dialog-route" method="get" action="<?php echo osc_admin_base_url(true); ?>" class="has-form-actions hide">
+        <input type="hidden" name="page" value="settings" />
+        <input type="hidden" name="action" id="form-route-action" value="new" />
+        <input type="hidden" name="id" id="form-route-id" value="" />
+        <p>
+            <label><?php _e('Identifier'); ?>: </label><br />
+            <input type="text" id="route-field-id" name="s_id" value="" />
+        </p>
+        <p>
+            <label><?php _e('Route type'); ?>: </label><br />
+            <select id="route-field-location" name="route-field-location" >
+                <option value="-1" ><?php _e('Select a route type'); ?></option>
+                <option value="custom" ><?php _e('Custom'); ?></option>
+                <?php /* <option value="url" ><?php _e('URL'); ?></option> */ ?>
+                <option value="item" ><?php _e('Item'); ?></option>
+                <option value="search" ><?php _e('Search'); ?></option>
+                <option value="user" ><?php _e('User'); ?></option>
+                <option value="page" ><?php _e('Page'); ?></option>
+                <option value="contact" ><?php _e('Contact'); ?></option>
+                <option value="login" ><?php _e('Login'); ?></option>
+                <option value="register" ><?php _e('Register'); ?></option>
+                <option value="main" ><?php _e('Main'); ?></option>
+                <option value="language" ><?php _e('Language'); ?></option>
+            </select>
+        </p>
+        <p id="route-field-section-p" style="display: none;">
+            <label><?php _e('Route action'); ?>: </label><br />
+            <select id="route-field-section" name="route-field-section" >
+                <option value="-1" ><?php _e('Select a route action'); ?></option>
+            </select>
+        </p>
+        <p>
+            <label><?php _e('URL'); ?>: </label><br />
+            <?php echo WEB_PATH; ?><input type="text" id="route-field-url" name="s_url" value="" />
+        </p>
+        <p>
+            <label><?php _e('Regexp'); ?>: </label><br />
+            <input type="text" id="route-field-regexp" name="s_regexp" value="" />
+        </p>
+        <p>
+            <label><?php _e('File'); ?>: </label><br />
+            <input type="text" id="route-field-file" name="s_file" value="<?php echo ABS_PATH; ?>" />
+        </p>
+        <div class="form-actions">
+            <div class="wrapper">
+                <button class="btn btn-red close-dialog" ><?php _e('Cancel'); ?></button>
+                <button type="submit" class="btn btn-submit" ><?php _e('Ok'); ?></button>
+            </div>
+        </div>
+    </form>
+
 <?php osc_current_admin_theme_path( 'parts/footer.php' ); ?>
