@@ -91,7 +91,64 @@
     </style>
     <script type="text/javascript">
         $(function() {
-            $( ".sortable" ).sortable();
+            $( ".sortable" ).sortable({
+                stop: function(event, ui) {
+
+                    $(".jsMessage").fadeIn("fast");
+                    $(".jsMessage p").attr('class', '');
+                    $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
+
+                    var list = '';
+                    list = $('.sortable').sortable('serialize');
+                    var array_list = $('.sortable').sortable('toArray');
+                    var l = array_list.length;
+                    console.log(list);
+                    console.log(array_list);
+                    for(var k = 0; k < l; k++ ) {
+                        console.log(array_list[k].item_id);
+                        if( array_list[k].item_id == $(ui.item).find('div').attr('category_id') ) {
+                            if( array_list[k].parent_id == 'root' ) {
+                                $(ui.item).closest('.toggle').show();
+                            }
+                            break;
+                        }
+                    }
+                    if(list_original != list) {
+                        var plist = array_list.reduce(function ( total, current, index ) {
+                            total[index] = {'c' : current.item_id, 'p' : current.parent_id};
+                            return total;
+                        }, {});
+                        $.ajax({
+                            type: 'POST',
+                            url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=routes_order&" . osc_csrf_token_url(); ?>",
+                            data: {'list' : plist},
+                            context: document.body,
+                            success: function(res){
+                                var ret = eval( "(" + res + ")");
+                                var message = "";
+                                if( ret.error ) {
+                                    $(".jsMessage p").attr('class', 'error');
+                                    message += ret.error;
+                                }
+                                if( ret.ok ){
+                                    $(".jsMessage p").attr('class', 'ok');
+                                    message += ret.ok;
+                                }
+
+                                $(".jsMessage").show();
+                                $(".jsMessage p").html(message);
+                            },
+                            error: function(){
+                                $(".jsMessage").fadeIn("fast");
+                                $(".jsMessage p").attr('class', '');
+                                $(".jsMessage p").html('<?php echo osc_esc_js(__('Ajax error, please try again.')); ?>');
+                            }
+                        });
+
+                        list_original = list;
+                    }
+                }
+            });
             $( ".sortable" ).disableSelection();
 
             $("#dialog-route").dialog({
@@ -99,6 +156,54 @@
                 modal: true,
                 width: 600,
                 title: '<?php echo osc_esc_js( __('Route') ); ?>'
+            });
+
+            $("#dialog-route-delete").dialog({
+                autoOpen: false,
+                modal: true,
+                title: '<?php echo osc_esc_js( __('Route') ); ?>'
+            });
+
+            $("#form-route-submit").on("click", function(e) {
+                e.preventDefault();
+                $.getJSON(
+                    "<?php echo osc_admin_base_url(true); ?>?page=ajax&<?php echo osc_csrf_token_url(); ?>",
+                    {
+                        "action" : $("#form-route-action").attr("value"),
+                        "id" : $("#form-route-id").attr("value"),
+                        "route_id" : $("#route-field-id").attr("value"),
+                        "location" : $("#route-field-location").attr("value"),
+                        "section" : $("#route-field-section").attr("value"),
+                        "regexp" : $("#route-field-regexp").attr("value"),
+                        "url" : $("#route-field-url").attr("value"),
+                        "file" : $("#route-field-file").attr("value")
+                    },
+                    function(data){
+                        drawRoutes();
+                        $(".jsMessage").fadeIn("fast");
+                        $(".jsMessage p").attr('class', data.error==1?'error':'ok');
+                        $(".jsMessage p").html(data.msg);
+                        $("#dialog-route").dialog('close');
+                    }
+                );
+            });
+
+            $("#route-delete-submit").on("click", function(e) {
+                e.preventDefault();
+                $.getJSON(
+                    "<?php echo osc_admin_base_url(true); ?>?page=ajax&<?php echo osc_csrf_token_url(); ?>",
+                    {
+                        "action" : "delete_route",
+                        "id" : $("#form-delete-route-id").attr("value")
+                    },
+                    function(data){
+                        drawRoutes();
+                        $(".jsMessage").fadeIn("fast");
+                        $(".jsMessage p").attr('class', data.error==1?'error':'ok');
+                        $(".jsMessage p").html(data.msg);
+                        $("#dialog-route-delete").dialog('close');
+                    }
+                );
             });
 
             $("#route-field-location").on("change", function() {
@@ -132,13 +237,18 @@
                         for (var key in options[location]) {
                             $("#route-field-section").append('<option value="'+key+'" >'+options[location][key]+'</option>');
                         }
+                        $("#route-field-file-p").hide();
                         break;
                     case '-1':
                     default:
                         $("#route-field-section-p").hide();
+                        $("#route-field-file-p").show();
                         break;
                 }
             });
+
+
+            drawRoutes();
 
         });
 
@@ -147,37 +257,80 @@
                 "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=route",
                 {"route" : id},
                 function(data){
-                    $("#dialog-route").dialog('open');
+                    if(data!=false) {
+                        $("#form-route-action").attr("value", 'edit_route');
+                        $("#form-route-id").attr("value", data.pk_s_id);
+                        $("#route-field-id").attr("value", data.pk_s_id);
+                        $("#route-field-location").attr("value", data.s_location);
+                        $("#route-field-section").attr("value", data.s_section);
+                        $("#route-field-regexp").attr("value", data.s_regexp);
+                        $("#route-field-url").attr("value", data.s_url);
+                        $("#route-field-file").attr("value", data.s_file);
+                        if(data.s_location=='custom') { $("#route-field-file-p").show(); } else { $("#route-field-file-p").hide(); }
+                        if(data.b_indelible==1) { $("#route-field-id").attr("disabled", "disabled"); } else { $("#route-field-id").attr("disabled"); }
+
+                        $("#dialog-route").dialog('open');
+                    }
+                }
+            );
+        }
+
+        function delete_route(id) {
+            $("#form-delete-route-id").attr("value", id);
+            $("#dialog-route-delete").dialog('open');
+        }
+
+        function show_add() {
+            $("#form-route-action").attr("value", 'add_route');
+            $("#form-route-id").attr("value", '');
+            $("#route-field-id").attr("value", '');
+            $("#route-field-location").attr("value", '');
+            $("#route-field-section").attr("value", '');
+            $("#route-field-regexp").attr("value", '');
+            $("#route-field-url").attr("value", '');
+            $("#route-field-file").attr("value", '');
+            $("#route-field-id").attr("disabled");
+
+            $("#dialog-route").dialog('open');
+        }
+
+        function drawRoutes() {
+            $(".list-routes ul li").remove();
+            $.getJSON(
+                "<?php echo osc_admin_base_url(true); ?>?page=ajax",
+                {"action" : "routes"},
+                function(routes){
+                    if(routes!=false) {
+                        var l = routes.length;
+                        for(var k=0;k<l;k++) {
+                            var data = routes[k];
+                            var html = '<li id="list_'+data.pk_s_id+'" class="route_li" >';
+                            html += '<div class="route_div" id="row_'+data.pk_s_id+'" >';
+                            html += '<div class="route_row" >';
+                            html += '<div class="handle ico ico-32 ico-droppable"></div>';
+                            html += '<div class="route-name" >'+data.pk_s_id+'</div>';
+                            html += '<div class="route-url" >'+data.s_url+'</div>';
+                            html += '<div class="actions-route">';
+                            html += '<a onclick="show_edit(\''+data.pk_s_id+'\');"><?php _e('Edit'); ?></a>';
+
+                            if(data.b_indelible!=1) {
+                                html += '<a onclick="delete_route(\''+data.pk_s_id+'\')"><?php _e('Delete'); ?></a>';
+                            }
+
+                            html += '</div>';
+                            html += '</div>';
+                            html += '<div class="edit content_list_'+data.pk_s_id+'"></div>';
+                            html += '</div>';
+                            html += '</li>';
+
+                            $(".list-routes ul").append(html);
+                        }
+                    }
                 }
             );
         }
 
     </script>
-<?php
-function drawRoute($route) {
-    ?>
-    <li id="list_<?php echo $route['pk_s_id']; ?>" class="route_li" >
-        <div class="route_div" route_id="<?php echo $route['pk_s_id']; ?>" >
-            <div class="route_row">
-                <div class="handle ico ico-32 ico-droppable"></div>
-                <div class="route-name" ><?php echo $route['pk_s_id']; ?></div>
-                <div class="route-url" ><?php echo $route['s_url']; ?></div>
-                <div class="actions-route">
-                    <a onclick="show_edit('<?php echo $route['pk_s_id']; ?>');"><?php _e('Edit'); ?></a>
-                    <?php if($route['b_indelible']!=1) { ?>
-                        &middot;
-                        <a onclick="delete_route(<?php echo $route['pk_s_id']; ?>)"><?php _e('Delete'); ?></a>
-                    <?php }; ?>
-                </div>
-            </div>
-            <div class="edit content_list_<?php echo $route['pk_s_id']; ?>"></div>
-        </div>
-    </li>
-<?php
-} //End drawCategory
-?>
-
-
     <style>
         .sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
         .sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
@@ -206,11 +359,9 @@ function drawRoute($route) {
                             <div id="custom_routes" <?php if( !osc_rewrite_enabled() ) { echo 'class="hide"'; } ?>>
                                 <div id="show_hide" ><a href="#" onclick="javascript:showhide();"><?php _e('Show routes'); ?></a></div>
                                 <div id="inner_routes" class="hide">
+                                    <div><a onclick="show_add();"><?php _e('Add route'); ?></a></div>
                                     <div class="list-routes">
                                         <ul class="sortable">
-                                            <?php foreach($routes as $route) {
-                                                drawRoute($route);
-                                            } ?>
                                         </ul>
                                     </div>
                                     <div class="clear"></div>
@@ -255,14 +406,14 @@ HTACCESS;
 </div>
 
     <form id="dialog-route" method="get" action="<?php echo osc_admin_base_url(true); ?>" class="has-form-actions hide">
-        <input type="hidden" name="page" value="settings" />
-        <input type="hidden" name="action" id="form-route-action" value="new" />
+        <input type="hidden" name="page" value="ajax" />
+        <input type="hidden" name="action" id="form-route-action" value="add_route" />
         <input type="hidden" name="id" id="form-route-id" value="" />
-        <p>
+        <p id="route-field-id-p" >
             <label><?php _e('Identifier'); ?>: </label><br />
-            <input type="text" id="route-field-id" name="s_id" value="" />
+            <input type="text" id="route-field-id" name="route_id" value="" />
         </p>
-        <p>
+        <p id="route-field-location-p" >
             <label><?php _e('Route type'); ?>: </label><br />
             <select id="route-field-location" name="route-field-location" >
                 <option value="-1" ><?php _e('Select a route type'); ?></option>
@@ -285,22 +436,37 @@ HTACCESS;
                 <option value="-1" ><?php _e('Select a route action'); ?></option>
             </select>
         </p>
-        <p>
+        <p id="route-field-url-p" >
             <label><?php _e('URL'); ?>: </label><br />
             <?php echo WEB_PATH; ?><input type="text" id="route-field-url" name="s_url" value="" />
         </p>
-        <p>
+        <p id="route-field-regexp-p" >
             <label><?php _e('Regexp'); ?>: </label><br />
             <input type="text" id="route-field-regexp" name="s_regexp" value="" />
         </p>
-        <p>
+        <p id="route-field-file-p" >
             <label><?php _e('File'); ?>: </label><br />
             <input type="text" id="route-field-file" name="s_file" value="<?php echo ABS_PATH; ?>" />
         </p>
         <div class="form-actions">
             <div class="wrapper">
                 <button class="btn btn-red close-dialog" ><?php _e('Cancel'); ?></button>
-                <button type="submit" class="btn btn-submit" ><?php _e('Ok'); ?></button>
+                <button id="form-route-submit" type="submit" class="btn btn-submit" ><?php _e('Ok'); ?></button>
+            </div>
+        </div>
+    </form>
+
+    <form id="dialog-route-delete" method="get" action="<?php echo osc_admin_base_url(true); ?>" class="has-form-actions hide">
+        <input type="hidden" name="id" id="form-delete-route-id" value="" />
+        <div class="form-horizontal">
+            <div class="form-row">
+                <?php _e('Are you sure you want to delete this route?'); ?>
+            </div>
+            <div class="form-actions">
+                <div class="wrapper">
+                    <a class="btn" href="javascript:void(0);" onclick="$('#dialog-route-delete').dialog('close');"><?php _e('Cancel'); ?></a>
+                    <input id="route-delete-submit" type="submit" value="<?php echo osc_esc_html( __('Delete') ); ?>" class="btn btn-red" />
+                </div>
             </div>
         </div>
     </form>

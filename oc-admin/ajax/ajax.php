@@ -432,9 +432,59 @@
 
                     require_once osc_plugins_path() . $file;
                 break;
-                case 'route':
-                    $route = Router::newInstance()->findByPrimaryKey(Params::getParam('id'));
+                case 'routes':
+                    $route = Router::newInstance()->routes();
                     echo json_encode($route);
+                    break;
+                case 'route':
+                    $route = Router::newInstance()->findByPrimaryKey(Params::getParam('route'));
+                    echo json_encode($route);
+                    break;
+                case 'edit_route':
+                    $result = Router::newInstance()->update(
+                        array(
+                            'pk_s_id' => Params::getParam('route_id'),
+                            's_location' => Params::getParam('location'),
+                            's_section' => Params::getParam('section'),
+                            's_regexp' => Params::getParam('regexp'),
+                            's_url' => Params::getParam('url'),
+                            's_file' => Params::getParam('file')
+                        ),
+                        array('pk_s_id' => Params::getParam('id')));
+                    if($result) {
+                        echo json_encode(array('error' => 0, 'msg' => __('Route updated correctly')));
+                    } else {
+                        echo json_encode(array('error' => 1, 'msg' => __('An error occurred while updating the route')));
+                    }
+                    break;
+                case 'delete_route':
+                    $result = Router::newInstance()->delete(array('pk_s_id' => Params::getParam('id')));
+                    if($result) {
+                        echo json_encode(array('error' => 0, 'msg' => __('Route deleted correctly')));
+                    } else {
+                        echo json_encode(array('error' => 1, 'msg' => __('An error occurred while deleting the route')));
+                    }
+                    break;
+                case 'add_route':
+                    $order = $this->lastOrder()+1;
+                    $result = Router::newInstance()->insert(
+                        array(
+                            'pk_s_id' => Params::getParam('route_id'),
+                            's_location' => Params::getParam('location'),
+                            's_section' => Params::getParam('section'),
+                            's_regexp' => Params::getParam('regexp'),
+                            's_url' => Params::getParam('url'),
+                            's_file' => Params::getParam('file'),
+                            'i_order' => $order
+                        ));
+                    if($result) {
+                        echo json_encode(array('error' => 0, 'msg' => __('Route added correctly')));
+                    } else {
+                        echo json_encode(array('error' => 1, 'msg' => __('An error occurred while adding the route')));
+                    }
+                    break;
+                case 'routes_order':
+                    print_r($_REQUEST);
                     break;
                 case 'test_mail':
                     $title = sprintf( __('Test email, %s'), osc_page_title() );

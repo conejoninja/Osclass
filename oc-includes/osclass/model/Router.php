@@ -46,6 +46,7 @@
                 's_location',
                 's_section',
                 's_title',
+                'b_indelible',
                 'i_order'
             );
             $this->setFields($array_fields);
