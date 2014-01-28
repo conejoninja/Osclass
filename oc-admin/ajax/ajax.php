@@ -484,7 +484,22 @@
                     }
                     break;
                 case 'routes_order':
-                    print_r($_REQUEST);
+                    $list = Params::getParam('list');
+                    $l = count($list)-1;
+                    $mRoute = Router::newInstance();
+                    $errors = 0;
+                    foreach($list as $k => $v) {
+                        $result = $mRoute->update(
+                            array('i_order' => $l-$k),
+                            array('pk_s_id' => $v)
+                        );
+                        if($result===false) { $errors++; };
+                    }
+                    if($errors==0) {
+                        echo json_encode(array('error' => 0, 'msg' => __('Routes\' order saved correctly')));
+                    } else {
+                        echo json_encode(array('error' => 1, 'msg' => __('An error occurred while saving the order')));
+                    }
                     break;
                 case 'test_mail':
                     $title = sprintf( __('Test email, %s'), osc_page_title() );

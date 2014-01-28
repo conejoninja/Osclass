@@ -92,59 +92,31 @@
     <script type="text/javascript">
         $(function() {
             $( ".sortable" ).sortable({
+                start: function(event, ui) {
+                    list_original = $('.sortable').sortable('serialize');
+                },
                 stop: function(event, ui) {
 
                     $(".jsMessage").fadeIn("fast");
                     $(".jsMessage p").attr('class', '');
                     $(".jsMessage p").html('<img height="16" width="16" src="<?php echo osc_current_admin_theme_url('images/loading.gif');?>"> <?php echo osc_esc_js(__('This action could take a while.')); ?>');
 
-                    var list = '';
-                    list = $('.sortable').sortable('serialize');
-                    var array_list = $('.sortable').sortable('toArray');
-                    var l = array_list.length;
-                    console.log(list);
-                    console.log(array_list);
-                    for(var k = 0; k < l; k++ ) {
-                        console.log(array_list[k].item_id);
-                        if( array_list[k].item_id == $(ui.item).find('div').attr('category_id') ) {
-                            if( array_list[k].parent_id == 'root' ) {
-                                $(ui.item).closest('.toggle').show();
-                            }
-                            break;
-                        }
-                    }
+                    var list = $('.sortable').sortable('toArray');
                     if(list_original != list) {
-                        var plist = array_list.reduce(function ( total, current, index ) {
-                            total[index] = {'c' : current.item_id, 'p' : current.parent_id};
+                        var plist = list.reduce(function ( total, current, index ) {
+                            total[index] = $("#"+current).attr("route_id");
                             return total;
                         }, {});
-                        $.ajax({
-                            type: 'POST',
-                            url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=routes_order&" . osc_csrf_token_url(); ?>",
-                            data: {'list' : plist},
-                            context: document.body,
-                            success: function(res){
-                                var ret = eval( "(" + res + ")");
-                                var message = "";
-                                if( ret.error ) {
-                                    $(".jsMessage p").attr('class', 'error');
-                                    message += ret.error;
-                                }
-                                if( ret.ok ){
-                                    $(".jsMessage p").attr('class', 'ok');
-                                    message += ret.ok;
-                                }
-
-                                $(".jsMessage").show();
-                                $(".jsMessage p").html(message);
-                            },
-                            error: function(){
+                        $.getJSON(
+                            "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=routes_order&<?php echo osc_csrf_token_url(); ?>",
+                            {"list" : plist},
+                            function(data){
+                                drawRoutes();
                                 $(".jsMessage").fadeIn("fast");
-                                $(".jsMessage p").attr('class', '');
-                                $(".jsMessage p").html('<?php echo osc_esc_js(__('Ajax error, please try again.')); ?>');
+                                $(".jsMessage p").attr('class', data.error==1?'error':'ok');
+                                $(".jsMessage p").html(data.msg);
                             }
-                        });
-
+                        );
                         list_original = list;
                     }
                 }
@@ -304,7 +276,7 @@
                         var l = routes.length;
                         for(var k=0;k<l;k++) {
                             var data = routes[k];
-                            var html = '<li id="list_'+data.pk_s_id+'" class="route_li" >';
+                            var html = '<li id="list_'+data.pk_s_id+'" route_id="'+data.pk_s_id+'" class="route_li" >';
                             html += '<div class="route_div" id="row_'+data.pk_s_id+'" >';
                             html += '<div class="route_row" >';
                             html += '<div class="handle ico ico-32 ico-droppable"></div>';
