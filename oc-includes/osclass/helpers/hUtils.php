@@ -258,9 +258,12 @@ function osc_get_http_referer() {
     return '';
 }
 
-function osc_add_route($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $indelible) {
-    Router::newInstance()->addRoute($id, $regexp, $url, $file, $user_menu, $location, $section, $indelible);
+function osc_add_route($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $title = "Custom") {
+    Rewrite::newInstance()->addRoute($id, $regexp, $url, $file, $user_menu, $location, $section, $title);
 }
+/*function osc_add_route($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $indelible) {
+    Router::newInstance()->addRoute($id, $regexp, $url, $file, $user_menu, $location, $section, $indelible);
+}*/
 
 /**
  *

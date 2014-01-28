@@ -23,14 +23,14 @@
     class Router extends DAO
     {
         private static $instance;
-        private $routes;
-        private $request_uri;
-        private $raw_request_uri;
-        private $uri;
-        private $location;
-        private $section;
-        private $title;
-        private $http_referer;
+        private $_routes;
+        private $_request_uri;
+        private $_raw_request_uri;
+        private $_uri;
+        private $_location;
+        private $_section;
+        private $_title;
+        private $_http_referer;
 
         public function __construct()
         {
@@ -51,14 +51,14 @@
             );
             $this->setFields($array_fields);
 
-            $this->request_uri = '';
-            $this->raw_request_uri = '';
-            $this->uri = '';
-            $this->location = '';
-            $this->section = '';
-            $this->title = '';
-            $this->http_referer = '';
-            $this->routes = $this->routes();
+            $this->_request_uri = '';
+            $this->_raw_request_uri = '';
+            $this->_uri = '';
+            $this->_location = '';
+            $this->_section = '';
+            $this->_title = '';
+            $this->_http_referer = '';
+            $this->_routes = $this->routes();
         }
 
         public static function newInstance()
@@ -80,11 +80,23 @@
                 return array();
             }
 
-            $this->routes = $result->result();
-            return $this->routes;
+            $tmp_routes = $result->result();
+            foreach($tmp_routes as $route) {
+                $this->_routes[$route['pk_s_id']] = $route;
+            }
+            return $this->_routes;
         }
 
-        public function addRoute($id, $regexp, $url, $file = '', $user_menu = false, $location = "custom", $section = "custom", $indelible = 0)
+        public function addRoute($id, $regexp, $url, $file, $user_menu = false, $location = "custom", $section = "custom", $title = "Custom")
+        {
+            $regexp = trim($regexp);
+            $file = trim($file);
+            if($regexp!='' && $file!='') {
+                $this->_routes[$id] = array('regexp' => $regexp, 'url' => $url, 'file' => $file, 'user_menu' => $user_menu, 'location' => $location, 'section' => $section, 'title' => $title);
+            }
+        }
+
+        /*public function addRoute($id, $regexp, $url, $file = '', $user_menu = false, $location = "custom", $section = "custom", $indelible = 0)
         {
             $regexp = trim($regexp);
             $file = trim($file);
@@ -103,7 +115,7 @@
                 );
                 return $this->dao->insert($this->getTableName(), $params);
             }
-        }
+        }*/
 
         public function lastOrder()
         {
@@ -132,15 +144,15 @@
             // $_SERVER is not supported by Params Class... we should fix that
             if(isset($_SERVER['REQUEST_URI'])) {
                 if(preg_match('|[\?&]{1}http_referer=(.*)$|', urldecode($_SERVER['REQUEST_URI']), $ref_match)) {
-                    $this->http_referer = $ref_match[1];
+                    $this->_http_referer = $ref_match[1];
                     $_SERVER['REQUEST_URI'] = preg_replace('|[\?&]{1}http_referer=(.*)$|', "", urldecode($_SERVER['REQUEST_URI']));
                 }
                 $request_uri = preg_replace('@^' . REL_WEB_URL . '@', "", urldecode($_SERVER['REQUEST_URI']));
-                $this->raw_request_uri = $request_uri;
+                $this->_raw_request_uri = $request_uri;
                 if(Params::getParam('r')!='') { $request_uri = Params::getParam('r'); }
                 $tmp = explode("?", $request_uri);
                 $request_uri = $tmp[0];
-                foreach($this->routes as $id => $route) {
+                foreach($this->_routes as $id => $route) {
                     // UNCOMMENT TO DEBUG
                     //echo 'Request URI: '.$request_uri." # Match : ".$route['s_regexp']." # URI to go : ".$route['s_url']." <br />";
                     if(preg_match('#^'.$route['s_regexp'].'#', $request_uri, $m)) {
@@ -164,11 +176,11 @@
                         }
 
                         //$this->extractParams($request_uri);
-                        $this->request_uri = $request_uri;
+                        $this->_request_uri = $request_uri;
 
-                        $this->location = $route['s_location'];
-                        $this->section = $route['s_section'];
-                        $this->title = $route['s_title'];
+                        $this->_location = $route['s_location'];
+                        $this->_section = $route['s_section'];
+                        $this->_title = $route['s_title'];
                         break;
                     }
                 }
@@ -201,37 +213,37 @@
 
         public function get_request_uri()
         {
-            return $this->request_uri;
+            return $this->_request_uri;
         }
 
         public function get_raw_request_uri()
         {
-            return $this->raw_request_uri;
+            return $this->_raw_request_uri;
         }
 
         public function set_location($location)
         {
-            $this->location = $location;
+            $this->_location = $location;
         }
 
         public function get_location()
         {
-            return $this->location;
+            return $this->_location;
         }
 
         public function get_section()
         {
-            return $this->section;
+            return $this->_section;
         }
         
         public function get_title()
         {
-            return $this->title;
+            return $this->_title;
         }
         
         public function get_http_referer()
         {
-            return $this->http_referer;
+            return $this->_http_referer;
         }
         
     }
