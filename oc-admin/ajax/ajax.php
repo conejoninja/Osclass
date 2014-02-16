@@ -466,7 +466,7 @@
                     }
                     break;
                 case 'add_route':
-                    $order = $this->lastOrder()+1;
+                    $order = Router::newInstance()->lastOrder()+1;
                     $result = Router::newInstance()->insert(
                         array(
                             'pk_s_id' => Params::getParam('route_id'),

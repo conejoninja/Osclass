@@ -273,8 +273,7 @@
                 {"action" : "routes"},
                 function(routes){
                     if(routes!=false) {
-                        var l = routes.length;
-                        for(var k=0;k<l;k++) {
+                        for(var k in routes) {
                             var data = routes[k];
                             var html = '<li id="list_'+data.pk_s_id+'" route_id="'+data.pk_s_id+'" class="route_li" >';
                             html += '<div class="route_div" id="row_'+data.pk_s_id+'" >';
