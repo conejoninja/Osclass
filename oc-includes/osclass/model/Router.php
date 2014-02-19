@@ -147,16 +147,15 @@
                     $this->_http_referer = $ref_match[1];
                     $_SERVER['REQUEST_URI'] = preg_replace('|[\?&]{1}http_referer=(.*)$|', "", urldecode($_SERVER['REQUEST_URI']));
                 }
-                $request_uri = preg_replace('@^' . REL_WEB_URL . '@', "", urldecode($_SERVER['REQUEST_URI']));
+                $request_uri = preg_replace('@^' . REL_WEB_URL . '\??@', "", urldecode($_SERVER['REQUEST_URI']));
                 $this->_raw_request_uri = $request_uri;
-                if(Params::getParam('r')!='') { $request_uri = Params::getParam('r'); }
                 $tmp = explode("?", $request_uri);
                 $request_uri = $tmp[0];
                 foreach($this->_routes as $id => $route) {
                     // UNCOMMENT TO DEBUG
                     //echo 'Request URI: '.$request_uri." # Match : ".$route['s_regexp']." # URI to go : ".$route['s_url']." <br />";
                     if(preg_match('#^'.$route['s_regexp'].'#', $request_uri, $m)) {
-                        if(!preg_match_all('#\{([^\}]+)\}#', $route['url'], $args)) {
+                        if(!preg_match_all('#\{([^\}]+)\}#', $route['s_url'], $args)) {
                             $args[1] = array();
                         }
                         $l = count($m);
