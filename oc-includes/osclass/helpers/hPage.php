@@ -159,26 +159,17 @@
      * @return string
      */
     function osc_static_page_url($locale = '') {
-        if ( osc_rewrite_enabled() ) {
-            $sanitized_categories = array();
-            $cat = Category::newInstance()->hierarchy(osc_item_category_id());
-            for ($i = (count($cat)); $i > 0; $i--) {
-                $sanitized_categories[] = $cat[$i - 1]['s_slug'];
-            }
-            $url = str_replace('{PAGE_TITLE}', osc_static_page_title(), str_replace('{PAGE_ID}', osc_static_page_id(), str_replace('{PAGE_SLUG}', urlencode(osc_static_page_slug()), osc_get_preference('rewrite_page_url'))));
-            if($locale!='') {
-                $path = osc_base_url().$locale."/".$url;
-            } else {
-                $path = osc_base_url().$url;
-            }
+        // TODO: Improve this, extra params should not be in the url
+        $params = array();
+        $params['title'] = osc_static_page_title();
+        $params['slug'] = urlencode(osc_static_page_slug());
+        $params['id'] = osc_static_page_id();
+        if($locale!='') {
+            $params['lang'] = $locale;
+            return osc_route_url('page-locale', $params);
         } else {
-            if($locale!='') {
-                $path = osc_base_url(true)."?page=page&id=".osc_static_page_id()."&lang=".$locale;
-            } else {
-                $path = osc_base_url(true)."?page=page&id=".osc_static_page_id();
-            }
+            return osc_route_url('page', $params);
         }
-        return $path;
     }
 
     /**

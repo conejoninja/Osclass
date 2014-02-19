@@ -147,40 +147,42 @@
                     $this->_http_referer = $ref_match[1];
                     $_SERVER['REQUEST_URI'] = preg_replace('|[\?&]{1}http_referer=(.*)$|', "", urldecode($_SERVER['REQUEST_URI']));
                 }
-                $request_uri = preg_replace('@^' . REL_WEB_URL . '\??@', "", urldecode($_SERVER['REQUEST_URI']));
+                $request_uri = preg_replace('@^' . REL_WEB_URL . '(index\.php)?\??@', "", urldecode($_SERVER['REQUEST_URI']));
                 $this->_raw_request_uri = $request_uri;
                 $tmp = explode("?", $request_uri);
                 $request_uri = $tmp[0];
-                foreach($this->_routes as $id => $route) {
-                    // UNCOMMENT TO DEBUG
-                    //echo 'Request URI: '.$request_uri." # Match : ".$route['s_regexp']." # URI to go : ".$route['s_url']." <br />";
-                    if(preg_match('#^'.$route['s_regexp'].'#', $request_uri, $m)) {
-                        if(!preg_match_all('#\{([^\}]+)\}#', $route['s_url'], $args)) {
-                            $args[1] = array();
-                        }
-                        $l = count($m);
-                        for($p=1;$p<$l;$p++) {
-                            if(isset($args[1][$p-1])) {
-                                Params::setParam($args[1][$p-1], $m[$p]);
-                            } else {
-                                Params::setParam('route_param_'.$p, $m[$p]);
+                if(isset($tmp[1])) { $this->extractParams($this->_raw_request_uri); };
+                if(Params::getParam('page')=='') {
+                    foreach($this->_routes as $id => $route) {
+                        // UNCOMMENT TO DEBUG
+                        //echo 'Request URI: '.$request_uri." # Match : ".$route['s_regexp']." # URI to go : ".$route['s_url']." <br />";
+                        if(preg_match('#^'.$route['s_regexp'].'#', $request_uri, $m)) {
+                            if(!preg_match_all('#\{([^\}]+)\}#', $route['s_url'], $args)) {
+                                $args[1] = array();
                             }
-                        }
-                        if($route['s_file']!='') {
-                            Params::setParam('page', 'custom');
-                            Params::setParam('route', $id);
-                        } else {
-                            Params::setParam('page', $route['s_location']);
-                            Params::setParam('action', $route['s_section']);
-                        }
+                            $l = count($m);
+                            for($p=1;$p<$l;$p++) {
+                                if(isset($args[1][$p-1])) {
+                                    Params::setParam($args[1][$p-1], $m[$p]);
+                                } else {
+                                    Params::setParam('route_param_'.$p, $m[$p]);
+                                }
+                            }
+                            if($route['s_file']!='') {
+                                Params::setParam('page', 'custom');
+                                Params::setParam('route', $id);
+                            } else {
+                                Params::setParam('page', $route['s_location']);
+                                Params::setParam('action', $route['s_section']);
+                            }
+                            //$this->extractParams($request_uri);
+                            $this->_request_uri = $request_uri;
 
-                        //$this->extractParams($request_uri);
-                        $this->_request_uri = $request_uri;
-
-                        $this->_location = $route['s_location'];
-                        $this->_section = $route['s_section'];
-                        $this->_title = $route['s_title'];
-                        break;
+                            $this->_location = $route['s_location'];
+                            $this->_section = $route['s_section'];
+                            $this->_title = $route['s_title'];
+                            break;
+                        }
                     }
                 }
             }

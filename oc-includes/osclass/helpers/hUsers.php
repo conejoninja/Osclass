@@ -155,16 +155,11 @@
             $id = osc_user_id();
         }
         if ($id != '') {
-            if ( osc_rewrite_enabled() ) {
-                $user = User::newInstance()->findByPrimaryKey($id);
-                $path = osc_base_url().osc_get_preference('rewrite_user_profile')."/".$user['s_username'];
-            } else {
-                $path = sprintf(osc_base_url(true) . '?page=user&action=pub_profile&id=%d', $id);
-            }
+            $user = User::newInstance()->findByPrimaryKey($id);
+            return osc_route_url('user-pub-profile', array('username' => $user['s_username']));
         } else {
-            $path = '';
+            return '';
         }
-        return $path;
     }
 
     /**

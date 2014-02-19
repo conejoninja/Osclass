@@ -357,12 +357,7 @@
      * @return string
      */
     function osc_user_logout_url() {
-        if ( osc_rewrite_enabled() ) {
-            $path = osc_base_url() . osc_get_preference('rewrite_user_logout');
-        } else {
-            $path = osc_base_url(true) . '?page=main&action=logout';
-        }
-        return $path;
+        return osc_route_url('user-logout');
     }
 
     /**
@@ -371,12 +366,7 @@
      * @return string
      */
     function osc_user_login_url() {
-        if ( osc_rewrite_enabled() ) {
-            $path = osc_base_url() . osc_get_preference('rewrite_user_login');
-        } else {
-            $path = osc_base_url(true) . '?page=login';
-        }
-        return $path;
+        return osc_route_url('user-login');
     }
 
     /**
@@ -385,12 +375,7 @@
      * @return string
      */
     function osc_register_account_url() {
-        if ( osc_rewrite_enabled() ) {
-            $path = osc_base_url() . osc_get_preference('rewrite_user_register');
-        } else {
-            $path = osc_base_url(true) . '?page=register&action=register';
-        }
-        return $path;
+        return osc_route_url('user-register');
     }
 
     /**
@@ -818,26 +803,18 @@
      * @since 3.2
      */
     function osc_route_url($id, $args = array()) {
-        $routes = Rewrite::newInstance()->routes();
+        $routes = Router::newInstance()->routes();
         if(!isset($routes[$id])) { return ''; };
-        if ( osc_rewrite_enabled() ) {
-            $uri = $routes[$id]['url'];
-            $params_url = '';
-            foreach($args as $k => $v) {
-                $old_uri = $uri;
-                $uri = str_ireplace('{'.$k.'}', $v, $uri);
-                if($old_uri==$uri) {
-                    $params_url .= '&'.$k.'='.$v;
-                }
-            }
-            return osc_base_url().$uri.(($params_url!='')?'?'.$params_url:'');
-        } else {
-            $params_url = '';
-            foreach($args as $k => $v) {
+        $uri = $routes[$id]['s_url'];
+        $params_url = '';
+        foreach($args as $k => $v) {
+            $old_uri = $uri;
+            $uri = str_ireplace('{'.$k.'}', $v, $uri);
+            if($old_uri==$uri) {
                 $params_url .= '&'.$k.'='.$v;
             }
-            return osc_base_url(true)."?page=custom&route=".$id.$params_url;
         }
+        return osc_base_url().(osc_rewrite_enabled()?'':'?').$uri.(($params_url!='')?'?'.$params_url:'');
     }
 
     /**

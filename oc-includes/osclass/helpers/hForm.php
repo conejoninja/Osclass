@@ -187,7 +187,7 @@
                     '" '.osc_form_attributes_html(osc_form_element_attributes()).
                     (@$options['selected']==true?' selected="selected"':'').' />';
                 break;
-            case 'text':
+            case 'plaintext':
                 echo osc_form_element_value();
                 break;
             default:

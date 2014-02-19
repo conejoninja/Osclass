@@ -41,6 +41,7 @@
         function doModel()
         {
             switch( $this->action ) {
+                default:
                 case('register'):       //register user
                                         $this->doView('user-register.php');
                 break;

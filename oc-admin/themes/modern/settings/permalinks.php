@@ -330,7 +330,7 @@
                             <div id="custom_routes" <?php if( !osc_rewrite_enabled() ) { echo 'class="hide"'; } ?>>
                                 <div id="show_hide" ><a href="#" onclick="javascript:showhide();"><?php _e('Show routes'); ?></a></div>
                                 <div id="inner_routes" class="hide">
-                                    <div><a onclick="show_add();"><?php _e('Add route'); ?></a></div>
+                                    <div><a onclick="javascript:show_add();"><?php _e('Add route'); ?></a></div>
                                     <div class="list-routes">
                                         <ul class="sortable">
                                         </ul>

@@ -94,7 +94,7 @@
         }
 
         public function addText($label, $value = '', $name = '') {
-            $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'text'));
+            $this->addElement(array('label' => $label, 'name' => $name, 'value' => $value, 'type' => 'plaintext'));
         }
 
         public function addCheckBox($label, $name, $value = '1', $selected = false) {
