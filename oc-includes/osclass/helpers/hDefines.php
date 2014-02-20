@@ -413,7 +413,6 @@
      */
     function osc_item_url($locale = '')
     {
-        // TODO : There's a route for this, port the code to it
         return osc_item_url_from_item(osc_item(), $locale);
     }
 
@@ -427,30 +426,23 @@
      */
     function osc_item_url_from_item($item, $locale = '')
     {
-        // TODO : There's a route for this, port the code to it
-        if ( osc_rewrite_enabled() ) {
-            $url = osc_get_preference('rewrite_item_url');
-            if( preg_match('|{CATEGORIES}|', $url) ) {
-                $sanitized_categories = array();
-                $cat = Category::newInstance()->hierarchy($item['fk_i_category_id']);
-                for ($i = (count($cat)); $i > 0; $i--) {
-                    $sanitized_categories[] = $cat[$i - 1]['s_slug'];
-                }
-                $url = str_replace('{CATEGORIES}', implode("/", $sanitized_categories), $url);
-            }
-            $url = str_replace('{ITEM_ID}', osc_sanitizeString($item['pk_i_id']), $url);
-            $url = str_replace('{ITEM_CITY}', osc_sanitizeString($item['s_city']), $url);
-            $url = str_replace('{ITEM_TITLE}', osc_sanitizeString($item['s_title']), $url);
-            $url = str_replace('?', '', $url);
-            if($locale!='') {
-                $path = osc_base_url().$locale."/".$url;
-            } else {
-                $path = osc_base_url().$url;
-            }
-        } else {
-            $path = osc_item_url_ns(osc_item_id(), $locale);
+        $sanitized_categories = array();
+        $cat = Category::newInstance()->hierarchy($item['fk_i_category_id']);
+        for ($i = (count($cat)); $i > 0; $i--) {
+            $sanitized_categories[] = $cat[$i - 1]['s_slug'];
         }
-        return $path;
+
+        $params = array(
+            'category' => implode("/", $sanitized_categories),
+            'title' => osc_sanitizeString($item['s_title']),
+            'city' => osc_sanitizeString($item['s_city']), // TODO: No extra params in url
+            'id' => $item['pk_i_id']
+        );
+        if($locale!='') {
+            $params['locale'] = $locale;
+            return osc_route_url('item-locale', $params);
+        }
+        return osc_route_url('item', $params);
     }
 
     /**
@@ -460,34 +452,20 @@
      * @return string
      */
     function osc_premium_url($locale = '') {
-        // TODO : There's a route for this, port the code to it
-        if ( osc_rewrite_enabled() ) {
-            $sanitized_categories = array();
-            $cat = Category::newInstance()->hierarchy(osc_premium_category_id());
-            for ($i = (count($cat)); $i > 0; $i--) {
-                $sanitized_categories[] = $cat[$i - 1]['s_slug'];
-            }
-            $url = str_replace('{CATEGORIES}', implode("/", $sanitized_categories), str_replace('{ITEM_ID}', osc_premium_id(), str_replace('{ITEM_TITLE}', osc_sanitizeString(osc_premium_title()), osc_get_preference('rewrite_item_url'))));
-            if($locale!='') {
-                $path = osc_base_url().$locale."/".$url;
-            } else {
-                $path = osc_base_url().$url;
-            }
-        } else {
-            $path = osc_item_url_ns( osc_premium_id(), $locale );
-        }
-        return $path;
+        // TODO : Check this
+        return osc_item_url_from_item(osc_premium(), $locale);
     }
 
     /**
      * Create the no friendly url of the item using the id of the item
      *
+     * @deprecated
      * @param int $id the primary key of the item
      * @param $locale
      * @return string
      */
     function osc_item_url_ns($id, $locale = '') {
-        // TODO : There's a route for this
+        // TODO : DELETE SOON
         $path = osc_base_url(true) . '?page=item&id=' . $id;
         if($locale!='') {
             $path .= "&lang=" . $locale;
