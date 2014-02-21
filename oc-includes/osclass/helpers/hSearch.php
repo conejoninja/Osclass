@@ -412,8 +412,10 @@
         unset($params['page']);
         $countP = count($params);
 
-        if(osc_rewrite_enabled()) {
-            $url = $base_url.osc_get_preference('rewrite_search_url');
+        if(!osc_rewrite_enabled()) { $base_url .= "?"; } // NEW ROUTER
+        // TODO : Enable backward compatible (index.php?page=search....)
+        //if(osc_rewrite_enabled()) {
+            $url = $base_url.osc_get_preference('rewrite_search_url'); // TODO: CHANGE THIS LINE TO NOT USE REWRITE SEARCH URL
             // CANONICAL URLS
             if(isset($params['sCategory']) && !is_array($params['sCategory']) && strpos($params['sCategory'], ',')===false && ($countP==1 || ($countP==2 && isset($params['iPage'])))) {
                 if(osc_category_id()==$params['sCategory']) {
@@ -552,7 +554,7 @@
                     if(!is_array($v)  && $v!='') { $url .= "/".$k.",".$v; }
                 }
             }
-        } else {
+        /*} else {
             $url = $base_url.'index.php?page=search';
             if($params!=null) {
                 foreach($params as $k => $v) {
@@ -574,7 +576,7 @@
                     }
                 }
             }
-        }
+        }*/
         return $url;
     }
 

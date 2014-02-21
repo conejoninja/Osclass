@@ -28,6 +28,7 @@
 
             $this->mSearch = Search::newInstance();
             $this->uri = preg_replace('|^' . REL_WEB_URL . '|', '', $_SERVER['REQUEST_URI']);
+            // TODO : SHOULD DELETE THIS, LEFT FOR COMPATIBILITY ISSUES
             if( preg_match('/^index\.php/', $this->uri)>0) {
                 // search url without permalinks params
             } else {
@@ -38,9 +39,11 @@
                     $this->redirectTo($redirectURL, 301);
                 }
 
-                if( stripos($_SERVER['REQUEST_URI'], osc_get_preference('rewrite_search_url'))===false && osc_rewrite_enabled() && !Params::existParam('sFeed')) {
+                //if( stripos($_SERVER['REQUEST_URI'], osc_get_preference('rewrite_search_url'))===false && osc_rewrite_enabled() && !Params::existParam('sFeed')) {
+                if(!Params::existParam('sFeed')) {
                     // clean GET html params
-                    $this->uri = preg_replace('/(\/?)\?.*$/', '', $this->uri);
+                    //$this->uri = preg_replace('/(\/?)\?.*$/', '', $this->uri);
+                    $this->uri = Params::getParam('search_param');
 
                     $search_uri = preg_replace('|/[0-9]+$|', '', $this->uri);
                     $this->_exportVariableToView('search_uri', $search_uri);
@@ -162,6 +165,8 @@
                     }
                 }
             }
+
+            Params::_view();
 
             ////////////////////////////////
             //GETTING AND FIXING SENT DATA//
