@@ -152,6 +152,10 @@
                 $tmp = explode("?", $request_uri);
                 $request_uri = $tmp[0];
                 if(isset($tmp[1])) { $this->extractParams($this->_raw_request_uri); };
+                if(!osc_rewrite_enabled()) { // DO NOT LET ROUTE TO BE THE NAME OF A PARAM
+                    unset($_REQUEST[$request_uri.'?']);
+                    unset($_GET[$request_uri.'?']);
+                }
                 if(Params::getParam('page')=='') {
                     foreach($this->_routes as $id => $route) {
                         // UNCOMMENT TO DEBUG
@@ -203,7 +207,7 @@
             $uri_array = explode('?', $uri);
             $length_i = count($uri_array);
             for($var_i = 1;$var_i<$length_i;$var_i++) {
-                if(preg_match_all('|&([^=]+)=([^&]*)|', '&'.$uri_array[$var_i].'&', $matches)) {
+                if(preg_match_all('|&+([^=]+)=([^&]*)|', '&'.$uri_array[$var_i].'&', $matches)) {
                     $length = count($matches[1]);
                     for($var_k = 0;$var_k<$length;$var_k++) {
                         Params::setParam($matches[1][$var_k], $matches[2][$var_k]);
