@@ -295,140 +295,219 @@ function _osc_load_form($id) {
             $form->addButton(__('Apply'), 'submit');
             break;
         case 'item-form':
+            $action = in_array(func_get_arg(1), array('edit', 'post'))?func_get_arg(1):'post';
             $form = new OSCForm('item-form');
-            $form->addHidden('action', 'item_form');
+            $form->addHidden('action', 'item_'.$action);
+            $form->addHidden('page', 'item');
+            $form->multipart();
+            if($action=='edit') {
+                $form->addHidden('id', osc_item_id());
+                $form->addHidden('secret', osc_item_secret());
+            }
+            $form->addHTML('<h2>'.__('General Information').'</h2>');
+
+            // CATEGORIES
+            // TODO : Let the user choose from 1 select, 2 select or multiselect
+            $categoryID = Params::getParam('catId');
+            if(osc_item_category_id()!=null) { $categoryID = osc_item_category_id(); }
+            if(Session::newInstance()->_getForm('catId')!='') { $categoryID = Session::newInstance()->_getForm('catId'); }
+            $item = osc_item();
+            if(isset($item['fk_i_category_id'])) { $categoryID = $item['fk_i_category_id']; }
+
+            $tmp_categories_tree = Category::newInstance()->toRootTree($categoryID);
+            $categories_tree = array();
+            foreach($tmp_categories_tree as $t) { $categories_tree[] = $t['pk_i_id']; }
+            unset($tmp_categories_tree);
+            $categories = Category::newInstance()->listEnabled();
+
+            $form->addHidden('catId', $categoryID);
+            $form->addHTML('<div id="select_holder"></div>');
+
+            // PREPARE CATEGORIES FOR JAVASCRIPT
+            $tmp_cat = array();
+            foreach($categories as $c) {
+                if( $c['fk_i_parent_id']==null ) { $c['fk_i_parent_id'] = 0; };
+                $tmp_cat[$c['fk_i_parent_id']][] = array($c['pk_i_id'], $c['s_name']);
+            }
+
+            $html = '<script type="text/javascript" charset="utf-8">'.PHP_EOL;
+
+            foreach($tmp_cat as $k => $v) {
+                $html .= 'var categories_'.$k.' = '.json_encode($v).';';
+            }
+
+            $html .= 'if(osc==undefined) { var osc = {}; }'.
+                    'if(osc.langs==undefined) { osc.langs = {}; }'.
+                    'if(osc.langs.select_category==undefined) { osc.langs.select_category = "'.__('Select category').'"; }'.
+                    'if(osc.langs.select_subcategory==undefined) { osc.langs.select_subcategory = "'.__('Select subcategory').'"; }'.
+                    'osc.item_post = {};'.
+                    'osc.item_post.category_id = "'.$categoryID.'";'.
+                    'osc.item_post.category_tree_id = '.json_encode($categories_tree).';'.
+
+            $html .= '$(document).ready(function(){';
+                if($categoryID==array()) {
+                    $html .= 'draw_select(1,0);';
+                } else {
+                    $html .= 'draw_select(1,0);';
+                    for($i=0; $i<count($categories_tree)-1; $i++) {
+                        $html .= 'draw_select('.($i+2).' ,'.$categories_tree[$i].');';
+                    }
+                }
+                $html .= '$(\'body\').on("change", \'[name^="select_"]\', function() {'.
+                    'var depth = parseInt($(this).attr("depth"));'.
+                    'for(var d=(depth+1);d<=4;d++) {'.
+                        '$("#select_"+d).trigger(\'removed\');'.
+                        '$("#select_"+d).remove();'.
+                    '}'.
+                    '$("#catId").attr("value", $(this).val());'.
+                    '$("#catId").change();'.
+                    'if(catPriceEnabled[$(\'#catId\').val()] == 1) {'.
+                        '$(\'.price\').show();'.
+                    '} else {'.
+                        '$(\'.price\').hide();'.
+                        '$(\'#price\').val(\'\') ;'.
+                    '}'.
+                    'if((depth==1 && $(this).val()!=0) || (depth>1 && $(this).val()!=$("#select_"+(depth-1)).val())) {'.
+                        'draw_select(depth+1, $(this).val());'.
+                    '}'.
+                    'return true;'.
+                '});'.
+            '});'.
+
+            'function draw_select(select, categoryID) {'.
+                'tmp_categories = window[\'categories_\' + categoryID];'.
+                'if( tmp_categories!=null && $.isArray(tmp_categories) ) {'.
+                    '$("#select_holder").before(\'<select id="select_\'+select+\'" name="select_\'+select+\'" depth="\'+select+\'"></select>\');'.
+                    'if(categoryID==0) {'.
+                        'var options = \'<option value="\' + categoryID + \'" >\' + osc.langs.select_category + \'</option>\';'.
+                    '}else {'.
+                        'var options = \'<option value="\' + categoryID + \'" >\' + osc.langs.select_subcategory + \'</option>\';'.
+                    '}'.
+                    '$.each(tmp_categories, function(index, value){'.
+                        'options += \'<option value="\' + value[0] + \'" \'+(value[0]==osc.item_post.category_tree_id[select-1]?\'selected="selected"\':\'\')+\'>\' + value[1] + \'</option>\';'.
+                    '});'.
+                    'osc.item_post.category_tree_id[select-1] = null;'.
+                    '$(\'#select_\'+select).html(options);'.
+                    '$(\'#select_\'+select).next("a").find(".select-box-label").text(osc.langs.select_subcategory);'.
+                    '$(\'#select_\'+select).trigger("created");'.
+                '};'.
+            '}';
+            $html .= '</script>'.PHP_EOL;
+            $form->addHTML($html);
+
+            // TODO : Add multi locale support
+            $form->addElement(__('Title'), 'title['.osc_locale_code().']', osc_item_title(osc_locale_code()));
+            $form->addTextArea(__('Description'), 'description['.osc_locale_code().']', osc_item_description(osc_locale_code()));
+
+            if(osc_price_enabled_at_items()) {
+                $form->addElement(__('Price'), 'price');
+            }
 
 
-/*
-                <form name="item" action="<?php echo osc_base_url(true);?>" method="post" enctype="multipart/form-data" id="item-post">
-                    <fieldset>
-                    <input type="hidden" name="action" value="<?php echo $action; ?>" />
-                    <input type="hidden" name="page" value="item" />
-                    <?php if($edit){ ?>
-                        <input type="hidden" name="id" value="<?php echo osc_item_id();?>" />
-                        <input type="hidden" name="secret" value="<?php echo osc_item_secret();?>" />
-                    <?php } ?>
-                        <h2><?php _e('General Information', 'bender'); ?></h2>
-                        <div class="control-group">
-                            <label class="control-label" for="select_1"><?php _e('Category', 'bender'); ?></label>
-                            <div class="controls">
-                                <?php ItemForm::category_select(null, null, __('Select a category', 'bender')); ?>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="title[<?php echo osc_locale_code(); ?>]"><?php _e('Title', 'bender'); ?></label>
-                            <div class="controls">
-                                <?php ItemForm::title_input('title',osc_locale_code(), osc_esc_html( bender_item_title() )); ?>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="description[<?php echo osc_locale_code(); ?>]"><?php _e('Description', 'bender'); ?></label>
-                            <div class="controls">
-                                <?php ItemForm::description_textarea('description',osc_locale_code(), osc_esc_html( bender_item_description() )); ?>
-                            </div>
-                        </div>
-                        <?php if( osc_price_enabled_at_items() ) { ?>
-                        <div class="control-group">
-                            <label class="control-label" for="price"><?php _e('Price', 'bender'); ?></label>
-                            <div class="controls">
-                                <?php ItemForm::price_input_text(); ?>
-                                <?php ItemForm::currency_select(); ?>
-                            </div>
-                        </div>
-                        <?php } ?>
-                        <?php if( osc_images_enabled_at_items() ) { ?>
-                        <div class="box photos">
-                            <h2><?php _e('Photos', 'bender'); ?></h2>
-                            <div class="control-group">
-                                <label class="control-label" for="photos[]"><?php _e('Photos', 'bender'); ?></label>
-                                <div class="controls">
-                                    <div id="photos">
-                                        <?php ItemForm::photos(); ?>
-                                    </div>
-                                </div>
-                                <div class="controls">
-                                    <a href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo', 'bender'); ?></a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php } ?>
-                        <div class="box location">
-                            <h2><?php _e('Listing Location', 'bender'); ?></h2>
 
-                            <div class="control-group">
-                                <label class="control-label" for="country"><?php _e('Country', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php ItemForm::country_select(osc_get_countries(), osc_user()); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="region"><?php _e('Region', 'bender'); ?></label>
-                                <div class="controls">
-                                  <?php ItemForm::region_text(osc_user()); ?>
-                                </div>
-                                    </div>
+            /*
+                                    <?php if( osc_price_enabled_at_items() ) { ?>
                                     <div class="control-group">
-                                <label class="control-label" for="city"><?php _e('City', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php ItemForm::city_text(osc_user()); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="cityArea"><?php _e('City Area', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php ItemForm::city_area_text(osc_user()); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="address"><?php _e('Address', 'bender'); ?></label>
-                                <div class="controls">
-                                  <?php ItemForm::address_text(osc_user()); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- seller info -->
-                        <?php if(!osc_is_user_logged_in() ) { ?>
-                        <div class="box seller_info">
-                            <h2><?php _e("Seller's information", 'bender'); ?></h2>
-                            <div class="control-group">
-                                <label class="control-label" for="contactName"><?php _e('Name', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php ItemForm::contact_name_text(); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="contactEmail"><?php _e('E-mail', 'bender'); ?></label>
-                                <div class="controls">
-                                    <?php ItemForm::contact_email_text(); ?>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <div class="controls checkbox">
-                                    <?php ItemForm::show_email_checkbox(); ?> <label for="showEmail"><?php _e('Show e-mail on the listing page', 'bender'); ?></label>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                        }
-                        if($edit) {
-                            ItemForm::plugin_edit_item();
-                        } else {
-                            ItemForm::plugin_post_item();
-                        }
-                        ?>
-                        <div class="control-group">
-                            <?php if( osc_recaptcha_items_enabled() ) { ?>
-                                <div class="controls">
-                                    <?php osc_show_recaptcha(); ?>
-                                </div>
-                            <?php }?>
-                            <div class="controls">
-                                <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php if($edit) { _e("Update", 'bender'); } else { _e("Publish", 'bender'); } ?></button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-*/
+                                        <label class="control-label" for="price"><?php _e('Price', 'bender'); ?></label>
+                                        <div class="controls">
+                                            <?php ItemForm::price_input_text(); ?>
+                                            <?php ItemForm::currency_select(); ?>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    <?php if( osc_images_enabled_at_items() ) { ?>
+                                    <div class="box photos">
+                                        <h2><?php _e('Photos', 'bender'); ?></h2>
+                                        <div class="control-group">
+                                            <label class="control-label" for="photos[]"><?php _e('Photos', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <div id="photos">
+                                                    <?php ItemForm::photos(); ?>
+                                                </div>
+                                            </div>
+                                            <div class="controls">
+                                                <a href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo', 'bender'); ?></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    <div class="box location">
+                                        <h2><?php _e('Listing Location', 'bender'); ?></h2>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="country"><?php _e('Country', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <?php ItemForm::country_select(osc_get_countries(), osc_user()); ?>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="region"><?php _e('Region', 'bender'); ?></label>
+                                            <div class="controls">
+                                              <?php ItemForm::region_text(osc_user()); ?>
+                                            </div>
+                                                </div>
+                                                <div class="control-group">
+                                            <label class="control-label" for="city"><?php _e('City', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <?php ItemForm::city_text(osc_user()); ?>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="cityArea"><?php _e('City Area', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <?php ItemForm::city_area_text(osc_user()); ?>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="address"><?php _e('Address', 'bender'); ?></label>
+                                            <div class="controls">
+                                              <?php ItemForm::address_text(osc_user()); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- seller info -->
+                                    <?php if(!osc_is_user_logged_in() ) { ?>
+                                    <div class="box seller_info">
+                                        <h2><?php _e("Seller's information", 'bender'); ?></h2>
+                                        <div class="control-group">
+                                            <label class="control-label" for="contactName"><?php _e('Name', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <?php ItemForm::contact_name_text(); ?>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="contactEmail"><?php _e('E-mail', 'bender'); ?></label>
+                                            <div class="controls">
+                                                <?php ItemForm::contact_email_text(); ?>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <div class="controls checkbox">
+                                                <?php ItemForm::show_email_checkbox(); ?> <label for="showEmail"><?php _e('Show e-mail on the listing page', 'bender'); ?></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    }
+                                    if($edit) {
+                                        ItemForm::plugin_edit_item();
+                                    } else {
+                                        ItemForm::plugin_post_item();
+                                    }
+                                    ?>
+                                    <div class="control-group">
+                                        <?php if( osc_recaptcha_items_enabled() ) { ?>
+                                            <div class="controls">
+                                                <?php osc_show_recaptcha(); ?>
+                                            </div>
+                                        <?php }?>
+                                        <div class="controls">
+                                            <button type="submit" class="ui-button ui-button-middle ui-button-main"><?php if($edit) { _e("Update", 'bender'); } else { _e("Publish", 'bender'); } ?></button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+            */
             break;
         default:
             return false;

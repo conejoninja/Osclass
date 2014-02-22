@@ -554,6 +554,7 @@
                     if(!is_array($v)  && $v!='') { $url .= "/".$k.",".$v; }
                 }
             }
+        // TODO : Enable this for backward compatible
         /*} else {
             $url = $base_url.'index.php?page=search';
             if($params!=null) {

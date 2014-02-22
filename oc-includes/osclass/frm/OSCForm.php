@@ -113,6 +113,10 @@
             $this->addElement(array('name' => 'html','type' => 'html', 'value' => $html));
         }
 
+        public function multipart($value = true) {
+            $this->_self['has_files'] = $value;
+        }
+
         public static function addElementClass($form_id, $element_name, $class) {
             OSCForm::load($form_id);
             if($class!='' && isset(OSCForm::$_forms[$form_id]) && isset(OSCForm::$_forms[$form_id]['elements'][$element_name])) {
