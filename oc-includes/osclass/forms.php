@@ -401,36 +401,52 @@ function _osc_load_form($id) {
 
             if(osc_price_enabled_at_items()) {
                 $form->addElement(__('Price'), 'price');
+
+                $currencies = osc_get_currencies();
+                if( Session::newInstance()->_getForm('currency') != '' ) {
+                    $item['fk_c_currency_code'] = Session::newInstance()->_getForm('currency');
+                }
+                if( count($currencies) > 1 ) {
+                    $default_key = null;
+                    $currency = osc_get_preference('currency');
+                    if( isset($item['fk_c_currency_code']) ) {
+                        $default_key = $item['fk_c_currency_code'];
+                    } elseif( isset( $currency ) ) {
+                        $default_key = $currency;
+                    }
+                    // TODO : This will probably not work
+                    $form->addSelect('', 'currency', $currencies);
+                } else if( count($currencies) == 1 ) {
+                    $form->addHidden('currency', $currencies[0]["pk_c_code"]);
+                    $form->addHTML($currencies[0]['s_description']);
+                }
+
             }
 
+            if(osc_images_enabled_at_items()) {
+                /*<?php if( osc_images_enabled_at_items() ) { ?>
+                    <div class="box photos">
+                        <h2><?php _e('Photos', 'bender'); ?></h2>
+                        <div class="control-group">
+                            <label class="control-label" for="photos[]"><?php _e('Photos', 'bender'); ?></label>
+                            <div class="controls">
+                                <div id="photos">
+                                    <?php ItemForm::photos(); ?>
+                                </div>
+                            </div>
+                            <div class="controls">
+                                <a href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo', 'bender'); ?></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                */
+            }
+
+            $form->addHTML('<h2>'.__('Listing Location').'</h2>');
 
 
             /*
-                                    <?php if( osc_price_enabled_at_items() ) { ?>
-                                    <div class="control-group">
-                                        <label class="control-label" for="price"><?php _e('Price', 'bender'); ?></label>
-                                        <div class="controls">
-                                            <?php ItemForm::price_input_text(); ?>
-                                            <?php ItemForm::currency_select(); ?>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
-                                    <?php if( osc_images_enabled_at_items() ) { ?>
-                                    <div class="box photos">
-                                        <h2><?php _e('Photos', 'bender'); ?></h2>
-                                        <div class="control-group">
-                                            <label class="control-label" for="photos[]"><?php _e('Photos', 'bender'); ?></label>
-                                            <div class="controls">
-                                                <div id="photos">
-                                                    <?php ItemForm::photos(); ?>
-                                                </div>
-                                            </div>
-                                            <div class="controls">
-                                                <a href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo', 'bender'); ?></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
                                     <div class="box location">
                                         <h2><?php _e('Listing Location', 'bender'); ?></h2>
 
@@ -515,6 +531,77 @@ function _osc_load_form($id) {
     }
 }
 
+
+function _osc_form_aux_photos() {
+
+    $html = <<<AJAXPHOTO
+<script type="text/javascript" charset="utf-8">
+
+            foreach($tmp_cat as $k => $v) {
+                $html .= 'var categories_'.$k.' = '.json_encode($v).';';
+            }
+
+            $html .= 'if(osc==undefined) { var osc = {}; }'.
+                    'if(osc.langs==undefined) { osc.langs = {}; }'.
+                    'if(osc.langs.select_category==undefined) { osc.langs.select_category = "'.__('Select category').'"; }'.
+                    'if(osc.langs.select_subcategory==undefined) { osc.langs.select_subcategory = "'.__('Select subcategory').'"; }'.
+                    'osc.item_post = {};'.
+                    'osc.item_post.category_id = "'.$categoryID.'";'.
+                    'osc.item_post.category_tree_id = '.json_encode($categories_tree).';'.
+
+            $html .= '$(document).ready(function(){';
+                if($categoryID==array()) {
+                    $html .= 'draw_select(1,0);';
+                } else {
+                    $html .= 'draw_select(1,0);';
+                    for($i=0; $i<count($categories_tree)-1; $i++) {
+                        $html .= 'draw_select('.($i+2).' ,'.$categories_tree[$i].');';
+                    }
+                }
+                $html .= '$(\'body\').on("change", \'[name^="select_"]\', function() {'.
+                    'var depth = parseInt($(this).attr("depth"));'.
+                    'for(var d=(depth+1);d<=4;d++) {'.
+                        '$("#select_"+d).trigger(\'removed\');'.
+                        '$("#select_"+d).remove();'.
+                    '}'.
+                    '$("#catId").attr("value", $(this).val());'.
+                    '$("#catId").change();'.
+                    'if(catPriceEnabled[$(\'#catId\').val()] == 1) {'.
+                        '$(\'.price\').show();'.
+                    '} else {'.
+                        '$(\'.price\').hide();'.
+                        '$(\'#price\').val(\'\') ;'.
+                    '}'.
+                    'if((depth==1 && $(this).val()!=0) || (depth>1 && $(this).val()!=$("#select_"+(depth-1)).val())) {'.
+                        'draw_select(depth+1, $(this).val());'.
+                    '}'.
+                    'return true;'.
+                '});'.
+            '});'.
+
+            'function draw_select(select, categoryID) {'.
+                'tmp_categories = window[\'categories_\' + categoryID];'.
+                'if( tmp_categories!=null && $.isArray(tmp_categories) ) {'.
+                    '$("#select_holder").before(\'<select id="select_\'+select+\'" name="select_\'+select+\'" depth="\'+select+\'"></select>\');'.
+                    'if(categoryID==0) {'.
+                        'var options = \'<option value="\' + categoryID + \'" >\' + osc.langs.select_category + \'</option>\';'.
+                    '}else {'.
+                        'var options = \'<option value="\' + categoryID + \'" >\' + osc.langs.select_subcategory + \'</option>\';'.
+                    '}'.
+                    '$.each(tmp_categories, function(index, value){'.
+                        'options += \'<option value="\' + value[0] + \'" \'+(value[0]==osc.item_post.category_tree_id[select-1]?\'selected="selected"\':\'\')+\'>\' + value[1] + \'</option>\';'.
+                    '});'.
+                    'osc.item_post.category_tree_id[select-1] = null;'.
+                    '$(\'#select_\'+select).html(options);'.
+                    '$(\'#select_\'+select).next("a").find(".select-box-label").text(osc.langs.select_subcategory);'.
+                    '$(\'#select_\'+select).trigger("created");'.
+                '};'.
+            '}';
+            $html .= '</script>'
+AJAXPHOTO;
+
+
+}
 
 
 ?>
