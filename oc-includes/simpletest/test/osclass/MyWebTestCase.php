@@ -15,11 +15,19 @@ class MyWebTestCase extends WebTestCase {
         $function = $bt[2]['function'];
 
         $date = $function."_".time().".png";
-        $path = "/var/www/vm-test-osclass.office/subdomains/images_test/httpdocs/img/";
+        if(defined('TEST_IMAGE_PATH')) {
+            $path = TEST_IMAGE_PATH;
+        } else {
+            $path = "/var/www/vm-test-osclass.office/subdomains/images_test/httpdocs/img/";
+        }
         $img  = $path.$date;
 
         if(!$res) {
-            $a = "<a target='_blank' href='http://images_test.vm-test-osclass.office/img/$date'>Image test failed</a><br /><br />";
+            if(defined('TEST_IMAGE_URL')) {
+                $a = "<a target='_blank' href='".TEST_IMAGE_URL.$date."'>Image test failed</a><br /><br />";
+            } else {
+                $a = "<a target='_blank' href='http://images_test.vm-test-osclass.office/img/$date'>Image test failed</a><br /><br />";
+            }
             $this->reporter->addFail($message . " " . $a);
             $cmd = "DISPLAY=:1 import -window root ".$img;
             system($cmd);
