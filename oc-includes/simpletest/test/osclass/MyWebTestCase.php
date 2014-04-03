@@ -29,9 +29,9 @@ class MyWebTestCase extends WebTestCase {
                 $a = "<a target='_blank' href='http://images_test.vm-test-osclass.office/img/$date'>Image test failed</a><br /><br />";
             }
             $this->reporter->addFail($message . " " . $a);
-            $cmd = "DISPLAY=:1 import -window root ".$img;
-            system($cmd);
-            $this->selenium->captureScreenshot($date);
+            //$cmd = "DISPLAY=:1 import -window root ".$img;
+            //system($cmd);
+            $this->selenium->captureScreenshot($img);//$date);
         }
 
         return $res;
