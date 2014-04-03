@@ -13,6 +13,7 @@ class Installer_installer extends InstallerTest {
             $this->can_continue = true;
 
             $this->selenium->open( $entry_point . "oc-includes/osclass/install.php" );
+            $this->selenium->waitForPageToLoad("30000");
 
             // Test locale
             $this->selenium->type("install_locale", "en_US");
@@ -21,6 +22,7 @@ class Installer_installer extends InstallerTest {
             $this->selenium->type("install_locale", "es_ES");
             sleep(3);
             $this->assertTrue( $this->selenium->isTextPresent("Extensión MySQLi para PHP"), "Locale didn't changed correctly - test 1" );
+            sleep(3);
 
             // step 1
             $this->selenium->click("css=input.button");
@@ -80,6 +82,7 @@ class Installer_installer extends InstallerTest {
             $this->can_continue = true;
 
             $this->selenium->open( $entry_point . "oc-includes/osclass/install.php" );
+            $this->selenium->waitForPageToLoad("30000");
 
             // Test locale
             $this->selenium->type("install_locale", "es_ES");
@@ -88,6 +91,7 @@ class Installer_installer extends InstallerTest {
             $this->selenium->type("install_locale", "en_US");
             sleep(3);
             $this->assertTrue( $this->selenium->isTextPresent("MySQLi extension for PHP"), "Locale didn't changed correctly - test 2" );
+            sleep(3);
 
             // step 1
             $this->selenium->click("css=input.button");
