@@ -22,7 +22,7 @@ class InstallerTest extends MyWebTestCase {
     {
         require(dirname(__FILE__).'/config_test.php');
         flush();
-        $this->selenium = new Testing_Selenium($browser, "http://localhost/");
+        $this->selenium = new Testing_Selenium($browser, $entry_point); //"http://localhost/");
         $this->selenium->start();
         $this->selenium->setSpeed("150");
     }

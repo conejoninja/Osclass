@@ -22,7 +22,7 @@ abstract class FrontendTest extends MyWebTestCase {
         $this->_email    = $email;
         $this->_password = $password;
 
-        $this->selenium = new Testing_Selenium( $browser, "http://localhost/");
+        $this->selenium = new Testing_Selenium( $browser, $entry_pont); //"http://localhost/");
         $this->selenium->start();
         $this->selenium->setSpeed( $speed );
 
