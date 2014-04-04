@@ -258,7 +258,7 @@ class MyReporter extends SimpleReporter {
             $bt = debug_backtrace();
             $function = $bt[2]['function'];
 
-            $date = $function."_".time().".png";
+            $date = $function."_".time()."_EXCEPTION.png";
             if(defined('TEST_IMAGE_PATH')) {
                 $path = TEST_IMAGE_PATH;
             } else {
@@ -315,7 +315,7 @@ class MyReporter extends SimpleReporter {
             $bt = debug_backtrace();
             $function = $bt[2]['function'];
 
-            $date = $function."_".time().".png";
+            $date = $function."_".time()."_EXCEPTION.png";
             if(defined('TEST_IMAGE_PATH')) {
                 $path = TEST_IMAGE_PATH;
             } else {
