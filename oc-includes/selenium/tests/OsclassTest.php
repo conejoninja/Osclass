@@ -1,18 +1,20 @@
 <?php
-define('TEST_IMAGE_PATH', dirname(__FILE__));
+
+//require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/oc-load.php';
+require_once dirname(__FILE__) . '/config.php';
 
 class OsclassTest extends PHPUnit_Extensions_SeleniumTestCase
 {
 
     protected $captureScreenshotOnFailure = TRUE;
     protected $screenshotPath = TEST_IMAGE_PATH;
-    protected $screenshotUrl = 'http://localhost/screenshots';
+    protected $screenshotUrl = TEST_IMAGE_URL;
 
 
   protected function setUp()
   {
     $this->setBrowser("*chrome");
-    $this->setBrowserUrl("http://vps.madriguera.me/testing/Osclass");
+    $this->setBrowserUrl(TEST_SERVER_URL);
   }
 
 
