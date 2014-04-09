@@ -11,6 +11,10 @@ define('TEST_ADMIN_USER', 'admin');
 define('TEST_ADMIN_PASS', 'admin');
 define('TEST_ADMIN_EMAIL', 'test@example.com');
 
+define('TEST_USER_USER', 'testname');
+define('TEST_USER_PASS', 'testing');
+define('TEST_USER_EMAIL', 'user@example.com');
+
 define('TEST_IMAGE_PATH', '');
 define('TEST_IMAGE_URL', '');
 
