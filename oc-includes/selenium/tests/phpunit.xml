@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+
+    <testsuites>
+        <testsuite name="all">
+            <directory>installer/test-installer.php</directory>
+            <directory>frontend/test-user.php</directory>
+        </testsuite>
+        <testsuite name="installer">
+            <directory>installer/test-installer.php</directory>
+        </testsuite>
+        <testsuite name="frontend">
+            <directory>frontend/test-user.php</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
