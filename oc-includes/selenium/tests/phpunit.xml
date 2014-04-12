@@ -2,16 +2,26 @@
 <phpunit>
 
     <testsuites>
+
         <testsuite name="all">
             <directory>installer/test-installer.php</directory>
+
             <directory>frontend/test-user.php</directory>
+            <directory>frontend/test-contact.php</directory>
+            <directory>frontend/test-page.php</directory>
+
         </testsuite>
+
         <testsuite name="installer">
             <directory>installer/test-installer.php</directory>
         </testsuite>
+
         <testsuite name="frontend">
             <directory>frontend/test-user.php</directory>
+            <directory>frontend/test-contact.php</directory>
+            <directory>frontend/test-page.php</directory>
         </testsuite>
+
     </testsuites>
 
 </phpunit>
