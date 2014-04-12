@@ -14,7 +14,7 @@ class OsclassTestFrontend extends OsclassTest
 
     protected function _login($email = TEST_USER_EMAIL, $pass = TEST_USER_PASS)
     {
-        $this->open("/osclass/Osclass/index.php?page=login");
+        $this->open(osc_user_login_url());
         $this->click("id=login_open");
         $this->waitForPageToLoad("30000");
         $this->type("id=email", $email);

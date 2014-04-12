@@ -108,7 +108,7 @@ class TestUser extends OsclassTestFrontend
 
     public function testLogin()
     {
-        $this->open("/osclass/Osclass/index.php?page=login");
+        $this->open(osc_user_login_url());
         $this->click("id=login_open");
         $this->waitForPageToLoad("30000");
 
