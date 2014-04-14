@@ -1,4 +1,5 @@
 <?php
+define('TEST_ASSETS_PATH', dirname(dirname(__FILE__)) . '/assets/');
 require_once dirname(dirname(__FILE__)).'/OsclassTestFrontend.php';
 class TestItems extends OsclassTestFrontend
 {
@@ -11,7 +12,7 @@ class TestItems extends OsclassTestFrontend
         osc_set_preference('reg_user_post', 0);
         osc_set_preference('moderate_items', -1);
 
-        include TEST_ABS_PATH . 'assets/ItemData.php';
+        include TEST_ASSETS_PATH . 'assets/ItemData.php';
         $this->insertItem($item['parentCatId'], $item['catId'], $item['title'],
             $item['description'], $item['price'],
             $item['regionId'], $item['cityId'], $item['cityArea'],
