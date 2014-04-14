@@ -1,7 +1,6 @@
 <?php
 
-define('TEST_ABS_PATH', dirname(__FILE__) . '/');
-require_once TEST_ABS_PATH . '/config.php';
+require_once dirname(__FILE__) . '/config.php';
 
 class OsclassTest extends PHPUnit_Extensions_SeleniumTestCase
 {
@@ -13,7 +12,7 @@ class OsclassTest extends PHPUnit_Extensions_SeleniumTestCase
 
   protected function setUp()
   {
-    $this->setBrowser("*chrome");
+    $this->setBrowser("*firefox");
     $this->setBrowserUrl(TEST_SERVER_URL);
   }
 
