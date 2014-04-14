@@ -1,7 +1,7 @@
 <?php
 
-//require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/oc-load.php';
-require_once dirname(__FILE__) . '/config.php';
+define('TEST_ABS_PATH', dirname(__FILE__) . '/');
+require_once TEST_ABS_PATH . '/config.php';
 
 class OsclassTest extends PHPUnit_Extensions_SeleniumTestCase
 {
