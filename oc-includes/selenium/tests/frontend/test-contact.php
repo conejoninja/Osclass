@@ -6,7 +6,7 @@ class TestContact extends OsclassTestFrontend
     public function testContactWeb()
     {
 
-        $this->open(TEST_SERVER_URL);
+        $this->open(osc_base_url());
         $this->click("link=Contact");
         $this->waitForPageToLoad("30000");
         $this->click("//button[@type='submit']");

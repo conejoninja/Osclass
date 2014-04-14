@@ -10,7 +10,7 @@ class TestUser extends OsclassTestFrontend
         osc_set_preference('enabled_user_registration', true);
         osc_set_preference('enabled_user_validation', true);
 
-        $this->open(TEST_SERVER_URL);
+        $this->open(osc_base_url());
         $this->click("link=Register for a free account");
         $this->waitForPageToLoad("30000");
         $this->click("//button[@type='submit']");
@@ -56,7 +56,7 @@ class TestUser extends OsclassTestFrontend
         osc_set_preference('enabled_user_registration', true);
         osc_set_preference('enabled_user_validation', false);
 
-        $this->open(TEST_SERVER_URL);
+        $this->open(osc_base_url());
         $this->click("link=Register for a free account");
         $this->waitForPageToLoad("30000");
         $this->click("//button[@type='submit']");
@@ -93,7 +93,7 @@ class TestUser extends OsclassTestFrontend
         osc_set_preference('enabled_user_registration', true);
         osc_set_preference('enabled_user_validation', false);
 
-        $this->open(TEST_SERVER_URL);
+        $this->open(osc_base_url());
         $this->click("link=Register for a free account");
         $this->waitForPageToLoad("30000");
         $this->type("id=s_name", "Test");
