@@ -19,4 +19,3 @@ class OsclassTest extends PHPUnit_Extensions_SeleniumTestCase
 
 
 }
-?>

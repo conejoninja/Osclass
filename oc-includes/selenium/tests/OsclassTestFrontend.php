@@ -76,4 +76,3 @@ class OsclassTestFrontend extends OsclassTest
 
 
 }
-?>
