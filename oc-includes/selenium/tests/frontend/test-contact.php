@@ -10,7 +10,7 @@ class TestContact extends OsclassTestFrontend
         $this->click("link=Contact");
         $this->waitForPageToLoad("30000");
         $this->click("//button[@type='submit']");
-        $this->assertEquals("Email: this field is required.", $this->getText("css=label.error"));
+        $this->assertEquals("Email: this field is required..", $this->getText("css=label.error"));
         $this->assertEquals("Message: this field is required.", $this->getText("//ul[@id='error_list']/li[2]/label"));
         $this->type("id=yourName", "Some name");
         $this->keyUp("id=yourName", "a");
