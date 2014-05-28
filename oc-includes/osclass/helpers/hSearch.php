@@ -321,6 +321,7 @@
      */
     function osc_search_url($params = null) {
         if(is_array($params)) {
+            if(isset($params['search_param'])) { unset($params['search_param']); };
             osc_prune_array($params);
         }
         $countP = count($params);

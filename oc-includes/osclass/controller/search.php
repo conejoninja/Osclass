@@ -89,10 +89,9 @@
                     } else {
                         if(!Params::existParam('sCategory')) {
                             $category  = Category::newInstance()->findBySlug($search_uri);
-                            if( count($category) === 0 ) {
-                                $this->do404();
+                            if( count($category) !== 0 ) {
+                                Params::setParam('sCategory', $search_uri);
                             }
-                            Params::setParam('sCategory', $search_uri);
                         }
                     }
                 }
