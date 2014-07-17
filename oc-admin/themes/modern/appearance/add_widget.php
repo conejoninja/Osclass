@@ -22,11 +22,9 @@
     $widget = __get("widget");
 
     if( Params::getParam('action') == 'edit_widget' ) {
-        $title  = __('Edit widget');
         $edit   = true;
         $button = osc_esc_html( __('Save changes') );
     } else {
-        $title  = __('Add widget');
         $edit   = false;
         $button = osc_esc_html( __('Add widget') );
     }
@@ -47,17 +45,6 @@
     }
     osc_add_filter('admin_title', 'customPageTitle');
     function customHead() {
-        $info   = __get("info");
-        $widget = __get("widget");
-        if( Params::getParam('action') == 'edit_widget' ) {
-            $title  = __('Edit widget');
-            $edit   = true;
-            $button = osc_esc_html( __('Save changes') );
-        } else {
-            $title  = __('Add widget');
-            $edit   = false;
-            $button = osc_esc_html( __('Add widget') );
-        }
         ?>
         <script type="text/javascript">
             tinyMCE.init({
