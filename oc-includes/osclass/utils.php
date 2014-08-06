@@ -1865,6 +1865,7 @@ function osc_do_upgrade() {
                             if (!rmdir($tmp_path)) {
                                 $rm_errors++;
                             }
+                            osc_set_preference('update_core_json', '');
                             $deleted = @unlink(ABS_PATH . '.maintenance');
                             if ($rm_errors == 0) {
                                 $message = __('Everything looks good! Your Osclass installation is up-to-date');
